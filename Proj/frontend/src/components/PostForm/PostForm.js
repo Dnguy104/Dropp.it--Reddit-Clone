@@ -22,6 +22,12 @@ class PostForm extends Component {
     const { author, content, title  } = this.state;
     const post = { author, content, title, slug: title };
     this.props.addPost(post);
+
+    this.setState({
+      author: '',
+      content: '',
+      title: ''
+    });
   }
 
   render() {

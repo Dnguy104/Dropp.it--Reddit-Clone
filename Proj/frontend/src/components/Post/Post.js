@@ -11,9 +11,6 @@ class Post extends Component {
 
   render() {
     const posts = this.props.posts;
-    console.log(posts);
-
-    // onClick={this.props.deletePost.bind(this, post.id)}
 
     return (
       <Fragment>
@@ -57,7 +54,7 @@ Post.propTypes = {
 
 const mapStateToProps = state => ({
   posts: state.posts.posts
-})
+});
 
 export default connect(
   mapStateToProps,

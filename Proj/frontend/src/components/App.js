@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom';
 import { Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 
-import Header from './Header/Header';
-import Dashboard from './Dashboard/Dashboard';
-import Alert from './Alert/Alert';
+import Header from './Header/Header.js';
+import Dashboard from './Dashboard/Dashboard.js';
+import Alert from './Alert/Alert.js';
 
 import { Provider } from 'react-redux';
 import store from '../store';
@@ -15,24 +15,24 @@ import store from '../store';
 const alertOptions = {
   timeout: 3000,
   position: 'top center'
-}
+};
 
 class App extends Component{
-    render() {
-        return (
-          <Provider store={store}>
-          <AlertProvider template={AlertTemplate} {...alertOptions}>
-            <Fragment>
-              <Header />
-              <Alert />
-              <div className="container">
-                <Dashboard />
-              </div>
-            </Fragment>
-          </AlertProvider>
-          </Provider>
-        );
-    }
+  render() {
+    return (
+      <Provider store={store}>
+        <AlertProvider template={AlertTemplate} {...alertOptions}>
+          <Fragment>
+            <Header />
+            <Alert />
+            <div className="container">
+              <Dashboard />
+            </div>
+          </Fragment>
+        </AlertProvider>
+      </Provider>
+    );
+  }
 }
 
 ReactDOM.render(<App/>, document.getElementById('app'));
