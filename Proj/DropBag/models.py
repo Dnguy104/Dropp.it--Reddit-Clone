@@ -14,6 +14,7 @@ class Post(models.Model):
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     author = models.TextField()
+    owner = models.ForeignKey(User, related_name="posts", on_delete=models.CASCADE, null=True)
 
     # def get_absolute_url(self):
     #     return ('post_detail', (),

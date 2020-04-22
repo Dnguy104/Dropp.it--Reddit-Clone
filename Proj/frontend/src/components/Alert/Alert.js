@@ -13,9 +13,8 @@ export class Alert extends Component {
       if(error.msg.title) alert.show(`Title: ${error.msg.title.join()}`);
       if(error.msg.content) alert.show(`Content: ${error.msg.content.join()}`);
     }
-    console.log('hello')
+    console.log(this.props)
     if(message !== prevProps.message) {
-      console.log('hello1')
       if(message.deletePost) alert.show(message.deletePost);
       if(message.addPost) alert.show(message.addPost);
     }
