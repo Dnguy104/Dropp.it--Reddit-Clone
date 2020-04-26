@@ -40,8 +40,14 @@ INSTALLED_APPS = [
     'corsheaders',
     'DropBag',
     'rest_framework',
+    'knox',
+    'accounts',
     # 'frontend',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

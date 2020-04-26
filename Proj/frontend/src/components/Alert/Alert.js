@@ -12,11 +12,13 @@ export class Alert extends Component {
       if(error.msg.author) alert.show(`Author: ${error.msg.author.join()}`);
       if(error.msg.title) alert.show(`Title: ${error.msg.title.join()}`);
       if(error.msg.content) alert.show(`Content: ${error.msg.content.join()}`);
+      if(error.msg.non_field_errors) alert.show(error.msg.non_field_errors.join());
+
     }
-    console.log(this.props)
-    if(message !== prevProps.message) {
+     if(message !== prevProps.message) {
       if(message.deletePost) alert.show(message.deletePost);
       if(message.addPost) alert.show(message.addPost);
+      if(message.passwordNotMatch) alert.show(message.passwordNotMatch);
     }
   }
 
