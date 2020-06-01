@@ -1,20 +1,25 @@
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 # Create your models here.
 
 class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
 
+class Thread(models.Model):
+    title = models.CharField(max_length=20)
+    created_on = models.DateTimeField(auto_now_add=True)
+    about = models.CharField(max_length=500)
+    userid = models.ForeignKey(User, related_name="threads", on_delete=models.SET_NULL, null=True)
 
 class Post(models.Model):
-    title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, max_length=255)
-    content = models.TextField()
+    title = models.CharField(max_length=40)
+    slug = models.SlugField(unique=True, max_length=100)
+    content = models.CharField(max_length=1000)
     created_on = models.DateTimeField(auto_now_add=True)
-    author = models.TextField()
-    owner = models.ForeignKey(User, related_name="posts", on_delete=models.CASCADE, null=True)
+    author = models.CharField(max_length=10)
+    userid = models.ForeignKey(User, related_name="posts", on_delete=models.SET_NULL, null=True)
 
     # def get_absolute_url(self):
     #     return ('post_detail', (),
@@ -25,7 +30,6 @@ class Post(models.Model):
     #     if not self.slug:
     #         self.slug = slugify(self.title)
     #         super(Post, self).save(*args, **kwargs)
-
     class Meta:
         ordering = ['created_on']
         def __unicode__(self):
@@ -33,9 +37,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    name = models.CharField(max_length=42)
-    email = models.EmailField(max_length=75)
-    website = models.URLField(max_length=200, null=True, blank=True)
-    content = models.TextField()
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.CharField(max_length=10)
+    content = models.TextField(max_length=1000)
     created_on = models.DateTimeField(auto_now_add=True)
+    userid = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="comments", null=True)

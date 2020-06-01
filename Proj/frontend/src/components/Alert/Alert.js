@@ -13,6 +13,7 @@ export class Alert extends Component {
       if(error.msg.title) alert.show(`Title: ${error.msg.title.join()}`);
       if(error.msg.content) alert.show(`Content: ${error.msg.content.join()}`);
       if(error.msg.non_field_errors) alert.show(error.msg.non_field_errors.join());
+      if(error.msg.username) alert.show(error.msg.username.join());
 
     }
      if(message !== prevProps.message) {

@@ -40,14 +40,14 @@ INSTALLED_APPS = [
     'corsheaders',
     'DropBag',
     'rest_framework',
-    'knox',
-    'accounts',
+    # 'knox',
+    # 'accounts',
     # 'frontend',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
+# }
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -60,7 +60,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = (
+    'xsrfheadername',
+    'xsrfcookiename',
+    'content-type',
+    'XSRF-TOKEN',
+)
+
+CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:9000',

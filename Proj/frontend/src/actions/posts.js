@@ -1,13 +1,18 @@
 import axios from 'axios';
+import cookie from "react-cookie";
 import { createMessage, returnErrors } from './messages';
+import { tokenConfig } from './auth';
 import { GET_POSTS, DELETE_POST, ADD_POST } from './types';
 
-// axios.defaults.withCredentials = true;
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+
 
 //GET GET_POSTS
-export const getPosts = () => dispatch => {
+export const getPosts = () => (dispatch, getState) => {
   axios
-    .get('http://localhost:8000/api/posts/').then(res => {
+    .get('http://localhost:8000/api/posts/', tokenConfig(getState))
+    .then(res => {
       dispatch({
         type: GET_POSTS,
         payload: res.data
@@ -16,9 +21,10 @@ export const getPosts = () => dispatch => {
 };
 
 // DELETE POSTS
-export const deletePost = (id) => dispatch => {
+export const deletePost = (id) => (dispatch, getState) => {
   axios
-    .delete(`http://localhost:8000/api/posts/${id}`).then(res => {
+    .delete(`http://localhost:8000/api/posts/${id}/`, tokenConfig(getState))
+      .then(res => {
       dispatch(createMessage({ deletePost: "Post Deleted"}));
       dispatch({
         type: DELETE_POST,
@@ -28,9 +34,11 @@ export const deletePost = (id) => dispatch => {
 };
 
 // ADD POST
-export const addPost = (post) => dispatch => {
+export const addPost = (post) => (dispatch, getState) => {
+  let config = tokenConfig(getState);
+  config.headers['']
   axios
-    .post(`http://localhost:8000/api/posts/`, post).then(res => {
+    .post(`http://localhost:8000/api/posts/`, post, tokenConfig(getState)).then(res => {
       dispatch(createMessage({ addPost: "Post Added"}));
       dispatch({
         type: ADD_POST,
