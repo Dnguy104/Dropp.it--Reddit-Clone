@@ -20,7 +20,7 @@ class PostForm extends Component {
   onSubmit = e => {
     e.preventDefault();
     const { author, content, title  } = this.state;
-    const post = { author, content, title, slug: title };
+    const post = { author, content, title };
     this.props.addPost(post);
 
     this.setState({

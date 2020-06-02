@@ -4,6 +4,7 @@ Mixins providing CRUD functionality for views
 from DropBag import status
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
+from django.db import IntegrityError
 # from DropBag.models import Post
 
 
@@ -13,20 +14,21 @@ class CreateModelMixin:
     """
     def create(self, request, *args, **kwargs):
         data = JSONParser().parse(request)
+        print(data)
         serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except IntegrityError:
+            return JsonResponse({}, status=status.HTTP_400_BAD_REQUEST)
+            
         self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
 
     def perform_create(self, serializer):
-        serializer.save()
+        data = serializer.save()
+        print("perform", data)
 
-    def get_success_headers(self, data):
-        try:
-            return {'Location': str(data['url'])}
-        except (TypeError, KeyError):
-            return {}
+
 
 class ListModelMixin:
     """
@@ -52,9 +54,10 @@ class UpdateModelMixin:
     Update a model instance.
     """
     def update(self, request, *args, **kwargs):
+        data = JSONParser().parse(request)
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
@@ -75,7 +78,7 @@ class DestroyModelMixin:
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse({}, status=status.HTTP_204_NO_CONTENT)
 
     def perform_destroy(self, instance):
         instance.delete()

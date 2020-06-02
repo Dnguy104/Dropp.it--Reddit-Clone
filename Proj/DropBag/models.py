@@ -8,14 +8,14 @@ class User(models.Model):
     email = models.EmailField(max_length=100, unique=True)
 
 class Thread(models.Model):
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=20, unique=True)
     created_on = models.DateTimeField(auto_now_add=True)
     about = models.CharField(max_length=500)
     userid = models.ForeignKey(User, related_name="threads", on_delete=models.SET_NULL, null=True)
 
 class Post(models.Model):
     title = models.CharField(max_length=40)
-    slug = models.SlugField(unique=True, max_length=100)
+    slug = models.SlugField(unique=True, max_length=100, blank=True)
     content = models.CharField(max_length=1000)
     created_on = models.DateTimeField(auto_now_add=True)
     author = models.CharField(max_length=10)
@@ -26,10 +26,12 @@ class Post(models.Model):
     #         {
     #             'slug': self.slug,
     #         })
-    # def save(self, *args, **kwargs):
-    #     if not self.slug:
-    #         self.slug = slugify(self.title)
-    #         super(Post, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        super(Post, self).save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify(self.title) + "-" + str(self.id)
+            self.save()
+
     class Meta:
         ordering = ['created_on']
         def __unicode__(self):
