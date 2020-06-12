@@ -12,22 +12,55 @@ class CreateModelMixin:
     """
     Create a model instance
     """
-    def create(self, request, *args, **kwargs):
-        data = JSONParser().parse(request)
-        print(data)
-        serializer = self.get_serializer(data=data)
-        try:
-            serializer.is_valid(raise_exception=True)
-        except IntegrityError:
-            return JsonResponse({}, status=status.HTTP_400_BAD_REQUEST)
-            
-        self.perform_create(serializer)
-        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+    def parse_request(self, request):
+        return JSONParser().parse(request)
 
-    def perform_create(self, serializer):
+    def validate(self, serializer):
+        if not serializer.is_valid():
+            self.status = status.HTTP_404_NOT_FOUND
+            self.data = serializer.errors
+            self.is_valid = False
+            return
+        self.is_valid = True
+
+    def create(self, serializer):
+        print("create0")
         data = serializer.save()
-        print("perform", data)
+        self.status = status.HTTP_201_CREATED
+        self.data = serializer.data
+        print("create")
 
+
+class UpdateModelMixin:
+    """
+    Update a model instance.
+    """
+    def parse_request(self, request):
+        return JSONParser().parse(request)
+
+    def validate(self, serializer):
+        if not serializer.is_valid():
+            self.status = status.HTTP_400_BAD_REQUEST
+            self.data = serializer.errors
+            self.is_valid = False
+            return
+        self.is_valid = True
+
+    def get_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if isinstance(instance, dict):
+            self.status = status.HTTP_400_BAD_REQUEST
+            self.data = instance
+        return instance
+
+    def perform_update(self, serializer):
+        serializer.save()
+        self.status = status.HTTP_200_OK
+        self.data = serializer.data
+
+    # def partial_update(self, request, *args, **kwargs):
+    #     self.kwargs['partial'] = True
+    #     return self.update(request, *args, **kwargs)
 
 
 class ListModelMixin:
@@ -46,29 +79,13 @@ class RetrieveModelMixin:
     """
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
+        if isinstance(instance, dict):
+            self.status = status.HTTP_400_BAD_REQUEST
+            self.data = instance
+            return
         serializer = self.get_serializer(instance)
-        return JsonResponse(serializer.data)
-
-class UpdateModelMixin:
-    """
-    Update a model instance.
-    """
-    def update(self, request, *args, **kwargs):
-        data = JSONParser().parse(request)
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        return JsonResponse(serializer.data)
-
-    def perform_update(self, serializer):
-        serializer.save()
-
-    def partial_update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        return self.update(request, *args, **kwargs)
+        self.status = status.HTTP_200_OK
+        self.data = serializer.data
 
 
 class DestroyModelMixin:
@@ -77,8 +94,13 @@ class DestroyModelMixin:
     """
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        if isinstance(instance, dict):
+            self.status = status.HTTP_404_NOT_FOUND
+            self.data = instance
+            return
         self.perform_destroy(instance)
-        return JsonResponse({}, status=status.HTTP_204_NO_CONTENT)
+        self.status = status.HTTP_204_NO_CONTENT
+        self.data = {}
 
     def perform_destroy(self, instance):
         instance.delete()

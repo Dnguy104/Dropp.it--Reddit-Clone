@@ -1,12 +1,13 @@
-from django.views.generic import View
-from DropBag import mixins
-from django.http import Http404
+# from django.views.generic import View
+from django.views.generic.base import ContextMixin, View
+from DropBag import mixins, status
+from django.http import Http404, JsonResponse
 from django.utils.translation import gettext as _
 from django.db.models import QuerySet
-from .serializers import PostSerializer, ThreadSerializer
-from .models import Post, Thread
+from .serializers import PostSerializer, ThreadSerializer, CommentSerializer
+from .models import Post, Thread, Comment
 
-class GenericAPIView(View):
+class GenericAPIView(ContextMixin, View):
     queryset = None
     serializer_class = None
     model = None
@@ -15,12 +16,13 @@ class GenericAPIView(View):
     pk_url_kwarg = 'id'
     query_pk_and_slug = False
 
+    serializer = None
+    request = None
+    data = None
+    status = None
+    is_valid = False
+
     def get_queryset(self):
-        # assert self.queryset is not None, (
-        #     "'%s' should either include a `queryset` attribute, "
-        #     "or override the `get_queryset()` method."
-        #     % self.__class__.__name__
-        # )
 
         if self.queryset is not None:
             queryset = self.queryset
@@ -73,8 +75,12 @@ class GenericAPIView(View):
             # Get the single item from the filtered queryset
             obj = queryset.get()
         except queryset.model.DoesNotExist:
-            raise Http404(_("No %(verbose_name)s found matching the query") %
-                          {'verbose_name': queryset.model._meta.verbose_name})
+            return {
+                "errors": [
+                    ("No %(verbose_name)s found matching the query") %
+                        {'verbose_name': queryset.model._meta.verbose_name}
+                ]
+            }
         return obj
 
     def get_serializer(self, *args, **kwargs):
@@ -103,10 +109,7 @@ class GenericAPIView(View):
         return self.slug_field
 
 
-#Post ViewSet
-class PostView(mixins.CreateModelMixin,
-               mixins.RetrieveModelMixin,
-               mixins.ListModelMixin,
+class PostView(mixins.RetrieveModelMixin,
                mixins.UpdateModelMixin,
                mixins.DestroyModelMixin,
                GenericAPIView):
@@ -114,29 +117,122 @@ class PostView(mixins.CreateModelMixin,
     serializer_class = PostSerializer
     model = Post
 
+    def dispatch(self, request, *args, **kwargs):
+       self.pk_url_kwarg = "p_id"
+       return super(PostView, self).dispatch(request, *args, **kwargs)
+
+    def validate(self, serializer, *args, **kwargs):
+        super(PostView, self).validate(serializer)
+        if self.is_valid:
+            print("valid ", kwargs, args)
+            # data = serializer.initial_data
+
+
+    def get(self, request, *args, **kwargs):
+        print("get ", kwargs, args)
+        return self.retrieve(request, args, kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        print("delete ", kwargs, args)
+        self.destroy(request, args, kwargs)
+        return JsonResponse(self.data, status=self.status)
+
+    def put(self, request, *args, **kwargs):
+        print("put ", kwargs, args)
+        self.request = self.parse_request(request);
+        self.get_update(request, args, kwargs)
+        serializer = self.get_serializer(instance, data=self.request, partial=partial)
+        self.validate(serializer)
+        if self.is_valid:
+            self.perform_update(serializer)
+        return JsonResponse(self.data, status=self.status, safe=False)
+
+#Post ViewSet
+class PostCRView(mixins.CreateModelMixin,
+                mixins.ListModelMixin,
+                GenericAPIView):
+
+    serializer_class = PostSerializer
+    model = Post
+
+    def validate(self, serializer, *args, **kwargs):
+        super(PostCRView, self).validate(serializer)
+        if self.is_valid:
+            print("valid ", kwargs, args)
+            # data = serializer.initial_data
+            if not Thread.objects.filter(id = kwargs.get("t_id")).exists():
+                self.status = status.HTTP_404_NOT_FOUND
+                self.data = {
+                    "threadid": [
+                        "this field is incorrect"
+                    ]
+                }
+                self.is_valid = False
+                print("invalid")
+
+    def post(self, request, *args, **kwargs):
+        print("post ", kwargs, args)
+        self.request = self.parse_request(request);
+        print(request.POST)
+        print(request.path)
+        print(request.content_type)
+        print(request.content_params)
+        serializer = self.get_serializer(data=self.request)
+        self.validate(serializer, *args, **kwargs)
+        if self.is_valid:
+            self.create(serializer)
+        return JsonResponse(self.data, status=self.status, safe=False)
+
     def get(self, request, *args, **kwargs):
         print("get ", kwargs, args)
         return self.list(request, args, kwargs)
 
-    def post(self, request, *args, **kwargs):
-        print("post ", kwargs, args)
-        return self.create(request, args, kwargs)
+
+#Thread ViewSet
+class ThreadView(mixins.RetrieveModelMixin,
+               mixins.UpdateModelMixin,
+               mixins.DestroyModelMixin,
+               GenericAPIView):
+
+    serializer_class = ThreadSerializer
+    model = Thread
+
+    def dispatch(self, request, *args, **kwargs):
+        self.pk_url_kwarg = "t_id"
+        return super(ThreadView, self).dispatch(request, *args, **kwargs)
+
+    def validate(self, serializer, *args, **kwargs):
+        super(ThreadView, self).validate(serializer)
+        if self.is_valid:
+            print("valid ", kwargs, args)
+            # data = serializer.initial_data
+
+
+    def get(self, request, *args, **kwargs):
+        print("get ", kwargs, args)
+        self.retrieve(request, args, kwargs)
+        return JsonResponse(self.data, status=self.status, safe=False)
 
     def delete(self, request, *args, **kwargs):
         print("delete ", kwargs, args)
-        return self.destroy(request, args, kwargs)
+        self.destroy(request, args, kwargs)
+        return JsonResponse(self.data, status=self.status)
 
     def put(self, request, *args, **kwargs):
         print("put ", kwargs, args)
-        return self.update(request, args, kwargs)
+        self.request = self.parse_request(request);
+        instance = self.get_update(request, args, kwargs)
+        partial = self.kwargs.pop('partial', False)
 
+        serializer = self.get_serializer(instance, data=self.request, partial=partial)
+        self.validate(serializer)
+        if self.is_valid:
+            self.perform_update(serializer)
+        return JsonResponse(self.data, status=self.status, safe=False)
 
 #Thread ViewSet
-class ThreadView(mixins.CreateModelMixin,
-               mixins.RetrieveModelMixin,
+class ThreadCRView(mixins.CreateModelMixin,
                mixins.ListModelMixin,
-               mixins.UpdateModelMixin,
-               mixins.DestroyModelMixin,
                GenericAPIView):
 
     serializer_class = ThreadSerializer
@@ -148,36 +244,63 @@ class ThreadView(mixins.CreateModelMixin,
 
     def post(self, request, *args, **kwargs):
         print("post ", kwargs, args)
-        return self.create(request, args, kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        print("delete ", kwargs, args)
-        return self.destroy(request, args, kwargs)
-
-    def put(self, request, *args, **kwargs):
-        print("put ", kwargs, args)
-        return self.update(request, args, kwargs)
+        self.request = self.parse_request(request);
+        serializer = self.get_serializer(data=self.request)
+        self.validate(serializer)
+        if self.is_valid:
+            self.create(serializer)
+        return JsonResponse(self.data, status=self.status)
 
 
 #Comment ViewSet
-class CommentView(mixins.CreateModelMixin,
-               mixins.RetrieveModelMixin,
+class CommentCRView(mixins.CreateModelMixin,
                mixins.ListModelMixin,
+               GenericAPIView):
+
+    serializer_class = CommentSerializer
+    model = Comment
+
+    def get(self, request, *args, **kwargs):
+        print("get ", kwargs, args)
+        return self.list(request, args, kwargs)
+
+    def post(self, request, *args, **kwargs):
+        print("post ", kwargs, args)
+        return self.create(request, args, kwargs)
+
+#Comment ViewSet
+class CommentView(mixins.RetrieveModelMixin,
                mixins.UpdateModelMixin,
                mixins.DestroyModelMixin,
                GenericAPIView):
 
-    serializer_class = PostSerializer
-    model = Post
+    serializer_class = CommentSerializer
+    model = Comment
 
-    def perform_create(self, serializer):
-        serializer.save()
+    def validate(self, serializer, *args, **kwargs):
+        super(CommentView, self).validate(serializer)
+        if self.is_valid:
+            print("valid ", kwargs, args)
+
+    def dispatch(self, request, *args, **kwargs):
+       self.pk_url_kwarg = "c_id"
+       return super(CommentView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        return self.list(request, args, kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, args, kwargs)
+        print("get ", kwargs, args)
+        return self.retrieve(request, args, kwargs)
 
     def delete(self, request, *args, **kwargs):
-        return self.destroy(request, args, kwargs)
+        print("delete ", kwargs, args)
+        self.destroy(request, args, kwargs)
+        return JsonResponse(self.data, status=self.status)
+
+    def put(self, request, *args, **kwargs):
+        print("put ", kwargs, args)
+        self.request = self.parse_request(request);
+        self.get_update(request, args, kwargs)
+        serializer = self.get_serializer(instance, data=self.request, partial=partial)
+        self.validate(serializer)
+        if self.is_valid:
+            self.perform_update(serializer)
+        return JsonResponse(self.data, status=self.status, safe=False)

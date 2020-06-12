@@ -19,6 +19,7 @@ class Post(models.Model):
     content = models.CharField(max_length=1000)
     created_on = models.DateTimeField(auto_now_add=True)
     author = models.CharField(max_length=10)
+    threadid = models.ForeignKey(Thread, related_name="posts", on_delete=models.SET_NULL, null=True, blank=False)
     userid = models.ForeignKey(User, related_name="posts", on_delete=models.SET_NULL, null=True)
 
     # def get_absolute_url(self):
@@ -42,4 +43,12 @@ class Comment(models.Model):
     author = models.CharField(max_length=10)
     content = models.TextField(max_length=1000)
     created_on = models.DateTimeField(auto_now_add=True)
+    depth = models.SmallIntegerField(blank=True, null=True)
+    threadid = models.ForeignKey(Thread, related_name="comments", on_delete=models.SET_NULL, null=True)
     userid = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="comments", null=True)
+
+    def save(self, *args, **kwargs):
+        super(Comment, self).save(*args, **kwargs)
+        if not self.depth:
+            self.depth = 1
+            self.save()
