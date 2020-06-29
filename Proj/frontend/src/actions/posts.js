@@ -4,9 +4,8 @@ import { createMessage, returnErrors } from './messages';
 import { tokenConfig } from './auth';
 import { GET_POSTS, DELETE_POST, ADD_POST } from './types';
 
-axios.defaults.xsrfCookieName = 'csrftoken'
-axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
-
+// axios.defaults.xsrfCookieName = 'csrftoken'
+// axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 
 //GET GET_POSTS
 export const getPosts = () => (dispatch, getState) => {

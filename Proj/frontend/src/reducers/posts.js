@@ -1,7 +1,8 @@
 import { GET_POSTS, DELETE_POST, ADD_POST } from '../actions/types.js';
 
 const initialState = {
-  posts: []
+  posts: [],
+  loaded: false,
 }
 
 export default (state = initialState, action) => {
@@ -9,7 +10,8 @@ export default (state = initialState, action) => {
     case GET_POSTS:
       return {
         ...state,
-        posts: action.payload
+        posts: action.payload,
+        loaded: true,
       }
     case DELETE_POST:
       return {
