@@ -3,10 +3,12 @@ import posts from './posts';
 import errors from './errors';
 import messages from './messages';
 import auth from './auth';
+import global from './global';
 
 export default combineReducers({
   posts,
   errors,
   messages,
-  auth
+  auth,
+  global
 });

@@ -4,10 +4,12 @@ import Posts from '../Posts/Posts.js';
 import PostForm from '../PostForm/PostForm.js'
 
 const Dashboard = props => {
+  const { style } = props;
+
   return (
     <Fragment>
       <PostForm />
-      <Posts />
+      <Posts  />
     </Fragment>
   );
 };
