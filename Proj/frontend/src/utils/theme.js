@@ -11,10 +11,10 @@ const theme = {
   themes: {
     dark: {
       back: 'black',
-      element: colors.grey50,
+      element: colors.grey30,
       hightlight: colors.grey40,
-      textA: colors.white90,
-      textB: colors.white70,
+      colorA: colors.white90,
+      colorB: colors.white70,
     }
   }
 

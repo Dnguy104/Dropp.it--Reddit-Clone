@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import { Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
@@ -32,8 +32,8 @@ class App extends Component {
     return (
       <Provider store={store}>
         <AlertProvider template={AlertTemplate} {...alertOptions}>
-          <Router>
-            <Fragment>
+          <BrowserRouter>
+            <>
               <Header />
               <Alert />
               <div className="container">
@@ -43,8 +43,8 @@ class App extends Component {
                   <Route exact path="/login" component= {Login} />
                 </Switch>
               </div>
-            </Fragment>
-          </Router>
+            </>
+          </BrowserRouter>
         </AlertProvider>
       </Provider>
     );

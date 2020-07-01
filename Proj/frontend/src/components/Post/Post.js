@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import PostHeader from './PostHeader.js';
 import PostFooter from './PostFooter.js';
 import styled from 'styled-components';
+import theme from '../../utils/theme.js';
 
 const Post = (props) => {
-  const { className, post, style } = props;
-  const postStyle = style ? style : 'classic';
+  const { className, post } = props;
 
   return (
     <div className={className}>
@@ -23,13 +23,15 @@ Post.propTypes = {
 
 const StyledPost = styled(Post)`
   border-style: solid;
-  border-color: white;
+  background-color: ${props => theme.themes[props.globalTheme].element};
+  border-color: ${props => theme.themes[props.globalTheme].colorA};
   border-width: 1px;
   padding: 10px;
 `;
 
 const mapStateToProps = (state, props) => ({
-  post: state.posts.posts.find(x => x.id === props.id)
+  post: state.posts.posts.find(x => x.id === props.id),
+  globalTheme: state.global.theme,
 });
 
 export default connect(

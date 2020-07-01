@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Subtitle from './Subtitle.js';
+import styled from 'styled-components';
+
+import Title from '../SharedComponents/Title.js'
+import Subtitle from '../SharedComponents/Subtitle.js';
+
 
 const PostHeader = (props) => {
   const { title, author, created_on } = props;
 
   return (
     <>
-      <h3>{title}</h3>
+      <Title>{title}</Title>
       <Subtitle author={author} created_on={created_on}/>
     </>
   );
