@@ -1,8 +1,10 @@
-import { GET_POSTS, DELETE_POST, ADD_POST } from '../actions/types.js';
+import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST } from '../actions/types.js';
 
 const initialState = {
   posts: [],
   loaded: false,
+  currentPostId: null,
+  threadPageShow: false,
 }
 
 export default (state = initialState, action) => {
@@ -22,6 +24,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         posts: [...state.posts, action.payload]
+      }
+    case SET_POST:
+      return {
+        ...state,
+        currentPostId: action.payload,
+        threadPageShow: true,
       }
     default:
       return state;

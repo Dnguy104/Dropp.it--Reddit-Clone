@@ -1,27 +1,28 @@
-import React, { Component, Fragment } from 'react';
+import React  from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PostHeader from './PostHeader.js';
 import PostFooter from './PostFooter.js';
 import styled from 'styled-components';
 import theme from '../../utils/theme.js';
+import { setPost } from '../../actions/posts.js'
 
-const Post = (props) => {
-  const { className, post } = props;
+const PostCard = (props) => {
+  const { className, post, handlePostCardClick, setPost } = props;
 
   return (
-    <div className={className}>
+    <div className={className} onClick={setPost(post)} >
       <PostHeader title={post.title} author={post.author} created_on={post.created_on} />
       <PostFooter/>
     </div>
   );
 }
 
-Post.propTypes = {
+PostCard.propTypes = {
 
 };
 
-const StyledPost = styled(Post)`
+const StyledPostCard = styled(PostCard)`
   border-style: solid;
   background-color: ${props => theme.themes[props.globalTheme].element};
   border-color: ${props => theme.themes[props.globalTheme].colorA};
@@ -34,6 +35,12 @@ const mapStateToProps = (state, props) => ({
   globalTheme: state.global.theme,
 });
 
+// const mapDispatchToProps = dispatch => ({
+//   setPost: (postId) => dispatch({ type: SET_POST,
+//   }),
+// });
+
 export default connect(
-  mapStateToProps
-)(StyledPost);
+  mapStateToProps,
+  { setPost }
+)(StyledPostCard);

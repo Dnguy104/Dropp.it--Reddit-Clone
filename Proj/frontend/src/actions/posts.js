@@ -2,10 +2,19 @@ import axios from 'axios';
 import cookie from "react-cookie";
 import { createMessage, returnErrors } from './messages';
 import { tokenConfig } from './auth';
-import { GET_POSTS, DELETE_POST, ADD_POST } from './types';
+import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST } from './types';
 
 // axios.defaults.xsrfCookieName = 'csrftoken'
 // axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+
+// SET POST sets the post that will load on thread page components
+export const setPost = (post) => (dispatch, getState) => () => {
+
+  dispatch({
+    type: SET_POST,
+    payload: post.id
+  });
+};
 
 //GET GET_POSTS
 export const getPosts = () => (dispatch, getState) => {

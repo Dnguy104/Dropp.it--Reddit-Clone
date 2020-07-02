@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getPosts, deletePost, addPost } from '../../actions/posts.js'
-import Post from '../Post/Post.js';
+import PostCard from './PostCard.js';
 import styled from 'styled-components';
 
-const Posts = (props) => {
+const PostCards = (props) => {
   const { className, loaded, posts, getPosts, deletePost } = props;
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const Posts = (props) => {
   });
 
   const postCards = posts.map((post) => (
-    <Post id={post.id}/>
+    <PostCard id={post.id}/>
   ));
 
   return (
@@ -25,13 +25,13 @@ const Posts = (props) => {
 }
 
 
-const StyledPosts = styled(Posts)`
-  & ${Post}:nth-child(2) {
+const StyledPostCards = styled(PostCards)`
+  & ${PostCard}:nth-child(2) {
     border-radius: 8px 8px 0px 0px;
   };
 `;
 
-Posts.propTypes = {
+PostCards.propTypes = {
   posts: PropTypes.array.isRequired,
   getPosts: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired
@@ -45,4 +45,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getPosts, deletePost }
-)(StyledPosts);
+)(StyledPostCards);
