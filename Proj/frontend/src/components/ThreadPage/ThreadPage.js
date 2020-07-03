@@ -11,14 +11,9 @@ const ThreadPage = props => {
 
   // const active = threadPageShow ? 'active' : '';
   return (
-    <>
-      {threadPageShow ?
-        (<div className={`${className}`}>
-          <Post/>
-        </div>)
-        : null
-      }
-    </>
+    <div className={`${className}`}>
+      <Post/>
+    </div>
   );
 };
 

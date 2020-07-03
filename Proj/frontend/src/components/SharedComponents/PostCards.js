@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getPosts, deletePost, addPost } from '../../actions/posts.js'
@@ -13,7 +14,15 @@ const PostCards = (props) => {
   });
 
   const postCards = posts.map((post) => (
-    <PostCard id={post.id}/>
+    <Link
+      to={{
+        pathname:`/r/${post.id}`,
+        state: {
+          modal: true,
+        }
+      }}>
+      <PostCard id={post.id}/>
+    </Link>
   ));
 
   return (

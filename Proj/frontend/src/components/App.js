@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
 import { Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
@@ -23,11 +23,32 @@ const alertOptions = {
 };
 
 class App extends Component {
-  // componentDidMount() {
-  //   store.dispatch(loadUser());
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      previousLocation: this.props.location
+    }
+  }
+  static getDerivedStateFromProps(props, state) {
+    const { location } = props;
+
+    if (!(location.state && location.state.modal)) {
+      return {
+        previousLocation: location,
+      }
+    }
+  }
 
   render() {
+    const { location } = this.props;
+    const isModal = (
+      location.state &&
+      location.state.modal &&
+      this.previousLocation !== location
+    );
+    console.log(this.previousLocation);
+    console.log(location);
+
     return (
       <Provider store={store}>
         <AlertProvider template={AlertTemplate} {...alertOptions}>
@@ -36,13 +57,17 @@ class App extends Component {
               <Header />
               <Alert />
               <div className="container">
-                <Switch>
-                  <Route exact path="/" component= {MainPage} />
-                  <Route exact path="/register" component= {Register} />
-                  <Route exact path="/login" component= {Login} />
+                <Switch location={isModal ? this.state.previousLocation : location}>
+                  <Route exact path="/" component={MainPage} />
+                  <Route exact path="/register" component={Register} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/r/:id" component={ThreadPage} />
                 </Switch>
 
-                <ThreadPage/>
+                {isModal
+                  ? <Route exact path="/r/:id"><ThreadPage isModal={isModal}/></Route>
+                  : null
+                }
               </div>
             </>
           </BrowserRouter>
