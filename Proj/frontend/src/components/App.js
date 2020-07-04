@@ -9,10 +9,18 @@ import Register from './accounts/Register/Register.js';
 import PrivateRoute from './common/PrivateRoute/PrivateRoute.js';
 import { Provider } from 'react-redux';
 import { loadUser } from '../actions/auth'
+import { createGlobalStyle } from 'styled-components'
 
 import Header from './Header/Header.js';
 import MainPage from './MainPage/MainPage.js';
 import ThreadPage from './ThreadPage/ThreadPage.js';
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+  }
+
+`
 
 class App extends Component {
   constructor(props) {
@@ -43,9 +51,10 @@ class App extends Component {
 
     return (
       <>
+        <GlobalStyle />
         <Header />
         <Alert />
-        <div className="container">
+        <>
           <Switch location={isModal ? this.state.previousLocation : location}>
             <Route exact path="/" component={MainPage} />
             <Route exact path="/register" component={Register} />
@@ -57,7 +66,7 @@ class App extends Component {
             ? <Route exact path="/r/:id"><ThreadPage isModal={isModal}/></Route>
             : null
           }
-        </div>
+        </>
       </>
     );
   }

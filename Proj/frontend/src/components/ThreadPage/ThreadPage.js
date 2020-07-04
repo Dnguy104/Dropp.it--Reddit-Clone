@@ -1,18 +1,28 @@
 import React, { } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import Post from './Post.js';
+import theme from '../../utils/theme.js';
 
 
 const ThreadPage = props => {
-  const { className, post, threadPageShow } = props;
+  const { globalTheme, className, post, isModal, history } = props;
 
-  // const active = threadPageShow ? 'active' : '';
+  const modal = isModal ? 'modal' : '';
   return (
-    <div className={`${className}`}>
-      <Post/>
+    <div
+      className={`${className} modal-wrapper`}
+      onClick={(e)=>(history.goBack())}
+    >
+      <div
+        className={modal}
+        onClick={e => e.stopPropagation()}
+      >
+        <Post/>
+      </div>
     </div>
   );
 };
@@ -22,17 +32,31 @@ ThreadPage.propTypes = {
 };
 
 const StyledThreadPage = styled(ThreadPage)`
-  /* &.active {
-    display: block;
+  .modal {
+    width: calc(100% - 100px);
+    max-width: 1300px;
+    background-color: ${props => theme.themes[props.globalTheme].background};
   }
-  display: none */
+  &.modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(30,30,30,0.9);
+    display: flex;
+    justify-content: center;
+
+  }
+
 `
 
 const mapStateToProps = state => ({
   post: state.posts.posts.find(x => x.id === state.id),
-  threadPageShow: state.posts.threadPageShow,
+  globalTheme: state.global.theme,
 });
 
-export default connect(
-  mapStateToProps
+export default compose(
+  withRouter,
+  connect(mapStateToProps)
 )(StyledThreadPage);

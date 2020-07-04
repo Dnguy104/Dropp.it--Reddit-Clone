@@ -1,4 +1,4 @@
-const colors = {
+export const colors = {
   grey90: '#959595',
   grey50: '#525252',
   grey40: '#414141',
@@ -10,10 +10,10 @@ const colors = {
 const theme = {
   themes: {
     dark: {
-      back: 'black',
+      background: 'black',
       element: colors.grey30,
       hightlight: colors.grey40,
-      colorA: colors.white90,
+      colorA: colors.grey90,
       colorB: colors.white70,
     }
   }

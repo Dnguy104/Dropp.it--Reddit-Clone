@@ -21,7 +21,7 @@ const PostCards = (props) => {
           modal: true,
         }
       }}>
-      <PostCard id={post.id}/>
+      <PostCard id={post.id} />
     </Link>
   ));
 
@@ -35,9 +35,9 @@ const PostCards = (props) => {
 
 
 const StyledPostCards = styled(PostCards)`
-  & ${PostCard}:nth-child(2) {
+  a:nth-child(2) > ${PostCard} {
     border-radius: 8px 8px 0px 0px;
-  };
+  }
 `;
 
 PostCards.propTypes = {

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PostHeader from './PostHeader.js';
 import PostFooter from './PostFooter.js';
 import styled from 'styled-components';
-import theme from '../../utils/theme.js';
+import theme, { colors as Colors } from '../../utils/theme.js';
 import { setPost } from '../../actions/posts.js'
 
 const PostCard = (props) => {
@@ -28,6 +28,9 @@ const StyledPostCard = styled(PostCard)`
   border-color: ${props => theme.themes[props.globalTheme].colorA};
   border-width: 1px;
   padding: 10px;
+  &:hover {
+    border-color: ${Colors.white90};
+  }
 `;
 
 const mapStateToProps = (state, props) => ({

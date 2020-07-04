@@ -1,16 +1,20 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PostCards from '../SharedComponents/PostCards.js';
 import PostForm from '../SharedComponents/PostForm.js'
+import styled from 'styled-components';
+import theme from '../../utils/theme.js';
+
 
 const MainPage = props => {
-  const { style } = props;
+  const { className } = props;
 
   return (
-    <Fragment>
+    <div className={className}>
       <PostForm />
       <PostCards  />
-    </Fragment>
+    </div>
   );
 };
 
@@ -18,4 +22,13 @@ MainPage.propTypes = {
 
 };
 
-export default MainPage;
+const StyledMainPage = styled(MainPage)`
+  background-color: ${props => theme.themes[props.globalTheme].background};
+  padding-left: 50px;
+  padding-right: 50px;
+`
+const mapStateToProps = state => ({
+  globalTheme: state.global.theme,
+});
+
+export default connect(mapStateToProps)(StyledMainPage);
