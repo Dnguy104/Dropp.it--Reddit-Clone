@@ -13,14 +13,8 @@ const ThreadPage = props => {
 
   const modal = isModal ? 'modal' : '';
   return (
-    <div
-      className={`${className} modal-wrapper`}
-      onClick={(e)=>(history.goBack())}
-    >
-      <div
-        className={modal}
-        onClick={e => e.stopPropagation()}
-      >
+    <div className={`${className} modal-wrapper`} onClick={(e)=>(history.goBack())}>
+      <div className={modal} onClick={e => e.stopPropagation()}>
         <Post/>
       </div>
     </div>

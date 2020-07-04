@@ -12,7 +12,7 @@ const Subtitle = (props) => {
   const { author, created_on, globalTheme } = props;
   return (
     <Subtitlediv globalTheme={globalTheme}>
-      r/Thread ~ Posted by <a>u/{author}</a> on {created_on}
+      r/Thread ~ Posted by u/{author} on {created_on}
     </Subtitlediv>
   );
 }

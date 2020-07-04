@@ -15,13 +15,14 @@ const PostCards = (props) => {
 
   const postCards = posts.map((post) => (
     <Link
+      key={post.slug}
       to={{
         pathname:`/r/${post.id}`,
         state: {
           modal: true,
         }
       }}>
-      <PostCard id={post.id} />
+      <PostCard id={post.id}/>
     </Link>
   ));
 

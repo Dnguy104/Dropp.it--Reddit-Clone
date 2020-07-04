@@ -11,7 +11,7 @@ const PostHeader = (props) => {
 
   return (
     <>
-      <Title>{title}</Title>
+      <Title title={title} fontSize='lg'/>
       <Subtitle author={author} created_on={created_on}/>
     </>
   );
