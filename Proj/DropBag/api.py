@@ -180,6 +180,7 @@ class PostCRView(mixins.CreateModelMixin,
         serializer = self.get_serializer(data=self.request)
         self.validate(serializer, *args, **kwargs)
         if self.is_valid:
+            print('valid')
             self.create(serializer)
         return JsonResponse(self.data, status=self.status, safe=False)
 

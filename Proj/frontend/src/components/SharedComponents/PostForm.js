@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import Element from './Element.js';
 import Input from './Input.js'
 import { addPost } from '../../actions/posts.js';
 import styled from 'styled-components';
@@ -22,7 +21,7 @@ const PostForm = (props) => {
 
   const handleOnSubmit = useCallback((e)=>{
     e.preventDefault();
-    const post = { author, content, title };
+    const post = { author, content, title, threadid: 2 };
     addPost(post);
 
     setAuthor('');
@@ -31,7 +30,7 @@ const PostForm = (props) => {
   },[author, content, title]);
 
   return (
-    <Element>
+    <div className={className}>
       <h2>Add Post</h2>
       <form onSubmit={handleOnSubmit}>
         <div className="form-group">
@@ -70,12 +69,12 @@ const PostForm = (props) => {
           </button>
         </div>
       </form>
-    </Element>
+    </div>
   );
 };
 
 const StyledPostForm = styled(PostForm)`
-  background-color: ${props => theme.themes[props.globalTheme].element};
+
 `
 
 PostForm.propTypes = {

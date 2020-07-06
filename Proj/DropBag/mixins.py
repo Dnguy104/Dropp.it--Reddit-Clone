@@ -16,6 +16,7 @@ class CreateModelMixin:
         return JSONParser().parse(request)
 
     def validate(self, serializer):
+        print('mixin validate')
         if not serializer.is_valid():
             self.status = status.HTTP_404_NOT_FOUND
             self.data = serializer.errors

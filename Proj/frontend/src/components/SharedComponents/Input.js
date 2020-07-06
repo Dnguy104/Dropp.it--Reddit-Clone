@@ -23,7 +23,7 @@ const StyledInput = styled.input`
   background-color: ${props => theme.themes[props.globalTheme].element};
   border-color: ${props => theme.themes[props.globalTheme].colorA};
   border-width: 2px;
-
+  color: ${props => theme.themes[props.globalTheme].colorA};
 `
 
 const mapStateToProps = (state) => ({

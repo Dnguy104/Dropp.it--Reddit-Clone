@@ -65,8 +65,8 @@ class App extends Component {
       location.state.modal &&
       this.previousLocation !== location
     );
-    console.log(this.previousLocation);
-    console.log(location);
+    // console.log(this.previousLocation);
+    // console.log(location);
 
     return (
       <div className={this.props.className}>

@@ -6,8 +6,7 @@ import styled from 'styled-components';
 
 const Element = (props) => {
   const { globalTheme } = props;
-  console.log(props.children)
-  console.log(props)
+
   return (
     <StyledElement globalTheme={globalTheme} >
       {props.children}

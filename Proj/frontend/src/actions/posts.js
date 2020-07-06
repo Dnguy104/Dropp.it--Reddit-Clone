@@ -46,7 +46,7 @@ export const addPost = (post) => (dispatch, getState) => {
   let config = tokenConfig(getState);
   config.headers['']
   axios
-    .post(`http://localhost:8000/api/posts/`, post, tokenConfig(getState)).then(res => {
+    .post(`http://localhost:8000/api/threads/${post.threadid}/posts/`, post, tokenConfig(getState)).then(res => {
       dispatch(createMessage({ addPost: "Post Added"}));
       dispatch({
         type: ADD_POST,
