@@ -17,7 +17,7 @@ const Title = (props) => {
 };
 
 const StyledTitle = styled(Title)`
-  color: ${(props) => theme.themes[props.globalTheme].colorA};
+  color: ${(props) => theme.themes[props.globalTheme].colorB};
   font-size: ${(props) => theme.fontSize[props.fontSize]};
 `
 

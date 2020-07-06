@@ -1,88 +1,92 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
+import Element from './Element.js';
+import Input from './Input.js'
 import { addPost } from '../../actions/posts.js';
+import styled from 'styled-components';
+import theme from '../../utils/theme.js';
 
-class PostForm extends Component {
-  state = {
-    author: '',
-    content: '',
-    title: ''
-  }
+const PostForm = (props) => {
+  const { addPost, className } = props;
+  const [author, setAuthor] = useState('');
+  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
 
-  onChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
+  const handleOnChange = useCallback((e)=>{
+    if(e.target.name == 'author') setAuthor(e.target.value);
+    else if(e.target.name == 'content') setContent(e.target.value);
+    else if(e.target.name == 'title') setTitle(e.target.value);
+  });
 
-  onSubmit = e => {
+  const handleOnSubmit = useCallback((e)=>{
     e.preventDefault();
-    const { author, content, title  } = this.state;
     const post = { author, content, title };
-    this.props.addPost(post);
+    addPost(post);
 
-    this.setState({
-      author: '',
-      content: '',
-      title: ''
-    });
-  }
+    setAuthor('');
+    setContent('');
+    setTitle('');
+  },[author, content, title]);
 
-  render() {
-    const { author, content, title } = this.state;
+  return (
+    <Element>
+      <h2>Add Post</h2>
+      <form onSubmit={handleOnSubmit}>
+        <div className="form-group">
+          <Input
+            type="text"
+            name="title"
+            placeholder="Title"
+            onChange={handleOnChange}
+            value={title}
+          >
+          </Input>
+        </div>
+        <div className="form-group">
+          <Input
+            type="text"
+            name="author"
+            placeholder="Author"
+            onChange={handleOnChange}
+            value={author}
+          >
+          </Input>
+        </div>
+        <div className="form-group">
+          <Input
+            type="text"
+            name="content"
+            placeholder="Text"
+            onChange={handleOnChange}
+            value={content}
+          >
+          </Input>
+        </div>
+        <div className="form-group">
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </div>
+      </form>
+    </Element>
+  );
+};
 
-    return (
-      <div className="card card-body mt-4 mb-4">
-        <h2>Add Post</h2>
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label>Title</label>
-            <input
-              className="form-control"
-              type="text"
-              name="title"
-              onChange={this.onChange}
-              value={title}
-            >
-            </input>
-          </div>
-          <div className="form-group">
-            <label>Author</label>
-            <input
-              className="form-control"
-              type="text"
-              name="author"
-              onChange={this.onChange}
-              value={author}
-            >
-            </input>
-          </div>
-          <div className="form-group">
-            <label>Content</label>
-            <input
-              className="form-control"
-              type="text"
-              name="content"
-              onChange={this.onChange}
-              value={content}
-            >
-            </input>
-          </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-}
+const StyledPostForm = styled(PostForm)`
+  background-color: ${props => theme.themes[props.globalTheme].element};
+`
 
 PostForm.propTypes = {
   addPost: PropTypes.func.isRequired
 };
 
-export default connect(null, { addPost })(PostForm);
+const mapStateToProps = (state) => ({
+  globalTheme: state.global.theme,
+})
+
+export default connect(
+  mapStateToProps,
+  { addPost }
+)(StyledPostForm);

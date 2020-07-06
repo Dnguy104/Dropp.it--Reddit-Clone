@@ -13,7 +13,7 @@ const MainPage = props => {
   return (
     <div className={className}>
       <PostForm />
-      <PostCards  />
+      <PostCards />
     </div>
   );
 };
@@ -24,6 +24,7 @@ MainPage.propTypes = {
 
 const StyledMainPage = styled(MainPage)`
   background-color: ${props => theme.themes[props.globalTheme].background};
+  height: 100%;
   padding-left: 50px;
   padding-right: 50px;
 `

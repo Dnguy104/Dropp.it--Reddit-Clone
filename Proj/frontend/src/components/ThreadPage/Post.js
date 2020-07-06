@@ -14,10 +14,13 @@ const Post = props => {
       <div className="post-container">
         {post ? (
           <>
-            <Title title={post.title} fontSize='xxl'/>
             <Subtitle author={post.author} created_on={post.created_on}/>
+            <Title title={post.title} fontSize='xxl'/>
           </>
         ): null}
+        <p>
+          {post.content}
+        </p>
       </div>
     </div>
   );
@@ -35,6 +38,9 @@ const StyledPost = styled(Post)`
     padding-left: 40px;
     width: 100%;
     background-color: ${(props)=>(theme.themes[props.globalTheme].element)}
+  }
+  p {
+    color: ${(props) => theme.themes[props.globalTheme].colorB};
   }
 `
 

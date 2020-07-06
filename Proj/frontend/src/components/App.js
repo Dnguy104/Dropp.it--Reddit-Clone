@@ -9,7 +9,7 @@ import Register from './accounts/Register/Register.js';
 import PrivateRoute from './common/PrivateRoute/PrivateRoute.js';
 import { Provider } from 'react-redux';
 import { loadUser } from '../actions/auth'
-import { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 
 import Header from './Header/Header.js';
 import MainPage from './MainPage/MainPage.js';
@@ -20,6 +20,14 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
+  body {
+      height: 100vh;
+  }
+
+  #app {
+    height: 100%;
+  }
+
   // html, body, div, span, applet, object, iframe,
   // h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   // a, abbr, acronym, address, big, cite, code,
@@ -61,7 +69,7 @@ class App extends Component {
     console.log(location);
 
     return (
-      <>
+      <div className={this.props.className}>
         <GlobalStyle />
         <Header />
         <Alert />
@@ -78,9 +86,13 @@ class App extends Component {
             : null
           }
         </>
-      </>
+      </div>
     );
   }
 }
 
-export default withRouter(App);
+const StyledApp = styled(App)`
+  height: 100%;
+`
+
+export default withRouter(StyledApp);

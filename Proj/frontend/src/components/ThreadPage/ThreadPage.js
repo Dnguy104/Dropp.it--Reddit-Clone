@@ -28,7 +28,7 @@ ThreadPage.propTypes = {
 const StyledThreadPage = styled(ThreadPage)`
   .modal {
     width: calc(100% - 100px);
-    max-width: 1300px;
+    max-width: 1280px;
     background-color: ${props => theme.themes[props.globalTheme].background};
   }
   &.modal-wrapper {
