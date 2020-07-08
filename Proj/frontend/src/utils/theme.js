@@ -10,6 +10,20 @@ export const colors = {
 }
 
 const theme = {
+  size: {
+    xs: '100px',
+    xs50: '150px',
+    sm: '200px',
+    sm50: '250px',
+    md: '300px',
+    md50: '350px',
+    lg: '400px',
+    lg50: '450px',
+    xl: '500px',
+    xl50: '550px',
+    xxl: '600px',
+  },
+
   fontSize: {
     xs: '10px',
     sm: '12px',

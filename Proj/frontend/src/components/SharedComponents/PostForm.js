@@ -41,8 +41,8 @@ const PostForm = (props) => {
             placeholder="Title"
             onChange={handleOnChange}
             value={title}
-          >
-          </Input>
+            lg
+          />
         </div>
         <div className="form-group">
           <Input
@@ -51,8 +51,8 @@ const PostForm = (props) => {
             placeholder="Author"
             onChange={handleOnChange}
             value={author}
-          >
-          </Input>
+            lg
+          />
         </div>
         <div className="form-group">
           <Input
@@ -61,8 +61,10 @@ const PostForm = (props) => {
             placeholder="Text"
             onChange={handleOnChange}
             value={content}
-          >
-          </Input>
+            lg
+            resize
+            text
+          />
         </div>
         <div className="form-group">
           <button type="submit" className="btn btn-primary">
@@ -75,7 +77,9 @@ const PostForm = (props) => {
 };
 
 const StyledPostForm = styled(PostForm)`
-
+  & .form-group {
+    height: auto;
+  }
 `
 
 PostForm.propTypes = {

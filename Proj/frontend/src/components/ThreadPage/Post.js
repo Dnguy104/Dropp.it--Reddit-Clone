@@ -35,8 +35,8 @@ const StyledPost = styled(Post)`
   padding-left: 32px;
   .post-container {
     padding-top: 8px;
-    padding-left: 40px;
-    width: 100%;
+    padding-left: 25px;
+    padding-right: 25px;
     background-color: ${(props)=>(theme.themes[props.globalTheme].element)}
   }
   p {

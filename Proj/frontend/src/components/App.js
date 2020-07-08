@@ -21,7 +21,8 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
   body {
-      height: 100vh;
+    height: 100vh;
+    font-family: Verdana, Geneva, sans-serif;
   }
 
   #app {
