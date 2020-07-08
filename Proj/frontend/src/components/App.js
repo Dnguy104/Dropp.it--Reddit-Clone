@@ -28,6 +28,13 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
 
+  .nav-spacer {
+    height: 100px;
+    width: 100%;
+    padding-bottom: 20px;
+
+  }
+
   // html, body, div, span, applet, object, iframe,
   // h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   // a, abbr, acronym, address, big, cite, code,
@@ -56,6 +63,7 @@ class App extends Component {
         previousLocation: location,
       }
     }
+    return state;
   }
 
   render() {
@@ -67,16 +75,18 @@ class App extends Component {
     );
     // console.log(this.previousLocation);
     // console.log(location);
+    let fixedStyle = '';
+    if(isModal) fixedStyle = 'fixed';
 
     return (
-      <div className={this.props.className}>
+      <div className={`${this.props.className} ${fixedStyle}`}>
         <GlobalStyle />
         <Header />
         <Alert />
         <>
           <Switch location={isModal ? this.state.previousLocation : location}>
             <Route exact path="/">
-              <MainPage fixed={isModal ? true : undefined} />
+              <MainPage/>
             </Route>
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
@@ -95,6 +105,11 @@ class App extends Component {
 
 const StyledApp = styled(App)`
   height: 100%;
+  overflow: auto;
+
+  &.fixed {
+    overflow: hidden;
+  }
 `
 
 export default withRouter(StyledApp);
