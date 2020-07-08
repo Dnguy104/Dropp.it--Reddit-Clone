@@ -2,7 +2,8 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import Input from './Input.js'
+import Input from './Input.js';
+import Title from './Title.js';
 import { addPost } from '../../actions/posts.js';
 import styled from 'styled-components';
 import theme from '../../utils/theme.js';
@@ -31,7 +32,7 @@ const PostForm = (props) => {
 
   return (
     <div className={className}>
-      <h2>Add Post</h2>
+      <Title fontSize='xl' title='Add Post'/>
       <form onSubmit={handleOnSubmit}>
         <div className="form-group">
           <Input

@@ -9,10 +9,14 @@ import theme from '../../utils/theme.js';
 
 
 const MainPage = props => {
-  const { className } = props;
+  const { className, fixed } = props;
+
+  let fixedStyle = '';
+  if(!!fixed) fixedStyle = 'fixed';
+
 
   return (
-    <div className={className}>
+    <div className={`${className} ${fixedStyle}`}>
       <Element>
         <PostForm />
       </Element>
@@ -30,6 +34,11 @@ const StyledMainPage = styled(MainPage)`
   height: auto;
   padding-left: 50px;
   padding-right: 50px;
+  position: static;
+
+  &.fixed {
+    position: fixed;
+  }
 `
 const mapStateToProps = state => ({
   globalTheme: state.global.theme,

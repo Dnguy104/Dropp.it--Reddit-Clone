@@ -38,6 +38,7 @@ const StyledThreadPage = styled(ThreadPage)`
     width: 100%;
     height: 100vh;
     background-color: rgba(30,30,30,0.9);
+    overflow-y: scroll;
     display: flex;
     justify-content: center;
 

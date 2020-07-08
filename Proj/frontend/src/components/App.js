@@ -75,7 +75,9 @@ class App extends Component {
         <Alert />
         <>
           <Switch location={isModal ? this.state.previousLocation : location}>
-            <Route exact path="/" component={MainPage} />
+            <Route exact path="/">
+              <MainPage fixed={isModal ? true : undefined} />
+            </Route>
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/r/:id" component={ThreadPage} />
