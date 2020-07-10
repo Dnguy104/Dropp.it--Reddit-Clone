@@ -16,7 +16,7 @@ const Button = (props) => {
    if(!!invert) color = 'invert';
 
   return (
-    <button className={`${className} ${color}`} {...attr}>
+    <button className={`${className} ${color}`} dispatch='' {...attr}>
       {children}
     </button>
   );
@@ -24,24 +24,24 @@ const Button = (props) => {
 
 const StyledButton = styled(Button)`
   border-style: none;
-  border-radius: 5px;
-  background-color: ${props => theme.themes[props.globalTheme].colorB};
-  color: ${props => theme.themes[props.globalTheme].element};
+  border-radius: var(--b-radius);
+  background-color: ${props => theme.themes[props.globaltheme].colorB};
+  color: ${props => theme.themes[props.globaltheme].element};
   height: 100%;
   width: 100%;
 
   &.invert {
-    background-color: ${props => theme.themes[props.globalTheme].element};
-    color: ${props => theme.themes[props.globalTheme].colorB};
+    background-color: ${props => theme.themes[props.globaltheme].element};
+    color: ${props => theme.themes[props.globaltheme].colorB};
     border-style: solid;
-    border-color: ${props => theme.themes[props.globalTheme].colorB};
+    border-color: ${props => theme.themes[props.globaltheme].colorB};
     border-width: 1px;
   }
 
 `
 
 const mapStateToProps = (state) => ({
-  globalTheme: state.global.theme,
+  globaltheme: state.global.theme,
 });
 
 export default connect(mapStateToProps)(StyledButton);

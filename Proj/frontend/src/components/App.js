@@ -16,6 +16,10 @@ import MainPage from './MainPage/MainPage.js';
 import ThreadPage from './ThreadPage/ThreadPage.js';
 
 const GlobalStyle = createGlobalStyle`
+  :root {
+    --b-radius: 3px;
+  }
+
   body, h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding: 0;

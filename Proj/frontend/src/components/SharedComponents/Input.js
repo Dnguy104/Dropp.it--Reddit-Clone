@@ -19,7 +19,7 @@ const Input = (props) => {
    if(!!lg) width = theme.size.lg;
    if(!!xl) width = theme.size.xl;
 
-   let height = '25px';
+   let height = '31px';
    if(resize) height = theme.size.sm;
    // let height = '20px';
    // if(!!sh) height = '40px';
@@ -31,19 +31,18 @@ const Input = (props) => {
 
   return (
     <Styleddiv globalTheme={globalTheme} {...style}>
-      <InputElement {...attr} dispatch=""
-        style={{
-          height: height,
-        }}
-      >
+      <InputElement {...attr} dispatch="">
       </InputElement>
     </Styleddiv>
   );
 }
 
 const Styleddiv = styled.div`
+  margin-top: 10px;
+  margin-bottom:10px;
+
   * {
-    border-radius: 8px;
+    border-radius: var(--b-radius);
     border-style: solid;
     background-color: ${props => theme.themes[props.globalTheme].element};
     border-color: ${props => theme.themes[props.globalTheme].colorA};
@@ -51,7 +50,12 @@ const Styleddiv = styled.div`
     color: ${props => theme.themes[props.globalTheme].colorA};
     resize: ${({resize}) => resize ? 'vertical' : 'none'};
     width: ${({width}) => width};
-    /* height: ${({height}) => height}; */
+    height: ${({height}) => height};
+    padding-left: 10px;
+  }
+
+  textarea {
+    padding-top: 10px;
   }
 `
 
