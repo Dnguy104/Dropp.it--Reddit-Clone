@@ -1,20 +1,44 @@
-import React, { Fragment } from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
+import { addPost } from '../../actions/posts.js';
 import PropTypes from 'prop-types';
 import PostCards from '../SharedComponents/PostCards.js';
 import PostForm from '../SharedComponents/PostForm.js'
 import Element from '../SharedComponents/Element.js';
+import Input from '../SharedComponents/Input.js';
+
 import styled from 'styled-components';
 import theme from '../../utils/theme.js';
 
 
 const MainPage = props => {
-  const { className } = props;
-
+  const { className, addPost } = props;
+  
   return (
     <div className={`${className}`}>
       <Element>
-        <PostForm />
+        <PostForm submitHandler={addPost} submit='Submit'>
+          <Input
+            type="text"
+            name="title"
+            placeholder="Title"
+            lg
+          />
+          <Input
+            type="text"
+            name="author"
+            placeholder="Author"
+            lg
+          />
+          <Input
+            type="text"
+            name="content"
+            placeholder="Text"
+            lg
+            resize
+            text
+          />
+        </PostForm>
       </Element>
       <PostCards />
     </div>
@@ -42,4 +66,7 @@ const mapStateToProps = state => ({
   globalTheme: state.global.theme,
 });
 
-export default connect(mapStateToProps)(StyledMainPage);
+export default connect(
+  mapStateToProps,
+  { addPost }
+)(StyledMainPage);

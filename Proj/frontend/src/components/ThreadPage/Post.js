@@ -16,11 +16,12 @@ const Post = props => {
           <>
             <Subtitle author={post.author} created_on={post.created_on}/>
             <Title title={post.title} fontSize='xxl'/>
+            <p>
+              {post.content}
+            </p>
           </>
         ): null}
-        <p>
-          {post.content}
-        </p>
+        
       </div>
     </div>
   );
