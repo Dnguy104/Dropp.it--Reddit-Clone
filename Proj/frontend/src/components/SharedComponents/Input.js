@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 const Input = (props) => {
   const {
-    className,
     globalTheme,
     resize,
     xs, sm, md, lg, xl,
@@ -31,7 +30,7 @@ const Input = (props) => {
    if(!!text) InputElement = 'textarea';
 
   return (
-    <Styleddiv className={className} globalTheme={globalTheme} {...style}>
+    <Styleddiv globalTheme={globalTheme} {...style}>
       <InputElement {...attr} dispatch=""
         style={{
           height: height,

@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Input from './Input.js';
 import Title from './Title.js';
+import Button from './Button.js';
 // import { addPost } from '../../actions/posts.js';
 import styled from 'styled-components';
 import theme from '../../utils/theme.js';
 
-const PostForm = (props) => {
+const Form = (props) => {
   const {
     className,
     submitHandler,
@@ -18,14 +19,14 @@ const PostForm = (props) => {
   const [state, setState] = useState({});
   const [stateReset, toggleStateReset] = useState(false);
 
-  useLayoutEffect(()=>{
+  if(state==undefined) {
     setState(
       children.reduce((map, obj)=>{
         map[obj.props.name] = '';
         return map;
       }, {})
     )
-  }, [])
+  }
 
 
   const handleOnChange = useCallback((e)=>{
@@ -56,19 +57,24 @@ const PostForm = (props) => {
       <Title fontSize='xl' title='Add Post'/>
       <form onSubmit={handleOnSubmit} autoComplete="off" >
         {inputTags}
-        <button type="submit" >
-          {submit}
-        </button>
+        <div className="button-wrapper">
+          <Button type="submit" invert>
+            {submit}
+          </Button>
+        </div>
       </form>
     </div>
   );
 };
 
-const StyledPostForm = styled(PostForm)`
-
+const StyledForm = styled(Form)`
+  .button-wrapper {
+    width: ${theme.size.sm};
+    height: 31px;
+  }
 `
 
-PostForm.propTypes = {
+Form.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
@@ -77,4 +83,4 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-)(StyledPostForm);
+)(StyledForm);

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { addPost } from '../../actions/posts.js';
 import PropTypes from 'prop-types';
 import PostCards from '../SharedComponents/PostCards.js';
-import PostForm from '../SharedComponents/PostForm.js'
+import Form from '../SharedComponents/Form.js'
 import Element from '../SharedComponents/Element.js';
 import Input from '../SharedComponents/Input.js';
 
@@ -13,11 +13,11 @@ import theme from '../../utils/theme.js';
 
 const MainPage = props => {
   const { className, addPost } = props;
-  
+
   return (
     <div className={`${className}`}>
       <Element>
-        <PostForm submitHandler={addPost} submit='Submit'>
+        <Form submitHandler={addPost} submit='Submit'>
           <Input
             type="text"
             name="title"
@@ -38,7 +38,7 @@ const MainPage = props => {
             resize
             text
           />
-        </PostForm>
+        </Form>
       </Element>
       <PostCards />
     </div>

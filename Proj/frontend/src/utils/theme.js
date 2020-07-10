@@ -11,6 +11,7 @@ export const colors = {
 
 const theme = {
   size: {
+    xxs50: '50px',
     xs: '100px',
     xs50: '150px',
     sm: '200px',

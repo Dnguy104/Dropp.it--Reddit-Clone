@@ -40,13 +40,13 @@ export const deletePost = (id) => (dispatch, getState) => {
     }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
-// ADD POST
-export const addPost = (post) => (dispatch, getState) => {
+// ADD COMMENT
+export const addComment = (comment) => (dispatch, getState) => {
   let config = tokenConfig(getState);
   config.headers['']
   axios
     .post(`http://localhost:8000/api/threads/${2}/posts/`, {...post, threadid: 2}, tokenConfig(getState)).then(res => {
-      dispatch(createMessage({ addPost: "Post Added"}));
+      dispatch(createMessage({ addPost: "Comment Added"}));
       dispatch({
         type: ADD_POST,
         payload: res.data

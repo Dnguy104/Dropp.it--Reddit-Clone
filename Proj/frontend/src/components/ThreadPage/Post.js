@@ -1,13 +1,13 @@
 import React, { } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Title from '../SharedComponents/Title.js';
-import Subtitle from '../SharedComponents/Subtitle.js';
+import { Title, Subtitle, Form, Input } from '../SharedComponents';
 import styled from 'styled-components';
 import theme from '../../utils/theme.js';
+import { addComment } from '../../actions/comments';
 
 const Post = props => {
-  const { post, className } = props;
+  const { post, className, addComment } = props;
 
   return (
     <div className={className}>
@@ -21,7 +21,16 @@ const Post = props => {
             </p>
           </>
         ): null}
-        
+        <Form submitHandler={addComment} submit='Comment'>
+          <Input
+            type="text"
+            name="content"
+            placeholder="Text"
+            lg
+            resize
+            text
+          />
+        </Form>
       </div>
     </div>
   );
@@ -51,4 +60,6 @@ const mapStateToProps = (state) => ({
 })
 
 export default connect(
-  mapStateToProps)(StyledPost);
+  mapStateToProps,
+  { addComment }
+)(StyledPost);
