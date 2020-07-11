@@ -64,8 +64,8 @@ const StyledThreadPage = styled(ThreadPage)`
     margin-right: 32px;
     margin-left: 32px;
     padding-top: 8px;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 5px;
+    padding-right: 5px;
     background-color: ${(props)=>(theme.themes[props.globalTheme].element)}
   }
   &.modal-wrapper {
@@ -79,6 +79,9 @@ const StyledThreadPage = styled(ThreadPage)`
     display: flex;
     justify-content: center;
 
+  }
+  ${Form} {
+    margin-bottom: 20px;
   }
 
 `

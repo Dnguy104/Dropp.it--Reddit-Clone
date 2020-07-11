@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
     case GET_COMMENTS:
       return {
         ...state,
-        comments: [...state.comments, action.payload.comments],
+        comments: [...state.comments, ...action.payload.comments],
         postsLoadedIds: [...state.postsLoadedIds, action.payload.postId],
       }
     case DELETE_COMMENT:

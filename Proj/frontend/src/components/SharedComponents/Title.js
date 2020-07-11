@@ -7,22 +7,30 @@ import styled from 'styled-components';
 const Title = (props) => {
   const {
     title,
+    globalTheme,
     className,
-    fontSize, // 'sm','md','lg' ...
+    xs, sm, md, lg, xl,
   } = props;
 
+  let size = '16px';
+  if(!!xs) size = theme.fontSize.xs;
+  if(!!sm) size = theme.fontSize.sm;
+  if(!!md) size = theme.fontSize.md;
+  if(!!lg) size = theme.fontSize.lg;
+  if(!!xl) size = theme.fontSize.xl;
+
   return (
-      <h1 className={className}>{title}</h1>
+      <StyledH1 globalTheme={globalTheme} size={size}>{title}</StyledH1>
   );
 };
 
-const StyledTitle = styled(Title)`
+const StyledH1 = styled.h1`
   color: ${(props) => theme.themes[props.globalTheme].colorB};
-  font-size: ${(props) => theme.fontSize[props.fontSize]};
+  font-size: ${(props) => props.size};
 `
 
 const mapStateToProps = (state) => ({
   globalTheme: state.global.theme,
 });
 
-export default connect(mapStateToProps)(StyledTitle);
+export default connect(mapStateToProps)(Title);
