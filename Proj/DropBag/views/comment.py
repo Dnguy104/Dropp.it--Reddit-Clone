@@ -20,7 +20,7 @@ class CommentCRView(CreateModelMixin,
         if self.is_valid:
             print("valid ", kwargs, args)
             # data = serializer.initial_data
-            if not Post.objects.filter(id = kwargs.get("p_id")).exists():
+            if not Post.object.filter(id = kwargs.get("p_id")).exists():
                 self.status = status.HTTP_404_NOT_FOUND
                 self.data = {
                     "postid": [
@@ -36,8 +36,23 @@ class CommentCRView(CreateModelMixin,
         return self.list(request, args, kwargs)
 
     def post(self, request, *args, **kwargs):
-        print("post ", kwargs, args)
-        return self.create(request, args, kwargs)
+        print("comment post ", kwargs, args)
+        self.request = self.parse_request(request);
+        print(request.POST)
+        print(request.path)
+        print(request.content_type)
+        print(request.content_params)
+
+        data =  self.request.copy()
+        data.update(kwargs)
+        data['post'] = data.pop('p_id')
+
+        serializer = self.get_serializer(data=data)
+        self.validate(serializer, args, **kwargs)
+        if self.is_valid:
+            print('valid')
+            self.create(serializer)
+        return JsonResponse(self.data, status=self.status, safe=False)
 
 
 class Get_Post_Comments(ListModelMixin,
@@ -66,9 +81,9 @@ class Get_Post_Comments(ListModelMixin,
         return queryset
 
     def validate(self, *args, **kwargs):
-        print("valid ", kwargs, args)
-        # data = serializer.initial_data
-        if not Post.objects.filter(id = kwargs.get("p_id")).exists():
+        print("valid ", args, kwargs, kwargs.get("p_id"))
+        self.is_valid = True
+        if not Post.object.filter(id = kwargs.get('p_id')).exists():
             self.status = status.HTTP_404_NOT_FOUND
             self.data = {
                 "postid": [
@@ -79,12 +94,12 @@ class Get_Post_Comments(ListModelMixin,
             print("invalid")
 
     def get(self, request, *args, **kwargs):
-        self.validate(args, kwargs)
+        self.validate(args, **kwargs)
 
-        print("get collection", kwargs, args)
         if self.is_valid:
-            print('valid')
-            self.list(request, args, kwargs)
+            print("get collection", kwargs, args)
+            queryset = self.get_queryset(kwargs['p_id'])
+            self.list(queryset, args, kwargs)
         return JsonResponse(self.data, status=self.status, safe=False)
 
 #Comment ViewSet

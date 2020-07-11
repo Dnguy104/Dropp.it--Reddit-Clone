@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { addPost } from '../../../actions/posts.js';
 import PropTypes from 'prop-types';
-import { Input, Element, Form, PostCards } from '../../SharedComponents';
+import { Input, Element, Form, PostCards, Title } from '../../SharedComponents';
 
 import styled from 'styled-components';
 import theme from '../../../utils/theme.js';
@@ -14,6 +14,7 @@ const MainPage = props => {
   return (
     <div className={`${className}`}>
       <Element>
+        <Title fontSize='xl' title='Add Post'/>
         <Form submitHandler={addPost} submit='Submit' lg>
           <Input
             type="text"

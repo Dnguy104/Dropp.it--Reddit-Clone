@@ -56,10 +56,11 @@ class PostCRView(CreateModelMixin,
 
     def validate(self, serializer, *args, **kwargs):
         super(PostCRView, self).validate(serializer)
+        print("valid ", kwargs, args, kwargs.get("t_id"))
         if self.is_valid:
             print("valid ", kwargs, args)
             # data = serializer.initial_data
-            if not Thread.objects.filter(id = kwargs.get("t_id")).exists():
+            if not Thread.object.filter(id = kwargs.get("t_id")).exists():
                 self.status = status.HTTP_404_NOT_FOUND
                 self.data = {
                     "threadid": [
@@ -84,9 +85,13 @@ class PostCRView(CreateModelMixin,
         return JsonResponse(self.data, status=self.status, safe=False)
 
     def get(self, request, *args, **kwargs):
-
-        print("get collection", kwargs, args)
+        queryset = self.get_queryset()
+        print("get collection", args, kwargs)
+        print(request.POST)
+        print(request.path)
+        print(request.content_type)
+        print(request.content_params)
         # if self.is_valid:
         print('valid')
-        self.list(request, args, kwargs)
+        self.list(queryset, args, kwargs)
         return JsonResponse(self.data, status=self.status, safe=False)

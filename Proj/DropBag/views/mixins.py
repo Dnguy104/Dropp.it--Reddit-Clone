@@ -68,9 +68,8 @@ class ListModelMixin:
     """
     List a queryset
     """
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-
+    def list(self, queryset, *args, **kwargs):
+        print("important list: ", queryset)
         serializer = self.get_serializer(queryset, many=True)
         self.status = status.HTTP_200_OK
         self.data = serializer.data

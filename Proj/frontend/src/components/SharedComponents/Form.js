@@ -64,7 +64,6 @@ const Form = (props) => {
 
   return (
     <div className={className}>
-      <Title fontSize='xl' title='Add Post'/>
       <form onSubmit={handleOnSubmit} autoComplete="off"
         style={{
           width: width,

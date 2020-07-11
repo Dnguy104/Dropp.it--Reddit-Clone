@@ -17,6 +17,7 @@ export const REGISTER_FAIL = "REGISTER_FAIL";
 export const THEME_CHANGED = "THEME_CHANGED";
 
 
-export const GET_POST_COMMENTS = "GET_POST_COMMENTS";
+export const GET_COMMENTS = "GET_COMMENTS";
+// export const LOAD_COMMENTS = "LOAD_COMMENTS";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const ADD_COMMENT = "ADD_COMMENT";

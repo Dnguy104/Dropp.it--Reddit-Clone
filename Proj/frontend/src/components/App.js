@@ -57,9 +57,11 @@ const App = (props) => {
   const { loaded, className, location, getPosts } = props;
   const [ previousLocation, setPreviousLocation] = useState(location);
 
-  if ((location.state && location.state.modal)) {
+  // let isModal = false;
+  if (!(location.state && location.state.modal) && previousLocation !== location) {
     setPreviousLocation(location)
   }
+
 
   useEffect(() => {
     if(!loaded) getPosts();
@@ -70,11 +72,10 @@ const App = (props) => {
     location.state.modal &&
     previousLocation !== location
   );
-  // console.log(this.previousLocation);
+  // console.log(previousLocation);
   // console.log(location);
   let fixedStyle = '';
   if(isModal) fixedStyle = 'fixed';
-
   return (
     <div className={`${className} ${fixedStyle}`}>
       <GlobalStyle />

@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 urlpatterns = [
     path('api/posts/', csrf_exempt(PostCRView.as_view()), name='posts'),
     path('api/posts/<int:p_id>/', csrf_exempt(PostView.as_view()), name='post'),
-    path('api/posts/<int:p_id>/comments', csrf_exempt(Get_Post_Comments.as_view()), name='post'),
+    path('api/posts/<int:p_id>/comments/', csrf_exempt(Get_Post_Comments.as_view()), name='post'),
     path('api/comments/', csrf_exempt(CommentCRView.as_view()), name='thread_post_comments'),
     path('api/comments/<int:c_id>/', csrf_exempt(CommentView.as_view()), name='thread_post_comment'),
     path('api/threads/<int:t_id>/', csrf_exempt(ThreadView.as_view()), name='thread'),
