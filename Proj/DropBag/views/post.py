@@ -77,7 +77,7 @@ class PostCRView(CreateModelMixin,
         print(request.content_type)
         print(request.content_params)
         serializer = self.get_serializer(data=self.request)
-        self.validate(serializer, *args, **kwargs)
+        self.validate(serializer, args, kwargs)
         if self.is_valid:
             print('valid')
             self.create(serializer)

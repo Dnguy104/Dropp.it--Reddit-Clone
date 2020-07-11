@@ -14,10 +14,20 @@ const Form = (props) => {
     className,
     submitHandler,
     submit,
-    children
+    children,
+    md, lg, xl,
   } = props;
   const [state, setState] = useState({});
   const [stateReset, toggleStateReset] = useState(false);
+
+  let width = '200px';
+  if(!!md) width = theme.size.md;
+  if(!!lg) width = theme.size.lg;
+  if(!!xl) width = theme.size.xl;
+
+  const style = {
+    width,
+  }
 
   if(state==undefined) {
     setState(
@@ -55,7 +65,11 @@ const Form = (props) => {
   return (
     <div className={className}>
       <Title fontSize='xl' title='Add Post'/>
-      <form onSubmit={handleOnSubmit} autoComplete="off" >
+      <form onSubmit={handleOnSubmit} autoComplete="off"
+        style={{
+          width: width,
+        }}
+      >
         {inputTags}
         <div className="button-wrapper">
           <Button type="submit" invert>
@@ -71,6 +85,8 @@ const StyledForm = styled(Form)`
   .button-wrapper {
     width: ${theme.size.sm};
     height: 31px;
+  }
+  form {
   }
 `
 

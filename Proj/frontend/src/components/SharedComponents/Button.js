@@ -11,12 +11,12 @@ const Button = (props) => {
     invert,
     ...attr
    } = props;
-   console.log(attr)
+
    let color = 'default';
    if(!!invert) color = 'invert';
 
   return (
-    <button className={`${className} ${color}`} dispatch='' {...attr}>
+    <button className={`${className} ${color}`} {...attr} dispatch=''>
       {children}
     </button>
   );

@@ -9,19 +9,84 @@ from .api import GenericAPIView
 
 #Comment ViewSet
 class CommentCRView(CreateModelMixin,
-               ListModelMixin,
-               GenericAPIView):
+                    ListModelMixin,
+                    GenericAPIView):
 
     serializer_class = CommentSerializer
     model = Comment
 
+    def validate(self, serializer, *args, **kwargs):
+        super(CommentCRView, self).validate(serializer)
+        if self.is_valid:
+            print("valid ", kwargs, args)
+            # data = serializer.initial_data
+            if not Post.objects.filter(id = kwargs.get("p_id")).exists():
+                self.status = status.HTTP_404_NOT_FOUND
+                self.data = {
+                    "postid": [
+                        "this field is incorrect"
+                    ]
+                }
+                self.is_valid = False
+                print("invalid")
+
     def get(self, request, *args, **kwargs):
+
         print("get ", kwargs, args)
         return self.list(request, args, kwargs)
 
     def post(self, request, *args, **kwargs):
         print("post ", kwargs, args)
         return self.create(request, args, kwargs)
+
+
+class Get_Post_Comments(ListModelMixin,
+                    GenericAPIView):
+
+    serializer_class = CommentSerializer
+    model = Comment
+
+    def get_queryset(self, post):
+
+        if self.queryset is not None:
+            queryset = self.queryset
+            if isinstance(queryset, QuerySet):
+                queryset = queryset.filter(post=post)
+        elif self.model is not None:
+            queryset = self.model.object.filter(post=post)
+        else:
+            raise ImproperlyConfigured(
+                "%(cls)s is missing a QuerySet. Define "
+                "%(cls)s.model, %(cls)s.queryset, or override "
+                "%(cls)s.get_queryset()." % {
+                    'cls': self.__class__.__name__
+                }
+            )
+
+        return queryset
+
+    def validate(self, *args, **kwargs):
+        print("valid ", kwargs, args)
+        # data = serializer.initial_data
+        if not Post.objects.filter(id = kwargs.get("p_id")).exists():
+            self.status = status.HTTP_404_NOT_FOUND
+            self.data = {
+                "postid": [
+                    "this field is incorrect"
+                ]
+            }
+            self.is_valid = False
+            print("invalid")
+
+    def get(self, request, *args, **kwargs):
+        self.validate(args, kwargs)
+
+        print("get collection", kwargs, args)
+        if self.is_valid:
+            print('valid')
+            self.create(serializer)
+            self.list(request, args, kwargs)
+        return JsonResponse(self.data, status=self.status, safe=False)
 
 #Comment ViewSet
 class CommentView(RetrieveModelMixin,

@@ -17,24 +17,22 @@ const MainPage = props => {
   return (
     <div className={`${className}`}>
       <Element>
-        <Form submitHandler={addPost} submit='Submit'>
+        <Form submitHandler={addPost} submit='Submit' lg>
           <Input
             type="text"
             name="title"
             placeholder="Title"
-            lg
           />
           <Input
             type="text"
             name="author"
             placeholder="Author"
-            lg
           />
           <Input
             type="text"
             name="content"
             placeholder="Text"
-            lg
+            xs
             resize
             text
           />

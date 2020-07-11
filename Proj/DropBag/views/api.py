@@ -18,6 +18,8 @@ class GenericAPIView(ContextMixin, View):
 
     serializer = None
     request = None
+
+    # data that will be in response
     data = None
     status = None
     is_valid = False
@@ -29,7 +31,7 @@ class GenericAPIView(ContextMixin, View):
             if isinstance(queryset, QuerySet):
                 queryset = queryset.all()
         elif self.model is not None:
-            queryset = self.model._default_manager.all()
+            queryset = self.model.object.all()
         else:
             raise ImproperlyConfigured(
                 "%(cls)s is missing a QuerySet. Define "

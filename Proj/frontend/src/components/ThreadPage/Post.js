@@ -21,12 +21,12 @@ const Post = props => {
             </p>
           </>
         ): null}
-        <Form submitHandler={addComment} submit='Comment'>
+        <Form submitHandler={addComment} submit='Comment' xl>
           <Input
             type="text"
             name="content"
             placeholder="Text"
-            lg
+            xs
             resize
             text
           />

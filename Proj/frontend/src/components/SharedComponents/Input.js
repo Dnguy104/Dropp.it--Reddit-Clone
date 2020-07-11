@@ -13,19 +13,14 @@ const Input = (props) => {
     ...attr
    } = props;
 
-   let width = '100px';
-   if(!!sm) width = theme.size.sm;
-   if(!!md) width = theme.size.md;
-   if(!!lg) width = theme.size.lg;
-   if(!!xl) width = theme.size.xl;
-
    let height = '31px';
-   if(resize) height = theme.size.sm;
-   // let height = '20px';
-   // if(!!sh) height = '40px';
-   // if(!!tl) height = '100px';
+   if(!!xs) height = theme.size.xs;
+   if(!!sm) height = theme.size.sm;
+   if(!!md) height = theme.size.md;
+   if(!!lg) height = theme.size.lg;
+   if(!!xl) height = theme.size.xl;
 
-   const style = {width, height};
+   const style = { height};
    let InputElement = 'input';
    if(!!text) InputElement = 'textarea';
 
@@ -44,12 +39,13 @@ const Styleddiv = styled.div`
   * {
     border-radius: var(--b-radius);
     border-style: solid;
+    box-sizing: border-box;
     background-color: ${props => theme.themes[props.globalTheme].element};
     border-color: ${props => theme.themes[props.globalTheme].colorA};
     border-width: 2px;
     color: ${props => theme.themes[props.globalTheme].colorA};
     resize: ${({resize}) => resize ? 'vertical' : 'none'};
-    width: ${({width}) => width};
+    width: 100%;
     height: ${({height}) => height};
     padding-left: 10px;
   }

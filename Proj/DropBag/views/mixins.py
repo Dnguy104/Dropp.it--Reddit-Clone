@@ -72,7 +72,8 @@ class ListModelMixin:
         queryset = self.get_queryset()
 
         serializer = self.get_serializer(queryset, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        self.status = status.HTTP_200_OK
+        self.data = serializer.data
 
 class RetrieveModelMixin:
     """
