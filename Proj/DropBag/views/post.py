@@ -77,12 +77,16 @@ class PostCRView(CreateModelMixin,
         print(request.content_type)
         print(request.content_params)
         serializer = self.get_serializer(data=self.request)
-        self.validate(serializer, args, kwargs)
+        self.validate(serializer, args, **kwargs)
         if self.is_valid:
             print('valid')
             self.create(serializer)
         return JsonResponse(self.data, status=self.status, safe=False)
 
     def get(self, request, *args, **kwargs):
-        print("get ", kwargs, args)
-        return self.list(request, args, kwargs)
+
+        print("get collection", kwargs, args)
+        # if self.is_valid:
+        print('valid')
+        self.list(request, args, kwargs)
+        return JsonResponse(self.data, status=self.status, safe=False)

@@ -1,14 +1,11 @@
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
-import { addPost } from '../../actions/posts.js';
+import { addPost } from '../../../actions/posts.js';
 import PropTypes from 'prop-types';
-import PostCards from '../SharedComponents/PostCards.js';
-import Form from '../SharedComponents/Form.js'
-import Element from '../SharedComponents/Element.js';
-import Input from '../SharedComponents/Input.js';
+import { Input, Element, Form, PostCards } from '../../SharedComponents';
 
 import styled from 'styled-components';
-import theme from '../../utils/theme.js';
+import theme from '../../../utils/theme.js';
 
 
 const MainPage = props => {

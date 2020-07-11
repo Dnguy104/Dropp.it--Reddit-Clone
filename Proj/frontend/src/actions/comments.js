@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createMessage, returnErrors } from './messages';
 import { tokenConfig } from './auth';
-import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST } from './types';
+import { GET_POST_COMMENTS, DELETE_COMMENT, ADD_COMMENT } from './types';
 
 // axios.defaults.xsrfCookieName = 'csrftoken'
 // axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
@@ -30,7 +30,7 @@ export const getPosts = () => (dispatch, getState) => {
 // DELETE POSTS
 export const deletePost = (id) => (dispatch, getState) => {
   axios
-    .delete(`http://localhost:8000/api/posts/${id}/`, tokenConfig(getState))
+    .delete(`http://localhost:8000/api/posts/${null}/comments`, tokenConfig(getState))
       .then(res => {
       dispatch(createMessage({ deletePost: "Post Deleted"}));
       dispatch({
@@ -45,8 +45,7 @@ export const addComment = (comment) => (dispatch, getState) => {
   let config = tokenConfig(getState);
   config.headers['']
   axios
-    .post(`http://localhost:8000/api/threads/${2}/posts/`, {...post, threadid: 2}, tokenConfig(getState)).then(res => {
-      dispatch(createMessage({ addPost: "Comment Added"}));
+    .post(`http://localhost:8000/api/posts/${null}/comments/`, comment, tokenConfig(getState)).then(res => {
       dispatch({
         type: ADD_POST,
         payload: res.data

@@ -1,6 +1,7 @@
 export const GET_POSTS = "GET_POST";
 export const DELETE_POST = "DELETE_POST";
 export const ADD_POST = "ADD_POST";
+export const SET_POST = "SET_POST";
 
 export const GET_ERRORS = "GET_ERRORS";
 export const CREATE_MESSAGE = "CREATE_MESSAGE";
@@ -15,4 +16,7 @@ export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const THEME_CHANGED = "THEME_CHANGED";
 
-export const SET_POST = "SET_POST";
+
+export const GET_POST_COMMENTS = "GET_POST_COMMENTS";
+export const DELETE_COMMENT = "DELETE_COMMENT";
+export const ADD_COMMENT = "ADD_COMMENT";

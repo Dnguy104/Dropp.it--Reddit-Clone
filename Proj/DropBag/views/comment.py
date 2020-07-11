@@ -84,7 +84,6 @@ class Get_Post_Comments(ListModelMixin,
         print("get collection", kwargs, args)
         if self.is_valid:
             print('valid')
-            self.create(serializer)
             self.list(request, args, kwargs)
         return JsonResponse(self.data, status=self.status, safe=False)
 

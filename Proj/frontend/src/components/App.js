@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, {  useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
-
 import { Provider as AlertProvider } from 'react-alert';
 import Alert from './Alert/Alert.js';
 import Login from './accounts/Login/Login.js';
 import Register from './accounts/Register/Register.js';
 import PrivateRoute from './common/PrivateRoute/PrivateRoute.js';
-import { Provider } from 'react-redux';
 import { loadUser } from '../actions/auth'
+import { getPosts } from '../actions/posts.js'
 import styled, { createGlobalStyle } from 'styled-components'
 
 import Header from './Header/Header.js';
-import MainPage from './MainPage/MainPage.js';
-import ThreadPage from './ThreadPage/ThreadPage.js';
+import MainPage from './Pages/MainPage/MainPage.js';
+import ThreadPage from './Pages//ThreadPage/ThreadPage.js';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -53,59 +53,50 @@ const GlobalStyle = createGlobalStyle`
   // }
 `
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      previousLocation: this.props.location
-    }
-  }
-  static getDerivedStateFromProps(props, state) {
-    const { location } = props;
+const App = (props) => {
+  const { loaded, className, location, getPosts } = props;
+  const [ previousLocation, setPreviousLocation] = useState(location);
 
-    if (!(location.state && location.state.modal)) {
-      return {
-        previousLocation: location,
-      }
-    }
-    return state;
+  if ((location.state && location.state.modal)) {
+    setPreviousLocation(location)
   }
 
-  render() {
-    const { location } = this.props;
-    const isModal = (
-      location.state &&
-      location.state.modal &&
-      this.previousLocation !== location
-    );
-    // console.log(this.previousLocation);
-    // console.log(location);
-    let fixedStyle = '';
-    if(isModal) fixedStyle = 'fixed';
+  useEffect(() => {
+    if(!loaded) getPosts();
+  });
 
-    return (
-      <div className={`${this.props.className} ${fixedStyle}`}>
-        <GlobalStyle />
-        <Header />
-        <Alert />
-        <>
-          <Switch location={isModal ? this.state.previousLocation : location}>
-            <Route exact path="/">
-              <MainPage/>
-            </Route>
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/r/:id" component={ThreadPage} />
-          </Switch>
+  const isModal = (
+    location.state &&
+    location.state.modal &&
+    previousLocation !== location
+  );
+  // console.log(this.previousLocation);
+  // console.log(location);
+  let fixedStyle = '';
+  if(isModal) fixedStyle = 'fixed';
 
-          {isModal
-            ? <Route exact path="/r/:id"><ThreadPage isModal={isModal}/></Route>
-            : null
-          }
-        </>
-      </div>
-    );
-  }
+  return (
+    <div className={`${className} ${fixedStyle}`}>
+      <GlobalStyle />
+      <Header />
+      <Alert />
+      <>
+        <Switch location={isModal ? previousLocation : location}>
+          <Route exact path="/">
+            <MainPage/>
+          </Route>
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/r/:id" component={ThreadPage} />
+        </Switch>
+
+        {isModal
+          ? <Route exact path="/r/:id"><ThreadPage isModal={isModal}/></Route>
+          : null
+        }
+      </>
+    </div>
+  );
 }
 
 const StyledApp = styled(App)`
@@ -117,4 +108,11 @@ const StyledApp = styled(App)`
   }
 `
 
-export default withRouter(StyledApp);
+const mapStateToProps = (state) => ({
+  loaded: state.posts.loaded,
+})
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { getPosts })
+)(StyledApp);

@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import Post from './Post.js';
-import theme from '../../utils/theme.js';
+import theme from '../../../utils/theme.js';
 
 
 const ThreadPage = props => {

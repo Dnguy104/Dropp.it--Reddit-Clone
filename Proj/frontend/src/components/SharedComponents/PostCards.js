@@ -2,16 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getPosts, deletePost, addPost } from '../../actions/posts.js'
+import { getPosts, deletePost } from '../../actions/posts.js'
 import PostCard from './PostCard.js';
 import styled from 'styled-components';
 
 const PostCards = (props) => {
-  const { className, loaded, posts, getPosts, deletePost } = props;
-
-  useEffect(() => {
-    if(!loaded) getPosts();
-  });
+  const { className, loaded, posts, deletePost } = props;
 
   const postCards = posts.map((post) => (
     <Link
@@ -44,7 +40,6 @@ const StyledPostCards = styled(PostCards)`
 PostCards.propTypes = {
   posts: PropTypes.array.isRequired,
   getPosts: PropTypes.func.isRequired,
-  deletePost: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -54,5 +49,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getPosts, deletePost }
+  { getPosts }
 )(StyledPostCards);

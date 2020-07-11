@@ -1,10 +1,11 @@
 import React, { } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Title, Subtitle, Form, Input } from '../SharedComponents';
+import { Title, Subtitle, Form, Input } from '../../SharedComponents';
+import CommentContainer from './CommentContainer.js';
 import styled from 'styled-components';
-import theme from '../../utils/theme.js';
-import { addComment } from '../../actions/comments';
+import theme from '../../../utils/theme.js';
+import { addComment } from '../../../actions/comments';
 
 const Post = props => {
   const { post, className, addComment } = props;
