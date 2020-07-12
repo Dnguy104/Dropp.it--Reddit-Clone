@@ -7,9 +7,9 @@ import theme, { colors as Colors } from '../../../utils/theme.js';
 // import { setPost } from '../../actions/posts.js'
 
 const Comment = (props) => {
-  const { className, comment, key} = props;
-  // console.log("Comment: ");
-  // console.log(comment);
+  const { className, comment, key, id} = props;
+  console.log("Comment: " + id);
+  console.log(comment);
 
   return (
     comment ?
@@ -41,7 +41,7 @@ const StyledComment = styled(Comment)`
 `;
 
 const mapStateToProps = (state, props) => ({
-  comment: state.comments.comments.find(x => x.id === props.id),
+  comment: state.comments.comments[props.id],
   globalTheme: state.global.theme,
 });
 

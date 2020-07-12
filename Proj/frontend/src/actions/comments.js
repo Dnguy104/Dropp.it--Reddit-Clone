@@ -32,7 +32,7 @@ export const getComments = () => (dispatch, getState) => {
     .get(`http://localhost:8000/api/posts/${state.posts.currentPostId}/comments/`, tokenConfig(getState))
     .then(res => {
       console.log("getComment: " )
-      console.log( res)
+      console.log(res)
 
       dispatch({
         type: GET_COMMENTS,
@@ -76,7 +76,7 @@ export const addComment = (comment) => (dispatch, getState) => {
         type: ADD_COMMENT,
         payload: {
           comments: res.data,
-          postsLoadedId: postsLoadedId
+          postsLoadedIds: postsLoadedId
         }
       });
     }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));

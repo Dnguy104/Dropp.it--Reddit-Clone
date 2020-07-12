@@ -37,7 +37,7 @@ const ThreadPage = props => {
             <Input
               type="text"
               name="content"
-              placeholder="Text"
+              placeholder="What are your thought?"
               xs
               resize
               text

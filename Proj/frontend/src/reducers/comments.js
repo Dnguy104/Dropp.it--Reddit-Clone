@@ -1,7 +1,7 @@
 import { GET_COMMENTS, DELETE_COMMENT, ADD_COMMENT } from '../actions/types.js';
 
 const initialState = {
-  comments: [],
+  comments: {},
   postsLoadedIds: [],
 
 }
@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
     case GET_COMMENTS:
       return {
         ...state,
-        comments: [...state.comments, ...action.payload.comments],
+        comments: {...state.comments, ...action.payload.comments},
         postsLoadedIds: [...state.postsLoadedIds, action.payload.postId],
       }
     case DELETE_COMMENT:
@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
     case ADD_COMMENT:
       return {
         ...state,
-        comments: [...state.comments, action.payload.comments],
+        comments: {...state.comments,[action.payload.comments.id]: action.payload.comments},
         postsLoadedIds: [...state.postsLoadedIds, action.payload.postsLoadedId],
       }
     default:

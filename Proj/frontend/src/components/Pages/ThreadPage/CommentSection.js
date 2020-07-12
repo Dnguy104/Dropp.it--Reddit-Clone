@@ -10,10 +10,11 @@ import theme, { colors as Colors } from '../../../utils/theme.js';
 const CommentSection = (props) => {
   const { className, comments, loaded } = props;
 
+  console.log("comment section: " );
   console.log(comments);
 
-  const commentList = comments.map((cmt) => (
-    <Comment id={cmt.id} key={cmt.id}/>
+  const commentList = Object.keys(comments).map((key) => (
+    <Comment id={comments[key].id} key={comments[key].id}/>
   ));
 
   return (
