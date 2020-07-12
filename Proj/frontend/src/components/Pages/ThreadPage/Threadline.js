@@ -9,7 +9,7 @@ const Subtitlediv = styled.div`
   font-size: ${(props) => props.size};
 `
 
-const Subtitle = (props) => {
+const Threadline = (props) => {
   const {
     author,
     created_on,
@@ -17,7 +17,7 @@ const Subtitle = (props) => {
     xs, sm, md, lg, xl,
   } = props;
 
-  let size = '11px';
+  let size = '10px';
   if(!!xs) size = theme.fontSize.xs;
   if(!!sm) size = theme.fontSize.sm;
   if(!!md) size = theme.fontSize.md;
@@ -25,7 +25,7 @@ const Subtitle = (props) => {
   if(!!xl) size = theme.fontSize.xl;
   return (
     <Subtitlediv globalTheme={globalTheme} size={size}>
-      r/Thread ~ Posted by u/{author} on {created_on}
+      |
     </Subtitlediv>
   );
 }
@@ -34,4 +34,4 @@ const mapStateToProps = (state) => ({
   globalTheme: state.global.theme,
 });
 
-export default connect(mapStateToProps)(Subtitle);
+export default connect(mapStateToProps)(Threadline);

@@ -13,6 +13,7 @@ const MainPage = props => {
 
   return (
     <div className={`${className}`}>
+      <div className='nav-spacer'></div>
       <Element>
         <Title fontSize='xl' title='Add Post'/>
         <Form submitHandler={addPost} submit='Submit' lg>

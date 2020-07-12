@@ -102,7 +102,6 @@ const App = (props) => {
 
 const StyledApp = styled(App)`
   height: 100%;
-  overflow: auto;
 
   &.fixed {
     overflow: hidden;

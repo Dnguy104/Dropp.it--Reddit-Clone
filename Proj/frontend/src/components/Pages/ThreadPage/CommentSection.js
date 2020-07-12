@@ -2,20 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { getComments } from '../../../actions/comments.js'
+import { addComment } from '../../../actions/comments.js'
 import Comment from './Comment.js'
+import { Form, Input } from '../../SharedComponents';
 import styled from 'styled-components';
 import theme, { colors as Colors } from '../../../utils/theme.js';
 
 const CommentSection = (props) => {
-  const { className, comments, loaded } = props;
+  const { className, comments, loaded, addComment } = props;
 
-  console.log("comment section: " );
-  console.log(comments);
+  // console.log("comment section: " );
+  // console.log(comments);
 
-  const commentList = Object.keys(comments).map((key) => (
-    <Comment id={comments[key].id} key={comments[key].id}/>
-  ));
+  const commentList = Object.keys(comments).map((key) => {
+    if(comments[key].commentForm) {
+      return (
+          [<Comment id={comments[key].id} key={comments[key].id}/>,
+          <Form submitHandler={addComment} submit='Comment' xl key={'f'+comments[key].id} parent={comments[key].id}>
+            <Input
+              type="text"
+              name="content"
+              placeholder="What are your thought?"
+              xs
+              resize
+              text
+            />
+          </Form>]
+      );
+    }
+    return <Comment id={comments[key].id} key={comments[key].id}/>
+  });
 
   return (
     <div className={className}>
@@ -32,7 +48,7 @@ const StyledCommentSection = styled(CommentSection)`
 `;
 
 CommentSection.propTypes = {
-  comments: PropTypes.array.isRequired,
+  comments: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -43,5 +59,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {  }
+  { addComment }
 )(StyledCommentSection);

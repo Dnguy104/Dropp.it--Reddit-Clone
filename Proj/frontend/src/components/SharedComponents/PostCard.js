@@ -27,7 +27,7 @@ const StyledPostCard = styled(PostCard)`
   background-color: ${props => theme.themes[props.globalTheme].element};
   border-color: ${props => theme.themes[props.globalTheme].colorA};
   border-width: 1px;
-  padding: 10px;
+  padding: 10px 10px 0px;
   &:hover {
     border-color: ${Colors.white90};
   }

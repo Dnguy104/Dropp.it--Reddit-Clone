@@ -1,15 +1,16 @@
-import React  from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { handleCommentReplyToggle } from '../../../actions/comments.js';
 import styled from 'styled-components';
-import { Subtitle } from '../../SharedComponents';
+import { Subtitle, Button } from '../../SharedComponents';
 import theme, { colors as Colors } from '../../../utils/theme.js';
 // import { setPost } from '../../actions/posts.js'
 
 const Comment = (props) => {
-  const { className, comment, key, id} = props;
+  const { className, comment, key, id, handleCommentReplyToggle} = props;
   console.log("Comment: " + id);
-  console.log(comment);
+  // console.log(comment);
 
   return (
     comment ?
@@ -18,6 +19,10 @@ const Comment = (props) => {
         <p>
           {comment.content}
         </p>
+        <div>
+          <Button onClick={handleCommentReplyToggle(comment)} icon>Reply</Button>
+          <Button icon>Reply</Button>
+        </div>
       </div>)
     : null
   );
@@ -48,5 +53,5 @@ const mapStateToProps = (state, props) => ({
 
 export default connect(
   mapStateToProps,
-  {  }
+  { handleCommentReplyToggle }
 )(StyledComment);

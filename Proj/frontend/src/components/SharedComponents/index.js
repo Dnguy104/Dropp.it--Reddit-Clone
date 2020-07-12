@@ -7,8 +7,10 @@ import PostFooter from './PostFooter';
 import PostHeader from './PostHeader';
 import Subtitle from './Subtitle';
 import Title from './Title';
+import Button from './Button';
 
 export {
+  Button,
   Element,
   Form,
   Input,
