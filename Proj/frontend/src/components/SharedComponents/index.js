@@ -8,6 +8,7 @@ import PostHeader from './PostHeader';
 import Subtitle from './Subtitle';
 import Title from './Title';
 import Button from './Button';
+import Votebox from './Votebox';
 
 export {
   Button,
@@ -20,4 +21,5 @@ export {
   PostHeader,
   Subtitle,
   Title,
+  Votebox,
 }

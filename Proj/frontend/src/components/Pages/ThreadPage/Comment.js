@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { handleCommentReplyToggle } from '../../../actions/comments.js';
 import styled from 'styled-components';
-import { Subtitle, Button } from '../../SharedComponents';
+import { Subtitle, Button, Votebox } from '../../SharedComponents';
 import theme, { colors as Colors } from '../../../utils/theme.js';
 // import { setPost } from '../../actions/posts.js'
 
 const Comment = (props) => {
   const { className, comment, key, id, handleCommentReplyToggle} = props;
-  console.log("Comment: " + id);
-  // console.log(comment);
 
   return (
     comment ?
@@ -25,6 +23,7 @@ const Comment = (props) => {
         <div>
           <Button onClick={handleCommentReplyToggle(comment.id)} icon>Reply</Button>
           <Button icon>Reply</Button>
+          <Votebox/>
         </div>
       </div>)
     : null

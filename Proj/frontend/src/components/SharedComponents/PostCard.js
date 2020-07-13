@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PostHeader from './PostHeader.js';
 import PostFooter from './PostFooter.js';
+import Votebox from './Votebox.js';
 import styled from 'styled-components';
 import theme, { colors as Colors } from '../../utils/theme.js';
 import { setPost } from '../../actions/posts.js'
@@ -12,8 +13,11 @@ const PostCard = (props) => {
 
   return (
     <div className={className} onClick={setPost(post)} >
-      <PostHeader title={post.title} author={post.author} created_on={post.created_on} />
-      <PostFooter/>
+      <Votebox/>
+      <div className='content-container'>
+        <PostHeader title={post.title} author={post.author} created_on={post.created_on} />
+        <PostFooter/>
+      </div>
     </div>
   );
 }
@@ -28,6 +32,12 @@ const StyledPostCard = styled(PostCard)`
   border-color: ${props => theme.themes[props.globalTheme].colorA};
   border-width: 1px;
   padding: 10px 10px 0px;
+  display: flex;
+  flex-direction: row;
+
+  .content-container {
+    margin-left: 5px;
+  }
   &:hover {
     border-color: ${Colors.white90};
   }
