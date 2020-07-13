@@ -1,5 +1,6 @@
 from .mixins import CreateModelMixin, UpdateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin
 from DropBag import status
+import json
 from django.http import Http404, JsonResponse
 from django.utils.translation import gettext as _
 from django.db.models import QuerySet
@@ -61,6 +62,11 @@ class Get_Post_Comments(ListModelMixin,
     serializer_class = CommentSerializer
     model = Comment
 
+    # def list(self, queryset, *args, **kwargs):
+    #     data = [{i.id: i} for i in queryset]
+    #     print("data: ", data)
+    #     super(Get_Post_Comments, self).list(data)
+
     def get_queryset(self, post):
 
         if self.queryset is not None:
@@ -100,6 +106,8 @@ class Get_Post_Comments(ListModelMixin,
             print("get collection", kwargs, args)
             queryset = self.get_queryset(kwargs['p_id'])
             self.list(queryset, args, kwargs)
+            print(self.data)
+            self.data = {i['id']: i for i in self.data}
         return JsonResponse(self.data, status=self.status, safe=False)
 
 #Comment ViewSet

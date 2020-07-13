@@ -1,15 +1,14 @@
-import React  from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { handleCommentReplyToggle } from '../../../actions/comments.js';
 import styled from 'styled-components';
-import { Subtitle } from '../../SharedComponents';
+import { Subtitle, Button, Votebox } from '../../SharedComponents';
 import theme, { colors as Colors } from '../../../utils/theme.js';
 // import { setPost } from '../../actions/posts.js'
 
 const Comment = (props) => {
-  const { className, comment, key} = props;
-  // console.log("Comment: ");
-  // console.log(comment);
+  const { className, comment, key, id, handleCommentReplyToggle} = props;
 
   return (
     comment ?
@@ -18,6 +17,14 @@ const Comment = (props) => {
         <p>
           {comment.content}
         </p>
+        <p>
+          {comment.depth}
+        </p>
+        <div>
+          <Button onClick={handleCommentReplyToggle(comment.id)} icon>Reply</Button>
+          <Button icon>Reply</Button>
+          <Votebox/>
+        </div>
       </div>)
     : null
   );
@@ -41,12 +48,12 @@ const StyledComment = styled(Comment)`
 `;
 
 const mapStateToProps = (state, props) => ({
-  comment: state.comments.comments.find(x => x.id === props.id),
+  comment: state.comments.comments[props.id],
   globalTheme: state.global.theme,
 });
 
 
 export default connect(
   mapStateToProps,
-  {  }
+  { handleCommentReplyToggle }
 )(StyledComment);

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useLayoutEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
@@ -15,10 +15,13 @@ const Form = (props) => {
     submitHandler,
     submit,
     children,
+    initialState,
+    parent = null,
     md, lg, xl,
   } = props;
-  const [state, setState] = useState({});
+  const [state, setState] = useState(initialState);
   const [stateReset, toggleStateReset] = useState(false);
+  const exist = useRef(true);
 
   let width = '200px';
   if(!!md) width = theme.size.md;
@@ -29,15 +32,12 @@ const Form = (props) => {
     width,
   }
 
-  if(state==undefined) {
-    setState(
-      children.reduce((map, obj)=>{
-        map[obj.props.name] = '';
-        return map;
-      }, {})
-    )
-  }
 
+  useEffect(()=>{
+    return (()=>{
+      exist.current = false;
+    })
+  }, [])
 
   const handleOnChange = useCallback((e)=>{
     setState({
@@ -48,9 +48,16 @@ const Form = (props) => {
 
   const handleOnSubmit = useCallback((e)=>{
     e.preventDefault();
-    const request = { ...state };
+    const request = { ...state, parent };
     submitHandler(request);
 
+    if(exist.current) {
+      const empty = Object.keys(state).reduce((map,obj)=>{
+        map[obj] = '';
+        return map;
+      }, {})
+      setState(empty);
+    };
   },[state]);
 
   const inputTags = React.Children.map(

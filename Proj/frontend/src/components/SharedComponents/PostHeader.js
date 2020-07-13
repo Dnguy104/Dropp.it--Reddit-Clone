@@ -12,7 +12,7 @@ const PostHeader = (props) => {
   return (
     <>
       <Title title={title} lg/>
-      <Subtitle author={author} created_on={created_on} sm/>
+      <Subtitle author={author} created_on={created_on}/>
     </>
   );
 }

@@ -21,3 +21,4 @@ export const GET_COMMENTS = "GET_COMMENTS";
 // export const LOAD_COMMENTS = "LOAD_COMMENTS";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const ADD_COMMENT = "ADD_COMMENT";
+export const ADD_COMMENT_REPLY = "ADD_COMMENT_REPLY";

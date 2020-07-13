@@ -1,10 +1,21 @@
 import axios from 'axios';
+import { commentsInit, commentInit } from '../utils/helpers.js';
 import { createMessage, returnErrors } from './messages';
 import { tokenConfig } from './auth';
-import { GET_COMMENTS, DELETE_COMMENT, ADD_COMMENT } from './types';
+import { GET_COMMENTS, DELETE_COMMENT, ADD_COMMENT, ADD_COMMENT_REPLY } from './types';
 
-// axios.defaults.xsrfCookieName = 'csrftoken'
-// axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+
+// SET POST sets the post that will load on thread page components
+export const handleCommentReplyToggle = (commentId) => (dispatch, getState) => () => {
+  const state = getState();
+  const comment = state.comments.comments[commentId];
+
+  const toggledReplyComment = {...comment, commentForm: !comment.commentForm}
+  dispatch({
+    type: ADD_COMMENT_REPLY,
+    payload: toggledReplyComment
+  });
+};
 
 // SET POST sets the post that will load on thread page components
 export const setPost = (post) => (dispatch, getState) => () => {
@@ -28,16 +39,19 @@ export const getComments = () => (dispatch, getState) => {
   //   });
   //   return;
   // }
+
+
   axios
     .get(`http://localhost:8000/api/posts/${state.posts.currentPostId}/comments/`, tokenConfig(getState))
     .then(res => {
       console.log("getComment: " )
-      console.log( res)
+      console.log(res)
+      const comments = commentsInit(res.data);
 
       dispatch({
         type: GET_COMMENTS,
         payload: {
-          comments: res.data,
+          comments: comments,
           postId: state.posts.currentPostId
         }
       });
@@ -58,26 +72,36 @@ export const deletePost = (id) => (dispatch, getState) => {
 };
 
 // ADD COMMENT
-export const addComment = (comment) => (dispatch, getState) => {
+export const addComment = (newComment) => (dispatch, getState) => {
   const state = getState();
   let config = tokenConfig(getState);
   // config.headers['']
-  const request = {
-    ...comment,
+  console.log(newComment)
+  const moreData = {
+    depth: newComment.parent ? state.comments.comments[newComment.parent].depth + 1 : null,
     author: 'author'
+  }
+  const request = {
+    ...newComment,
+    ...moreData
   }
 
   axios
     .post(`http://localhost:8000/api/threads/${2}/posts/${state.posts.currentPostId}/comments/`, request, config)
     .then(res => {
 
+      // if postid is null, set to 1
       const postsLoadedId = !!res.data.post ? res.data.post : 1
+      const comment = commentInit(res.data);
+      
+      if(comment.parent) dispatch(handleCommentReplyToggle(comment.parent))();
       dispatch({
         type: ADD_COMMENT,
         payload: {
-          comments: res.data,
-          postsLoadedId: postsLoadedId
+          comments: comment,
+          postsLoadedIds: postsLoadedId
         }
       });
-    }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+    })
+    .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
