@@ -33,11 +33,11 @@ const ThreadPage = props => {
         <div className='nav-spacer'></div>
         <div className='post-container'>
           <Post/>
-          <Form submitHandler={addComment} submit='Comment' xl>
+          <Form submitHandler={addComment} submit='Comment' xl initialState={{'content': ''}}>
             <Input
               type="text"
               name="content"
-              placeholder="Text"
+              placeholder="What are your thought?"
               xs
               resize
               text
@@ -57,6 +57,7 @@ ThreadPage.propTypes = {
 const StyledThreadPage = styled(ThreadPage)`
   .modal {
     width: calc(100% - 100px);
+    height: fit-content;
     max-width: 1280px;
     background-color: ${props => theme.themes[props.globalTheme].background};
   }

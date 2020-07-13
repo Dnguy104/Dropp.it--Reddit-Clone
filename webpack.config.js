@@ -2,6 +2,9 @@ var path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+  entry: {
+    app: './src/index.js'
+  },
   module: {
     rules: [
       {
@@ -27,6 +30,7 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, './Proj/frontend/src'),
+
     compress: true,
     port: 9000
   },

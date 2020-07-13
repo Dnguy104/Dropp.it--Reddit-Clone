@@ -52,7 +52,7 @@ const StyledHeader = styled(Header)`
   border-color: ${props => theme.themes[props.globalTheme].colorA};
   padding-left: 10px;
   padding-right: 10px;
-  position: relative;
+  position: fixed;
   width: 100%;
   z-index: 1;
 

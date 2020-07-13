@@ -7,8 +7,11 @@ import PostFooter from './PostFooter';
 import PostHeader from './PostHeader';
 import Subtitle from './Subtitle';
 import Title from './Title';
+import Button from './Button';
+import Votebox from './Votebox';
 
 export {
+  Button,
   Element,
   Form,
   Input,
@@ -18,4 +21,5 @@ export {
   PostHeader,
   Subtitle,
   Title,
+  Votebox,
 }

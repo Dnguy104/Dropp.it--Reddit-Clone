@@ -9,14 +9,25 @@ const Button = (props) => {
     className,
     children,
     invert,
+    icon,
     ...attr
    } = props;
 
-   let color = 'default';
+   let color = '';
    if(!!invert) color = 'invert';
 
+   let iconStyle = '';
+   if(!!icon) iconStyle = 'icon';
+
+   // let height = '31px';
+   // if(!!xs) height = theme.size.xs;
+   // if(!!sm) height = theme.size.sm;
+   // if(!!md) height = theme.size.md;
+   // if(!!lg) height = theme.size.lg;
+   // if(!!xl) height = theme.size.xl;
+
   return (
-    <button className={`${className} ${color}`} {...attr} dispatch=''>
+    <button className={`${className} ${color} ${iconStyle}`} {...attr} dispatch=''>
       {children}
     </button>
   );
@@ -29,9 +40,26 @@ const StyledButton = styled(Button)`
   color: ${props => theme.themes[props.globaltheme].element};
   height: 100%;
   width: 100%;
+  &:hover {
+    box-shadow: inset 0 0 100px 100px rgba(155, 155, 155, 0.1);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.icon {
+    height: initial;
+    width: initial;
+    font-weight: 800;
+    font-size: 11px;
+    padding: 5px 3px;
+    color: ${props => theme.themes[props.globaltheme].colorC};
+    background-color: transparent;
+  }
 
   &.invert {
-    background-color: ${props => theme.themes[props.globaltheme].element};
+    background-color: transparent;
     color: ${props => theme.themes[props.globaltheme].colorB};
     border-style: solid;
     border-color: ${props => theme.themes[props.globaltheme].colorB};

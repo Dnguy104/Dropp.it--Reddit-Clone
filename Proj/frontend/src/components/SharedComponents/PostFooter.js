@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from './Button.js';
 
 const PostFooter = (props) => {
   // const {  } = props;
   return (
     <>
-      <button type="button" >Comments</button>
+      <Button type="submit" icon>Comments</Button>
     </>
   );
 }
