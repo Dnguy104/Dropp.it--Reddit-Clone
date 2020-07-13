@@ -19,8 +19,11 @@ const Comment = (props) => {
         <p>
           {comment.content}
         </p>
+        <p>
+          {comment.depth}
+        </p>
         <div>
-          <Button onClick={handleCommentReplyToggle(comment)} icon>Reply</Button>
+          <Button onClick={handleCommentReplyToggle(comment.id)} icon>Reply</Button>
           <Button icon>Reply</Button>
         </div>
       </div>)

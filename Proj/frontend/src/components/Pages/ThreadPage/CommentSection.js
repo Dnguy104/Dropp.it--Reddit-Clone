@@ -18,7 +18,13 @@ const CommentSection = (props) => {
     if(comments[key].commentForm) {
       return (
           [<Comment id={comments[key].id} key={comments[key].id}/>,
-          <Form submitHandler={addComment} submit='Comment' xl key={'f'+comments[key].id} parent={comments[key].id}>
+          <Form submitHandler={addComment}
+            submit='Comment'
+            xl
+            key={'f'+comments[key].id}
+            parent={comments[key].id}
+            initialState={{'content': ''}}
+          >
             <Input
               type="text"
               name="content"

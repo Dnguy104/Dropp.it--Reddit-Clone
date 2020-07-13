@@ -6,7 +6,10 @@ import { GET_COMMENTS, DELETE_COMMENT, ADD_COMMENT, ADD_COMMENT_REPLY } from './
 
 
 // SET POST sets the post that will load on thread page components
-export const handleCommentReplyToggle = (comment) => (dispatch, getState) => () => {
+export const handleCommentReplyToggle = (commentId) => (dispatch, getState) => () => {
+  const state = getState();
+  const comment = state.comments.comments[commentId];
+
   const toggledReplyComment = {...comment, commentForm: !comment.commentForm}
   dispatch({
     type: ADD_COMMENT_REPLY,
@@ -90,8 +93,8 @@ export const addComment = (newComment) => (dispatch, getState) => {
       // if postid is null, set to 1
       const postsLoadedId = !!res.data.post ? res.data.post : 1
       const comment = commentInit(res.data);
-      handleCommentReplyToggle(comment);
-
+      
+      if(comment.parent) dispatch(handleCommentReplyToggle(comment.parent))();
       dispatch({
         type: ADD_COMMENT,
         payload: {
@@ -99,5 +102,6 @@ export const addComment = (newComment) => (dispatch, getState) => {
           postsLoadedIds: postsLoadedId
         }
       });
-    }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+    })
+    .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };

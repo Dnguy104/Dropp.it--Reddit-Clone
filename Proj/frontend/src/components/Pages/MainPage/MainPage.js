@@ -16,7 +16,7 @@ const MainPage = props => {
       <div className='nav-spacer'></div>
       <Element>
         <Title fontSize='xl' title='Add Post'/>
-        <Form submitHandler={addPost} submit='Submit' lg>
+        <Form submitHandler={addPost} submit='Submit' lg initialState={{'title': '', 'author': '', 'content' : ''}}>
           <Input
             type="text"
             name="title"
