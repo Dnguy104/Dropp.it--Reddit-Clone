@@ -13,7 +13,9 @@ const PostCard = (props) => {
 
   return (
     <div className={className} onClick={setPost(post)} >
-      <Votebox/>
+      <div className='left-container'>
+        <Votebox/>
+      </div>
       <div className='content-container'>
         <PostHeader title={post.title} author={post.author} created_on={post.created_on} />
         <PostFooter/>
@@ -31,12 +33,20 @@ const StyledPostCard = styled(PostCard)`
   background-color: ${props => theme.themes[props.globalTheme].element};
   border-color: ${props => theme.themes[props.globalTheme].colorA};
   border-width: 1px;
-  padding: 10px 10px 0px;
+
   display: flex;
   flex-direction: row;
 
+  .left-container {
+    margin: 8px 8px;
+  }
+
   .content-container {
-    margin-left: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 8px;
   }
   &:hover {
     border-color: ${Colors.white90};

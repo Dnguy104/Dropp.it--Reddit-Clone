@@ -33,7 +33,7 @@ const ThreadPage = props => {
         <div className='nav-spacer'></div>
         <div className='post-container'>
           <Post/>
-          <Form submitHandler={addComment} submit='Comment' xl initialState={{'content': ''}}>
+          <Form submitHandler={addComment} submit='Comment' lg initialState={{'content': ''}}>
             <Input
               type="text"
               name="content"

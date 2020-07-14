@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addComment } from '../../../actions/comments.js'
 import Comment from './Comment.js'
+import CommentThread from './CommentThread.js'
 import { Form, Input } from '../../SharedComponents';
 import styled from 'styled-components';
 import theme, { colors as Colors } from '../../../utils/theme.js';
@@ -16,27 +17,52 @@ const CommentSection = (props) => {
 
   const commentList = Object.keys(comments).map((key) => {
     if(comments[key].commentForm) {
-      return (
-          [<Comment id={comments[key].id} key={comments[key].id}/>,
-          <Form submitHandler={addComment}
-            submit='Comment'
-            xl
-            key={'f'+comments[key].id}
-            parent={comments[key].id}
-            initialState={{'content': ''}}
-          >
-            <Input
-              type="text"
-              name="content"
-              placeholder="What are your thought?"
-              xs
-              resize
-              text
-            />
-          </Form>]
-      );
+      return ([
+        <CommentThread
+          depth={comments[key].depth}
+          collapsable
+          vote
+          commentId={comments[key].id}
+          key={comments[key].id}
+          render={()=>(
+            <Comment id={comments[key].id}/>
+          )}
+        ></CommentThread>,
+        <CommentThread
+          depth={comments[key].depth}
+          commentId={comments[key].id}
+          key={comments[key].id}
+          render={()=>(
+            <Form submitHandler={addComment}
+              submit='Comment'
+              xl
+              key={'f'+comments[key].id}
+              parent={comments[key].id}
+              initialState={{'content': ''}}
+            >
+              <Input
+                type="text"
+                name="content"
+                placeholder="What are your thought?"
+                xs
+                resize
+                text
+              />
+            </Form>
+          )}
+        ></CommentThread>
+      ]);
     }
-    return <Comment id={comments[key].id} key={comments[key].id}/>
+    return (
+      <CommentThread
+        depth={comments[key].depth}
+        collapsable
+        vote
+        commentId={comments[key].id}
+        key={comments[key].id}
+        render={()=><Comment id={comments[key].id} />}
+      ></CommentThread>
+    );
   });
 
   return (

@@ -1,37 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import theme from '../../utils/theme.js';
 import styled from 'styled-components';
 
+const Subtitlediv = styled.div`
+  color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
+  font-size: ${(props) => props.size};
+`
 
-const Title = (props) => {
+const Threadline = (props) => {
   const {
-    title,
+    author,
+    created_on,
     globalTheme,
-    className,
     xs, sm, md, lg, xl,
   } = props;
 
-  let size = '16px';
+  let size = '10px';
   if(!!xs) size = theme.fontSize.xs;
   if(!!sm) size = theme.fontSize.sm;
   if(!!md) size = theme.fontSize.md;
   if(!!lg) size = theme.fontSize.lg;
   if(!!xl) size = theme.fontSize.xl;
-
   return (
-      <StyledH1 globalTheme={globalTheme} size={size}>{title}</StyledH1>
+    <Subtitlediv globalTheme={globalTheme} size={size}>
+      |
+    </Subtitlediv>
   );
-};
-
-const StyledH1 = styled.h1`
-  color: ${(props) => theme.themes[props.globalTheme].colorB};
-  font-size: ${(props) => props.size};
-  line-height: 20px;
-`
+}
 
 const mapStateToProps = (state) => ({
   globalTheme: state.global.theme,
 });
 
-export default connect(mapStateToProps)(Title);
+export default connect(mapStateToProps)(Threadline);

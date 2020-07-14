@@ -26,9 +26,15 @@ const Votebox = (props) => {
 
   return (
     <div className={`${className} `} {...attr} dispatch=''>
-      <button className="upvote"></button>
+      <div className="vote-button">
+        <div className="upvote">
+        </div>
+      </div>
       <p>•</p>
-      <button className="downvote"></button>
+      <div className="vote-button">
+        <div className="downvote">
+        </div>
+      </div>
     </div>
   );
 }
@@ -38,38 +44,39 @@ const StyledVotebox = styled(Votebox)`
   display: flex;
   flex-direction: column;
   width: fit-content;
-
-  button {
+  .vote-button {
     border-style: none;
-    padding: 0;
+    border-radius: 2px;
+    padding: 3px 3px 3px 2px;
+    &:hover {
+      box-shadow: inset 0 0 100px 100px rgba(155, 155, 155, 0.1);
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  .upvote, .downvote {
     height: 16px;
     width: 16px;
     background: url('/assets/vote_sm.png');
-    &:hover {
-      pointer-events: none;
-    }
   }
-  .upvote {
-    background-position: -32px 0px;
-  }
-
   .upvote:hover {
-    background-position: -32px 0px;
-
+    background-position: -31.25px 0px;
   }
-
   .downvote {
-    background-position: -16px 0px;
+    background-position: -15.75px 0px;
     &:hover {
-      background-position: -48px 0px;
+      background-position: -46.75px 0px;
     }
   }
 
   p {
     font-weight: 700;
     font-size: 12px;
-    padding: 4px 0px;
+    padding: 8px 0px;
     align-self: center;
+    color: ${(props) => theme.themes[props.globaltheme].colorB};
+    line-height: 0;
   }
 `
 
