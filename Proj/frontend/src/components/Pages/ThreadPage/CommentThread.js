@@ -14,34 +14,38 @@ const CommentThread = (props) => {
     vote,
     depth,
     commentThreadLinks,
+    updateCommentThreadView,
   } = props;
 
   // console.log(commentThreadLinks);
   // console.log(commentThreadLinks[-1]);
 
+
   let threadLines = [];
   if(commentThreadLinks.length > 1) {
-    threadLines = commentThreadLinks.slice(0,-1).map((commentId,index)=>{
+    threadLines = commentThreadLinks.slice(0,-1).map((commentThreadView,index)=>{
       return (
         <ThreadLine
-          key={`'t'${index}'c'${commentId}`}
-          commentId={commentId}
+          key={`'t'${index}'c'${commentThreadView.id}`}
+          commentId={commentThreadView.id}
+          threadHover={commentThreadView.threadHover}
+          updateCommentThreadView={updateCommentThreadView}
           // handleMouseEnter={}
           // handleMouseLeaver={}
         />);
     })
   }
-  const lastLink = commentThreadLinks[commentThreadLinks.length-1];
-
-  if(!!vote) {
-    threadLines.push((
-      <ThreadLine
-        vote={vote}
-        key={`'t'${depth}'c'${lastLink}`}
-        commentId={lastLink}
-      />
-    ))
-  }
+  // const lastLink = commentThreadLinks[commentThreadLinks.length-1];
+  //
+  // if(!!vote) {
+  //   threadLines.push((
+  //     <ThreadLine
+  //       vote={vote}
+  //       key={`'t'${depth}'c'${lastLink}`}
+  //       commentId={lastLink}
+  //     />
+  //   ))
+  // }
 
   return (
     <div className={className}>
@@ -60,6 +64,7 @@ const StyledCommentThread = styled(CommentThread)`
   flex-direction: row;
   justify-content: flex-start;
   padding: 0px 4px;
+  box-sizing: content-box;
 `;
 
 const mapStateToProps = (state, props) => ({

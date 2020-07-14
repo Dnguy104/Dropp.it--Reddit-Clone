@@ -7,7 +7,7 @@ import { GET_COMMENTS,
 
 const initialState = {
   comments: {},
-  postsLoadedIds: [],
+  commentPageLinks: {},
 
 }
 
@@ -16,8 +16,8 @@ export default (state = initialState, action) => {
     case GET_COMMENTS:
       return {
         ...state,
-        comments: {...action.payload.comments},
-        postsLoadedIds: [...state.postsLoadedIds, action.payload.postId],
+        comments: {...state.comments, ...action.payload.comments},
+        commentPageLinks: {...state.commentPageLinks, [action.payload.postId]:{...action.payload.comments}},
       }
     case DELETE_COMMENT:
       return {
@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         comments: {...state.comments,[action.payload.comments.id]: action.payload.comments},
-        postsLoadedIds: [...state.postsLoadedIds, action.payload.postsLoadedId],
+        commentPageLinks: {...state.commentPageLinks, [action.payload.postId]:{...action.payload.comments}},
       }
     case ADD_COMMENT_REPLY:
       return {

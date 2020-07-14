@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { handleCommentThreadHover, handleCommentThreadOff } from '../../../actions/comments.js';
+// import { handleCommentThreadHover, handleCommentThreadOff } from '../../../actions/comments.js';
 import styled from 'styled-components';
 import { Votebox } from '../../SharedComponents';
 import theme from '../../../utils/theme.js';
@@ -9,29 +9,26 @@ import theme from '../../../utils/theme.js';
 const ThreadLine = (props) => {
   const {
     className,
-    render,
     vote,
-    comment,
     commentId,
-    handleCommentThreadHover,
-    handleCommentThreadOff
+    threadHover,
+    updateCommentThreadView,
   } = props;
 
-  // console.log(commentId);
-  // console.log(comment)
+  // console.log(threadHover);
 
   const lineStyle = vote ? 'voteline' : '';
-  const hoverStyle = comment.threadHover ? 'hover' : '';
+  const hoverStyle = threadHover ? 'hover' : '';
 
   return (
     <div className={className}>
       {vote ?
       (
-        <Votebox/>
+        <Votebox noScore/>
       ) : null}
       <div className={`line ${lineStyle} ${hoverStyle}`}
-        onMouseEnter={handleCommentThreadHover(comment)}
-        onMouseLeave={handleCommentThreadOff(comment)}
+        onMouseEnter={updateCommentThreadView(commentId, true)}
+        onMouseLeave={updateCommentThreadView(commentId, false)}
       >
       </div>
     </div>
@@ -47,7 +44,7 @@ const StyledThreadLine = styled(ThreadLine)`
   flex-direction: column;
   margin: 0px 5px;
   .line {
-    width: 10px;
+    width: 11.25px;
     height: 100%;
     border-right-style: solid;
     border-right-color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
@@ -62,7 +59,7 @@ const StyledThreadLine = styled(ThreadLine)`
   }
 
   .voteline {
-    width: 10px;   // calc(50% - 1px);
+    width: 11.25px;   // calc(50% - 1px);
     margin-top: 5px;
     align-self: flex-start
   }
@@ -70,12 +67,11 @@ const StyledThreadLine = styled(ThreadLine)`
 `;
 
 const mapStateToProps = (state, props) => ({
-  comment: state.comments.comments[props.commentId],
   globalTheme: state.global.theme,
 });
 
 
 export default connect(
   mapStateToProps,
-  { handleCommentThreadHover, handleCommentThreadOff }
+  {  }
 )(StyledThreadLine);

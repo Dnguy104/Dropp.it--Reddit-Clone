@@ -23,29 +23,22 @@ export const handleCommentReplyToggle = (commentId) => (dispatch, getState) => (
     }
   });
 };
-
-// SET POST sets the post that will load on thread page components
-export const setPost = (post) => (dispatch, getState) => () => {
-  dispatch({
-    type: SET_POST,
-    payload: post.id
-  });
-};
+//
+// // SET POST sets the post that will load on thread page components
+// export const setPost = (post) => (dispatch, getState) => () => {
+//   dispatch({
+//     type: SET_POST,
+//     payload: post.id
+//   });
+// };
 
 //GET GET_POSTS
 export const getComments = () => (dispatch, getState) => {
   const state = getState();
-  const commentExists = state.comments.postsLoadedIds.filter((postId)=>(state.posts.currentPostId == postId));
-  // if(commentExists.length) {
-  //   dispatch({
-  //     type: GET_COMMENTS,
-  //     payload: {
-  //       comments: res.data,
-  //       postId: {}
-  //     }
-  //   });
-  //   return;
-  // }
+  const commentExists = state.comments.commentPageLinks.hasOwnProperty(state.posts.currentPostId)
+  if(commentExists) {
+    return;
+  }
 
 
   axios
@@ -58,6 +51,7 @@ export const getComments = () => (dispatch, getState) => {
       dispatch({
         type: GET_COMMENTS,
         payload: {
+          commentPageLink: comments,
           comments: comments,
           postId: state.posts.currentPostId
         }
@@ -106,31 +100,31 @@ export const addComment = (newComment) => (dispatch, getState) => {
         type: ADD_COMMENT,
         payload: {
           comments: comment,
-          postsLoadedIds: postsLoadedId
+          postId: postsLoadedId
         }
       });
     })
     .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
-export const handleCommentThreadHover = (comment) => (dispatch) => () => {
-   comment = {...comment, threadHover: true};
-
-  dispatch({
-    type: COMMENT_THREAD_HOVER_CHANGE,
-    payload: {
-      comment
-    }
-  });
-}
-
-export const handleCommentThreadOff = (comment) => (dispatch) => () => {
-   comment = {...comment, threadHover: false};
-
-  dispatch({
-    type: COMMENT_THREAD_HOVER_CHANGE,
-    payload: {
-      comment
-    }
-  });
-}
+// export const handleCommentThreadHover = (comment) => (dispatch) => () => {
+//    comment = {...comment, threadHover: true};
+//
+//   dispatch({
+//     type: COMMENT_THREAD_HOVER_CHANGE,
+//     payload: {
+//       comment
+//     }
+//   });
+// }
+//
+// export const handleCommentThreadOff = (comment) => (dispatch) => () => {
+//    comment = {...comment, threadHover: false};
+//
+//   dispatch({
+//     type: COMMENT_THREAD_HOVER_CHANGE,
+//     payload: {
+//       comment
+//     }
+//   });
+// }
