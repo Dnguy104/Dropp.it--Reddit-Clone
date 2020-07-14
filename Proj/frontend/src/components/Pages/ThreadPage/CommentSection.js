@@ -14,30 +14,35 @@ const CommentSection = (props) => {
 
   // console.log("comment section: " );
   // console.log(comments);
+  let commentThreadLinks = [];
 
   const commentList = Object.keys(comments).map((key) => {
-    if(comments[key].commentForm) {
+    const comment = comments[key];
+    while(commentThreadLinks.length >= comment.depth) commentThreadLinks.pop();
+    commentThreadLinks.push(comment.id);
+
+    if(comment.commentForm) {
       return ([
         <CommentThread
-          depth={comments[key].depth}
+          depth={comment.depth}
           collapsable
           vote
-          commentId={comments[key].id}
-          key={comments[key].id}
+          commentThreadLinks={[...commentThreadLinks]}
+          key={comment.id}
           render={()=>(
-            <Comment id={comments[key].id}/>
+            <Comment id={comment.id}/>
           )}
         ></CommentThread>,
         <CommentThread
-          depth={comments[key].depth}
-          commentId={comments[key].id}
-          key={comments[key].id}
+          depth={comment.depth}
+          commentThreadLinks={[...commentThreadLinks]}
+          key={comment.id}
           render={()=>(
             <Form submitHandler={addComment}
               submit='Comment'
               xl
-              key={'f'+comments[key].id}
-              parent={comments[key].id}
+              key={'f'+comment.id}
+              parent={comment.id}
               initialState={{'content': ''}}
             >
               <Input
@@ -55,12 +60,12 @@ const CommentSection = (props) => {
     }
     return (
       <CommentThread
-        depth={comments[key].depth}
+        depth={comment.depth}
         collapsable
         vote
-        commentId={comments[key].id}
-        key={comments[key].id}
-        render={()=><Comment id={comments[key].id} />}
+        commentThreadLinks={[...commentThreadLinks]}
+        key={comment.id}
+        render={()=><Comment id={comment.id} />}
       ></CommentThread>
     );
   });

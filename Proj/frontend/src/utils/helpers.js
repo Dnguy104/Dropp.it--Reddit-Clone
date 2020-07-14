@@ -3,11 +3,16 @@ export const commentsInit = (comments) => {
     comments[key] = {
       ...comments[key],
       commentForm: false,
+      threadHover: false,
     };
   })
   return comments;
 }
 
 export const commentInit = (comment) => {
-  return {...comment, commentForm: false};
+  return {
+    ...comment,
+    commentForm: false,
+    threadHover: false,
+  };
 }

@@ -2,7 +2,12 @@ import axios from 'axios';
 import { commentsInit, commentInit } from '../utils/helpers.js';
 import { createMessage, returnErrors } from './messages';
 import { tokenConfig } from './auth';
-import { GET_COMMENTS, DELETE_COMMENT, ADD_COMMENT, ADD_COMMENT_REPLY } from './types';
+import { GET_COMMENTS,
+  DELETE_COMMENT,
+  ADD_COMMENT,
+  ADD_COMMENT_REPLY,
+  COMMENT_THREAD_HOVER_CHANGE,
+ } from './types';
 
 
 // SET POST sets the post that will load on thread page components
@@ -13,7 +18,9 @@ export const handleCommentReplyToggle = (commentId) => (dispatch, getState) => (
   const toggledReplyComment = {...comment, commentForm: !comment.commentForm}
   dispatch({
     type: ADD_COMMENT_REPLY,
-    payload: toggledReplyComment
+    payload: {
+      comment: toggledReplyComment
+    }
   });
 };
 
@@ -93,7 +100,7 @@ export const addComment = (newComment) => (dispatch, getState) => {
       // if postid is null, set to 1
       const postsLoadedId = !!res.data.post ? res.data.post : 1
       const comment = commentInit(res.data);
-      
+
       if(comment.parent) dispatch(handleCommentReplyToggle(comment.parent))();
       dispatch({
         type: ADD_COMMENT,
@@ -105,3 +112,25 @@ export const addComment = (newComment) => (dispatch, getState) => {
     })
     .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
+
+export const handleCommentThreadHover = (comment) => (dispatch) => () => {
+   comment = {...comment, threadHover: true};
+
+  dispatch({
+    type: COMMENT_THREAD_HOVER_CHANGE,
+    payload: {
+      comment
+    }
+  });
+}
+
+export const handleCommentThreadOff = (comment) => (dispatch) => () => {
+   comment = {...comment, threadHover: false};
+
+  dispatch({
+    type: COMMENT_THREAD_HOVER_CHANGE,
+    payload: {
+      comment
+    }
+  });
+}

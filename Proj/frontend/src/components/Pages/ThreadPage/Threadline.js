@@ -1,15 +1,27 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { handleCommentReplyToggle } from '../../../actions/comments.js';
+import { handleCommentThreadHover, handleCommentThreadOff } from '../../../actions/comments.js';
 import styled from 'styled-components';
 import { Votebox } from '../../SharedComponents';
 import theme from '../../../utils/theme.js';
 
 const ThreadLine = (props) => {
-  const { className, render, vote} = props;
+  const {
+    className,
+    render,
+    vote,
+    comment,
+    commentId,
+    handleCommentThreadHover,
+    handleCommentThreadOff
+  } = props;
 
-  const lineStyle = vote ? 'voteline' : ''
+  // console.log(commentId);
+  // console.log(comment)
+
+  const lineStyle = vote ? 'voteline' : '';
+  const hoverStyle = comment.threadHover ? 'hover' : '';
 
   return (
     <div className={className}>
@@ -17,7 +29,11 @@ const ThreadLine = (props) => {
       (
         <Votebox/>
       ) : null}
-      <div className={`line ${lineStyle}`}></div>
+      <div className={`line ${lineStyle} ${hoverStyle}`}
+        onMouseEnter={handleCommentThreadHover(comment)}
+        onMouseLeave={handleCommentThreadOff(comment)}
+      >
+      </div>
     </div>
   );
 }
@@ -41,21 +57,25 @@ const StyledThreadLine = styled(ThreadLine)`
       border-right-color: ${({globalTheme}) => theme.themes[globalTheme].colorB};
     } */
   }
+  .hover {
+    border-right-color: ${({globalTheme}) => theme.themes[globalTheme].colorB};
+  }
 
   .voteline {
     width: 10px;   // calc(50% - 1px);
+    margin-top: 5px;
     align-self: flex-start
   }
 
 `;
 
 const mapStateToProps = (state, props) => ({
-  comment: state.comments.comments[props.id],
+  comment: state.comments.comments[props.commentId],
   globalTheme: state.global.theme,
 });
 
 
 export default connect(
   mapStateToProps,
-  {  }
+  { handleCommentThreadHover, handleCommentThreadOff }
 )(StyledThreadLine);

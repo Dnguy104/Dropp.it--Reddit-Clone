@@ -1,4 +1,9 @@
-import { GET_COMMENTS, DELETE_COMMENT, ADD_COMMENT, ADD_COMMENT_REPLY } from '../actions/types.js';
+import { GET_COMMENTS,
+  DELETE_COMMENT,
+  ADD_COMMENT,
+  ADD_COMMENT_REPLY,
+  COMMENT_THREAD_HOVER_CHANGE,
+} from '../actions/types.js';
 
 const initialState = {
   comments: {},
@@ -28,7 +33,12 @@ export default (state = initialState, action) => {
     case ADD_COMMENT_REPLY:
       return {
         ...state,
-        comments: {...state.comments, [action.payload.id]: action.payload},
+        comments: {...state.comments, [action.payload.comment.id]: action.payload.comment},
+      }
+    case COMMENT_THREAD_HOVER_CHANGE:
+      return {
+        ...state,
+        comments: {...state.comments, [action.payload.comment.id]: action.payload.comment}
       }
     default:
       return state;

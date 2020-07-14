@@ -13,15 +13,33 @@ const CommentThread = (props) => {
     collapsable,
     vote,
     depth,
-    commentId
+    commentThreadLinks,
   } = props;
 
-  let threadLines = [...Array(depth-1)].map((i,index)=>{
-    return (<ThreadLine key={`'t'${index}'c'${commentId}`}/>);
-  })
+  // console.log(commentThreadLinks);
+  // console.log(commentThreadLinks[-1]);
+
+  let threadLines = [];
+  if(commentThreadLinks.length > 1) {
+    threadLines = commentThreadLinks.slice(0,-1).map((commentId,index)=>{
+      return (
+        <ThreadLine
+          key={`'t'${index}'c'${commentId}`}
+          commentId={commentId}
+          // handleMouseEnter={}
+          // handleMouseLeaver={}
+        />);
+    })
+  }
+  const lastLink = commentThreadLinks[commentThreadLinks.length-1];
+
   if(!!vote) {
     threadLines.push((
-      <ThreadLine vote={vote} key={`'t'${depth}'c'${commentId}`}/>
+      <ThreadLine
+        vote={vote}
+        key={`'t'${depth}'c'${lastLink}`}
+        commentId={lastLink}
+      />
     ))
   }
 
@@ -45,7 +63,6 @@ const StyledCommentThread = styled(CommentThread)`
 `;
 
 const mapStateToProps = (state, props) => ({
-  comment: state.comments.comments[props.id],
   globalTheme: state.global.theme,
 });
 

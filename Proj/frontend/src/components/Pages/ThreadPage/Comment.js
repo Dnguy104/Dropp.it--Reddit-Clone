@@ -9,8 +9,8 @@ import theme, { colors as Colors } from '../../../utils/theme.js';
 
 const Comment = (props) => {
   const { className, comment, key, id, handleCommentReplyToggle} = props;
-    console.log(comment);
-    console.log("comment");
+    // console.log(comment);
+    // console.log("comment");
   return (
       (<div className={className} key={key} >
         <Subtitle author={comment.author} created_on={comment.created_on}/>
