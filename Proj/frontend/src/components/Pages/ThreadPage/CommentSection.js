@@ -20,13 +20,14 @@ const CommentSection = (props) => {
     let collapsingDepth = 0;
     // handled removing link chains that are collapsed
     return Object.keys(commentPageLinks).reduce((obj, key)=>{
+      if(!!collapsingDepth && collapsingDepth < commentPageLinks[key].depth) return obj;
+      else collapsingDepth = 0;
+      
       if(!!collapsed && collapsed.hasOwnProperty(key)) {
         collapsingDepth = commentPageLinks[key].depth;
         obj[key] = {id: key, threadHover: false, minimized: true};
         return obj;
       }
-      if(!!collapsingDepth && collapsingDepth < commentPageLinks[key].depth) return obj;
-      else collapsingDepth = 0;
 
       obj[key] = {id: key, threadHover: false, minimized: false};
       return obj;
@@ -71,7 +72,7 @@ const CommentSection = (props) => {
                           />}
           >
           </CommentThread>
-          {(!!commentForm && commentForm[key]) && commentThreadView[key].minimized ?
+          {(!!commentForm && commentForm[key]) && !commentThreadView[key].minimized ?
           (<CommentThread
             depth={commentPageLink.depth}
             commentThreadLinks={[...commentThreadLinks]}

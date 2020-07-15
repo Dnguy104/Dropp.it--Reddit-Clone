@@ -86,7 +86,7 @@ export const addComment = (newComment) => (dispatch, getState) => {
   // config.headers['']
   console.log(newComment)
   const moreData = {
-    depth: newComment.parent ? state.comments.comments[newComment.parent].depth + 1 : null,
+    depth: newComment.parent ? state.comments.commentModels[newComment.parent].depth + 1 : null,
     author: 'author'
   }
   const request = {
@@ -99,15 +99,17 @@ export const addComment = (newComment) => (dispatch, getState) => {
     .then(res => {
 
       // if postid is null, set to 1
-      const postsLoadedId = !!res.data.post ? res.data.post : 1
+
       const comment = commentInit(res.data);
 
       if(comment.parent) dispatch(handleCommentReplyToggle(comment.parent))();
+      const comments = {...state.comments.commentPageLinks[comment.post], [comment.id]: comment};
       dispatch({
         type: ADD_COMMENT,
         payload: {
-          comments: comment,
-          postId: postsLoadedId
+          commentLinks: comments,
+          comment: comment,
+          postId: comment.post
         }
       });
     })

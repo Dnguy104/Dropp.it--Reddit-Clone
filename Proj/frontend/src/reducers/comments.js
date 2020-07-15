@@ -29,8 +29,8 @@ export default (state = initialState, action) => {
     case ADD_COMMENT:
       return {
         ...state,
-        commentModels: {...state.commentModels, [action.payload.comments.id]: action.payload.comments},
-        commentPageLinks: {...state.commentPageLinks, [action.payload.postId]:{...action.payload.comments}},
+        commentModels: {...state.commentModels, [action.payload.comment.id]: action.payload.comment},
+        commentPageLinks: {...state.commentPageLinks, [action.payload.postId]: action.payload.commentLinks},
       }
     case ADD_COMMENT_REPLY:
       return {

@@ -12,9 +12,6 @@ const Subtitlediv = styled.div`
     &:hover {
       color: inherit;
     }
-    display: flex;
-    flex-direction: row;
-    alige-items: baseline;
   }
 `
 
