@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { handleCommentThreadHover, handleCommentThreadOff } from '../../../actions/comments.js';
+import { handleCommentCollapse } from '../../../actions/comments.js';
 import styled from 'styled-components';
 import { Votebox } from '../../SharedComponents';
 import theme from '../../../utils/theme.js';
@@ -13,6 +13,7 @@ const ThreadLine = (props) => {
     commentId,
     threadHover,
     updateCommentThreadView,
+    handleCommentCollapse
   } = props;
 
   // console.log(threadHover);
@@ -29,6 +30,7 @@ const ThreadLine = (props) => {
       <div className={`line ${lineStyle} ${hoverStyle}`}
         onMouseEnter={updateCommentThreadView(commentId, true)}
         onMouseLeave={updateCommentThreadView(commentId, false)}
+        onClick={handleCommentCollapse(commentId)}
       >
       </div>
     </div>
@@ -73,5 +75,5 @@ const mapStateToProps = (state, props) => ({
 
 export default connect(
   mapStateToProps,
-  {  }
+  { handleCommentCollapse }
 )(StyledThreadLine);

@@ -20,7 +20,6 @@ const ThreadPage = props => {
   useEffect(() => {
     (async() => {
       if(!commentsLoaded) {
-        console.log("getting comments")
         const comments = await getComments();
         setCommentsLoaded(true);
       }

@@ -7,24 +7,38 @@ import styled from 'styled-components';
 const Subtitlediv = styled.div`
   color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
   font-size: ${(props) => props.size};
+
+  .minimized {
+    &:hover {
+      color: inherit;
+    }
+    display: flex;
+    flex-direction: row;
+    alige-items: baseline;
+  }
 `
 
 const Subtitle = (props) => {
   const {
+    children,
     author,
     created_on,
     globalTheme,
+    minimized,
     xs, sm, md, lg, xl,
   } = props;
 
-  let size = '11px';
+  const minimizedStyle = minimized ? 'minimized' : '';
+
+  let size = '12px';
   if(!!xs) size = theme.fontSize.xs;
   if(!!sm) size = theme.fontSize.sm;
   if(!!md) size = theme.fontSize.md;
   if(!!lg) size = theme.fontSize.lg;
   if(!!xl) size = theme.fontSize.xl;
   return (
-    <Subtitlediv globalTheme={globalTheme} size={size}>
+    <Subtitlediv globalTheme={globalTheme} size={size} className={minimizedStyle}>
+      {children}
       r/Thread ~ Posted by u/{author} on {created_on}
     </Subtitlediv>
   );

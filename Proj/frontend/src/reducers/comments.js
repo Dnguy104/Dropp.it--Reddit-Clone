@@ -2,13 +2,15 @@ import { GET_COMMENTS,
   DELETE_COMMENT,
   ADD_COMMENT,
   ADD_COMMENT_REPLY,
-  COMMENT_THREAD_HOVER_CHANGE,
+  COMMENT_COLLAPSE,
+  COMMENT_UNCOLLAPSE,
 } from '../actions/types.js';
 
 const initialState = {
-  comments: {},
+  commentModels: {},
   commentPageLinks: {},
-
+  collapsed: {},
+  commentForm: {},
 }
 
 export default (state = initialState, action) => {
@@ -16,7 +18,7 @@ export default (state = initialState, action) => {
     case GET_COMMENTS:
       return {
         ...state,
-        comments: {...state.comments, ...action.payload.comments},
+        commentModels: {...state.commentModels, ...action.payload.comments},
         commentPageLinks: {...state.commentPageLinks, [action.payload.postId]:{...action.payload.comments}},
       }
     case DELETE_COMMENT:
@@ -27,18 +29,19 @@ export default (state = initialState, action) => {
     case ADD_COMMENT:
       return {
         ...state,
-        comments: {...state.comments,[action.payload.comments.id]: action.payload.comments},
+        commentModels: {...state.commentModels, [action.payload.comments.id]: action.payload.comments},
         commentPageLinks: {...state.commentPageLinks, [action.payload.postId]:{...action.payload.comments}},
       }
     case ADD_COMMENT_REPLY:
       return {
         ...state,
-        comments: {...state.comments, [action.payload.comment.id]: action.payload.comment},
+        commentForm: {...state.commentForm, [action.payload.postId]: action.payload.currentPostCommentForm}
       }
-    case COMMENT_THREAD_HOVER_CHANGE:
+    case COMMENT_UNCOLLAPSE:
+    case COMMENT_COLLAPSE:
       return {
         ...state,
-        comments: {...state.comments, [action.payload.comment.id]: action.payload.comment}
+        collapsed: {...state.collapsed, [action.payload.postId]: action.payload.currentPostCollapsed}
       }
     default:
       return state;

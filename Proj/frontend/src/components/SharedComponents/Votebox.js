@@ -46,9 +46,9 @@ const Votebox = (props) => {
    // if(!!xl) height = theme.size.xl;
    const [upvoteStyle, setupvoteStyle] = useState('');
    const [downvoteStyle, setdownvoteStyle] = useState('');
-   const handleVote = useCallback((setter)=> () =>{
+   const handleVote = useCallback((setter, val)=> () =>{
        setter((prev)=>{
-         return prev ? '' : 'vote'
+         return val ? 'vote' : '';
        })
      });
 
@@ -56,11 +56,11 @@ const Votebox = (props) => {
 
   return (
     <div className={`${className} `} {...attr} dispatch=''>
-      <div className="vote-button" onMouseEnter={handleVote(setupvoteStyle)} onMouseLeave={handleVote(setupvoteStyle)} >
+      <div className="vote-button" onMouseEnter={handleVote(setupvoteStyle, true)} onMouseLeave={handleVote(setupvoteStyle, false)} >
         <VoteArrow type={'up'+upvoteStyle}/>
       </div>
       {noScore ? null : <p>•</p>}
-      <div className="vote-button"  onMouseEnter={handleVote(setdownvoteStyle)} onMouseLeave={handleVote(setdownvoteStyle)}>
+      <div className="vote-button"  onMouseEnter={handleVote(setdownvoteStyle, true)} onMouseLeave={handleVote(setdownvoteStyle, false)}>
         <VoteArrow type={'down'+downvoteStyle}/>
       </div>
     </div>

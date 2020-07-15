@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -10,24 +10,36 @@ import styled from 'styled-components';
 import theme, { colors as Colors } from '../../../utils/theme.js';
 
 const CommentSection = (props) => {
-  const { className, commentPageLinks, addComment, postId } = props;
-  const [prevComments, setPrevComments] = useState(commentPageLinks);
-  const [commentThreadView, setCommentThreadView] = useState(commentPageLinks ? commentPageLinks : null);
-  console.log(postId)
-  console.log(commentPageLinks)
-  console.log(commentThreadView);
+  const { className, commentPageLinks, collapsed, commentForm, addComment, postId } = props;
+  const [prevProps, setPrevProps] = useState(props);
 
   const commentThreadViewInit = ()=>{
     console.log("calling init");
-    return Object.keys(commentPageLinks).reduce((obj, key)=>{
-        obj[key] = {id: key, threadHover: false};
-        return obj;
-      }, {})
-  };
+    console.log(commentPageLinks);
 
-  if(prevComments !== commentPageLinks) {
+    let collapsingDepth = 0;
+    // handled removing link chains that are collapsed
+    return Object.keys(commentPageLinks).reduce((obj, key)=>{
+      if(!!collapsed && collapsed.hasOwnProperty(key)) {
+        collapsingDepth = commentPageLinks[key].depth;
+        obj[key] = {id: key, threadHover: false, minimized: true};
+        return obj;
+      }
+      if(!!collapsingDepth && collapsingDepth < commentPageLinks[key].depth) return obj;
+      else collapsingDepth = 0;
+
+      obj[key] = {id: key, threadHover: false, minimized: false};
+      return obj;
+    }, {})
+  };
+  const [commentThreadView, setCommentThreadView] = useState(commentPageLinks ? ()=>commentThreadViewInit() : null);
+
+  if(prevProps.commentPageLinks !== commentPageLinks
+    || prevProps.collapsed !== collapsed
+    || prevProps.commentForm !== commentForm) {
+    console.log('setting setCommentThreadView')
     setCommentThreadView(()=>commentThreadViewInit())
-    setPrevComments(commentPageLinks);
+    setPrevProps(props);
   }
 
   const updateCommentThreadView = (commentId, state) => () => {
@@ -36,30 +48,35 @@ const CommentSection = (props) => {
 
   let commentThreadLinks = [];
   const renderCommentList = () => {
+    console.log("rendering list:");
+    console.log(commentThreadView)
+
     return Object.keys(commentThreadView).map((key) => {
       const commentPageLink = commentPageLinks[key];
       while(commentThreadLinks.length >= commentPageLink.depth) commentThreadLinks.pop();
-      commentThreadLinks.push({id: commentThreadView[key].id, threadHover: commentThreadView[key].threadHover});
+      commentThreadLinks.push({...commentThreadView[key]});
 
-      if(commentPageLink.commentForm) {
-        return ([
+      return (
+        <Fragment key={commentPageLink.id}>
           <CommentThread
             depth={commentPageLink.depth}
-            collapsable
             vote
             commentThreadLinks={[...commentThreadLinks]}
             updateCommentThreadView={updateCommentThreadView}
-            key={commentPageLink.id}
-            render={()=>(
-              <Comment id={commentPageLink.id} commentThreadView={commentThreadView[key]} updateCommentThreadView={updateCommentThreadView}/>
-            )}
-          ></CommentThread>,
-          <CommentThread
+            renderComment={()=><Comment
+                            id={commentPageLink.id}
+                            commentThreadView={commentThreadView[key]}
+                            updateCommentThreadView={updateCommentThreadView}
+                            minimized={commentThreadView[key].minimized}
+                          />}
+          >
+          </CommentThread>
+          {(!!commentForm && commentForm[key]) && commentThreadView[key].minimized ?
+          (<CommentThread
             depth={commentPageLink.depth}
             commentThreadLinks={[...commentThreadLinks]}
             updateCommentThreadView={updateCommentThreadView}
-            key={commentPageLink.id}
-            render={()=>(
+            renderComment={()=>(
               <Form submitHandler={addComment}
                 submit='Comment'
                 xl
@@ -77,19 +94,8 @@ const CommentSection = (props) => {
                 />
               </Form>
             )}
-          ></CommentThread>
-        ]);
-      }
-      return (
-        <CommentThread
-          depth={commentPageLink.depth}
-          collapsable
-          vote
-          commentThreadLinks={[...commentThreadLinks]}
-          updateCommentThreadView={updateCommentThreadView}
-          key={commentPageLink.id}
-          render={()=><Comment id={commentPageLink.id} commentThreadView={commentThreadView[key]} updateCommentThreadView={updateCommentThreadView}/>}
-        ></CommentThread>
+          ></CommentThread>) : null}
+        </Fragment>
       );
     });
   };
@@ -113,6 +119,8 @@ CommentSection.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  collapsed: state.comments.collapsed[state.posts.currentPostId],
+  commentForm: state.comments.commentForm[state.posts.currentPostId],
   commentPageLinks: state.comments.commentPageLinks[state.posts.currentPostId],
   postId: state.posts.currentPostId,
   globalTheme: state.global.theme,

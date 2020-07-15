@@ -9,48 +9,29 @@ import theme from '../../../utils/theme.js';
 const CommentThread = (props) => {
   const {
     className,
-    render,
-    collapsable,
+    renderComment,
     vote,
     depth,
     commentThreadLinks,
     updateCommentThreadView,
   } = props;
 
-  // console.log(commentThreadLinks);
-  // console.log(commentThreadLinks[-1]);
-
-
-  let threadLines = [];
-  if(commentThreadLinks.length > 1) {
-    threadLines = commentThreadLinks.slice(0,-1).map((commentThreadView,index)=>{
+  const renderThreadLines = () => {
+    return commentThreadLinks.slice(0,-1).map((commentThreadView,index)=>{
       return (
         <ThreadLine
           key={`'t'${index}'c'${commentThreadView.id}`}
           commentId={commentThreadView.id}
           threadHover={commentThreadView.threadHover}
           updateCommentThreadView={updateCommentThreadView}
-          // handleMouseEnter={}
-          // handleMouseLeaver={}
         />);
     })
   }
-  // const lastLink = commentThreadLinks[commentThreadLinks.length-1];
-  //
-  // if(!!vote) {
-  //   threadLines.push((
-  //     <ThreadLine
-  //       vote={vote}
-  //       key={`'t'${depth}'c'${lastLink}`}
-  //       commentId={lastLink}
-  //     />
-  //   ))
-  // }
 
   return (
     <div className={className}>
-      {threadLines}
-      {render()}
+      {commentThreadLinks.length > 1 ? renderThreadLines() : null}
+      {renderComment()}
     </div>
   );
 }
@@ -64,6 +45,7 @@ const StyledCommentThread = styled(CommentThread)`
   flex-direction: row;
   justify-content: flex-start;
   padding: 0px 4px;
+  
   box-sizing: content-box;
 `;
 

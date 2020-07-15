@@ -6,20 +6,27 @@ import { GET_COMMENTS,
   DELETE_COMMENT,
   ADD_COMMENT,
   ADD_COMMENT_REPLY,
-  COMMENT_THREAD_HOVER_CHANGE,
+  COMMENT_COLLAPSE,
+  COMMENT_UNCOLLAPSE,
  } from './types';
 
 
 // SET POST sets the post that will load on thread page components
 export const handleCommentReplyToggle = (commentId) => (dispatch, getState) => () => {
   const state = getState();
-  const comment = state.comments.comments[commentId];
+  const currentPostCommentForm = {...state.comments.commentForm[state.posts.currentPostId]};
 
-  const toggledReplyComment = {...comment, commentForm: !comment.commentForm}
+  if(currentPostCommentForm.hasOwnProperty(commentId)) {
+    delete currentPostCommentForm[commentId];
+  } else {
+    currentPostCommentForm[commentId] = true;
+  }
+
   dispatch({
     type: ADD_COMMENT_REPLY,
     payload: {
-      comment: toggledReplyComment
+      currentPostCommentForm: currentPostCommentForm,
+      postId: state.posts.currentPostId
     }
   });
 };
@@ -107,24 +114,27 @@ export const addComment = (newComment) => (dispatch, getState) => {
     .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
-// export const handleCommentThreadHover = (comment) => (dispatch) => () => {
-//    comment = {...comment, threadHover: true};
-//
-//   dispatch({
-//     type: COMMENT_THREAD_HOVER_CHANGE,
-//     payload: {
-//       comment
-//     }
-//   });
-// }
-//
-// export const handleCommentThreadOff = (comment) => (dispatch) => () => {
-//    comment = {...comment, threadHover: false};
-//
-//   dispatch({
-//     type: COMMENT_THREAD_HOVER_CHANGE,
-//     payload: {
-//       comment
-//     }
-//   });
-// }
+export const handleCommentCollapse = (commentId) => (dispatch, getState) => () => {
+  const state = getState();
+  const currentPostCollapsed = {...state.comments.collapsed[state.posts.currentPostId]};
+  console.log("collapse")
+  if(currentPostCollapsed.hasOwnProperty(commentId)) {
+    delete currentPostCollapsed[commentId];
+    dispatch({
+      type: COMMENT_UNCOLLAPSE,
+      payload: {
+        currentPostCollapsed: currentPostCollapsed,
+        postId: state.posts.currentPostId
+      }
+    });
+  } else {
+    currentPostCollapsed[commentId] = true;
+    dispatch({
+      type: COMMENT_COLLAPSE,
+      payload: {
+        currentPostCollapsed: currentPostCollapsed,
+        postId: state.posts.currentPostId
+      }
+    });
+  }
+}

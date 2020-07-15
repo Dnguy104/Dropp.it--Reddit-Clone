@@ -1,44 +1,66 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { handleCommentReplyToggle } from '../../../actions/comments.js';
+import { handleCommentReplyToggle, handleCommentCollapse } from '../../../actions/comments.js';
 import styled from 'styled-components';
 import { Subtitle, Button } from '../../SharedComponents';
 import theme, { colors as Colors } from '../../../utils/theme.js';
 import ThreadLine from './ThreadLine.js';
-// import { setPost } from '../../actions/posts.js'
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const Comment = (props) => {
   const { className,
     comment,
+    minimized,
     handleCommentReplyToggle,
+    handleCommentCollapse,
     updateCommentThreadView,
     commentThreadView,
+    globalTheme
   } = props;
-    // console.log(comment);
-    // console.log("comment");
+
+  const minimizedStyle = minimized ? 'minimized' : '';
 
   return (
-    <div className={className} >
-      <ThreadLine
-        vote={true}
-        key={`'t'${comment.depth}'c'${comment.id}`}
-        commentId={comment.id}
-        threadHover={commentThreadView.threadHover}
-        updateCommentThreadView={updateCommentThreadView}
-      />
+    <div className={`${className} ${minimizedStyle}`} >
+      {minimized ?
+        null
+        :
+        <ThreadLine
+          vote={true}
+          key={`'t'${comment.depth}'c'${comment.id}`}
+          commentId={comment.id}
+          threadHover={commentThreadView.threadHover}
+          updateCommentThreadView={updateCommentThreadView}
+        />
+      }
       <div className='content-container'>
-        <Subtitle author={comment.author} created_on={comment.created_on}/>
-        <p>
-          {comment.content}
-        </p>
-        <p>
-          {comment.depth}
-        </p>
-        <div>
-          <Button onClick={handleCommentReplyToggle(comment.id)} icon>Reply</Button>
-          <Button icon>Reply</Button>
-        </div>
+        {minimized ?
+          <Subtitle author={comment.author} created_on={comment.created_on} minimized={minimized}>
+            <div className='uncollapse-button' onClick={handleCommentCollapse(comment.id)}>
+              <AiOutlinePlusCircle style={{
+                color: theme.themes[globalTheme].colorB,
+                fontSize: '15px',
+              }}/>
+            </div>
+          </Subtitle>
+        : null}
+
+        {minimized ? null :
+          <>
+            <Subtitle author={comment.author} created_on={comment.created_on} minimized={minimized}/>
+            <p>
+              {comment.content}
+            </p>
+            <p>
+              {comment.depth}
+            </p>
+            <div>
+              <Button onClick={handleCommentReplyToggle(comment.id)} icon>Reply</Button>
+              <Button icon>Reply</Button>
+            </div>
+          </>
+        }
       </div>
     </div>
   );
@@ -52,23 +74,32 @@ const StyledComment = styled(Comment)`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  padding-top: 7px;
+  padding-top: 20px;
   .content-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 10px;
+
+  }
+  .uncollapse-button {
+    float: left;
+    padding: 0px 4px;
+    margin-left: 5px;
+    margin-right: 6px;
+  }
+  .minimized:hover {
+    color: ${props=>theme.themes[props.globalTheme].colorB};
   }
 
 `;
 
 const mapStateToProps = (state, props) => ({
-  comment: state.comments.comments[props.commentThreadView.id],
+  comment: state.comments.commentModels[props.commentThreadView.id],
   globalTheme: state.global.theme,
 });
 
 
 export default connect(
   mapStateToProps,
-  { handleCommentReplyToggle }
+  { handleCommentReplyToggle, handleCommentCollapse }
 )(StyledComment);
