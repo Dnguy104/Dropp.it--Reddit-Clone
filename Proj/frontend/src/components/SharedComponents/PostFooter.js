@@ -1,14 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button.js';
+import { FaExpandAlt } from "react-icons/fa";
+import styled from 'styled-components';
 
 const PostFooter = (props) => {
-  // const {  } = props;
+  const { className } = props;
   return (
-    <>
-      <Button type="submit" icon>Comments</Button>
-    </>
+    <div className={className}>
+      <Button icon><FaExpandAlt/></Button>
+      <Button icon>Comments</Button>
+    </div>
   );
-}
+};
 
-export default PostFooter;
+const StyledPostFooter = styled(PostFooter)`
+  button:nth-child(1) {
+    position: relative;
+    left: -4px;
+    font-size: 12px;
+  }
+
+`
+
+export default StyledPostFooter;

@@ -27,6 +27,7 @@ const Title = (props) => {
 const StyledH1 = styled.h1`
   color: ${(props) => theme.themes[props.globalTheme].colorB};
   font-size: ${(props) => props.size};
+  line-height: 20px;
 `
 
 const mapStateToProps = (state) => ({

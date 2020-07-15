@@ -9,5 +9,8 @@ export const commentsInit = (comments) => {
 }
 
 export const commentInit = (comment) => {
-  return {...comment, commentForm: false};
+  return {
+    ...comment,
+    commentForm: false,
+  };
 }

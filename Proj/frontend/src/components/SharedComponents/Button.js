@@ -53,7 +53,7 @@ const StyledButton = styled(Button)`
     width: initial;
     font-weight: 800;
     font-size: 11px;
-    padding: 5px 3px;
+    padding: 5px 5px;
     color: ${props => theme.themes[props.globaltheme].colorC};
     background-color: transparent;
   }

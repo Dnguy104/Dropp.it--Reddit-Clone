@@ -29,7 +29,7 @@ const Form = (props) => {
   if(!!xl) width = theme.size.xl;
 
   const style = {
-    width,
+    width: '100%',
   }
 
 
@@ -72,9 +72,7 @@ const Form = (props) => {
   return (
     <div className={className}>
       <form onSubmit={handleOnSubmit} autoComplete="off"
-        style={{
-          width: width,
-        }}
+        style={style}
       >
         {inputTags}
         <div className="button-wrapper">

@@ -49,7 +49,7 @@ class Comment(models.Model):
     depth = models.SmallIntegerField(blank=True, null=True)
     post = models.ForeignKey(Post, related_name="comments", on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="comments", null=True)
-    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     object = models.Manager()
 
     def save(self, *args, **kwargs):

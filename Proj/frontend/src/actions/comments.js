@@ -2,43 +2,50 @@ import axios from 'axios';
 import { commentsInit, commentInit } from '../utils/helpers.js';
 import { createMessage, returnErrors } from './messages';
 import { tokenConfig } from './auth';
-import { GET_COMMENTS, DELETE_COMMENT, ADD_COMMENT, ADD_COMMENT_REPLY } from './types';
+import { GET_COMMENTS,
+  DELETE_COMMENT,
+  ADD_COMMENT,
+  ADD_COMMENT_REPLY,
+  COMMENT_COLLAPSE,
+  COMMENT_UNCOLLAPSE,
+ } from './types';
 
 
 // SET POST sets the post that will load on thread page components
 export const handleCommentReplyToggle = (commentId) => (dispatch, getState) => () => {
   const state = getState();
-  const comment = state.comments.comments[commentId];
+  const currentPostCommentForm = {...state.comments.commentForm[state.posts.currentPostId]};
 
-  const toggledReplyComment = {...comment, commentForm: !comment.commentForm}
+  if(currentPostCommentForm.hasOwnProperty(commentId)) {
+    delete currentPostCommentForm[commentId];
+  } else {
+    currentPostCommentForm[commentId] = true;
+  }
+
   dispatch({
     type: ADD_COMMENT_REPLY,
-    payload: toggledReplyComment
+    payload: {
+      currentPostCommentForm: currentPostCommentForm,
+      postId: state.posts.currentPostId
+    }
   });
 };
-
-// SET POST sets the post that will load on thread page components
-export const setPost = (post) => (dispatch, getState) => () => {
-  dispatch({
-    type: SET_POST,
-    payload: post.id
-  });
-};
+//
+// // SET POST sets the post that will load on thread page components
+// export const setPost = (post) => (dispatch, getState) => () => {
+//   dispatch({
+//     type: SET_POST,
+//     payload: post.id
+//   });
+// };
 
 //GET GET_POSTS
 export const getComments = () => (dispatch, getState) => {
   const state = getState();
-  const commentExists = state.comments.postsLoadedIds.filter((postId)=>(state.posts.currentPostId == postId));
-  // if(commentExists.length) {
-  //   dispatch({
-  //     type: GET_COMMENTS,
-  //     payload: {
-  //       comments: res.data,
-  //       postId: {}
-  //     }
-  //   });
-  //   return;
-  // }
+  const commentExists = state.comments.commentPageLinks.hasOwnProperty(state.posts.currentPostId)
+  if(commentExists) {
+    return;
+  }
 
 
   axios
@@ -51,6 +58,7 @@ export const getComments = () => (dispatch, getState) => {
       dispatch({
         type: GET_COMMENTS,
         payload: {
+          commentPageLink: comments,
           comments: comments,
           postId: state.posts.currentPostId
         }
@@ -78,7 +86,7 @@ export const addComment = (newComment) => (dispatch, getState) => {
   // config.headers['']
   console.log(newComment)
   const moreData = {
-    depth: newComment.parent ? state.comments.comments[newComment.parent].depth + 1 : null,
+    depth: newComment.parent ? state.comments.commentModels[newComment.parent].depth + 1 : null,
     author: 'author'
   }
   const request = {
@@ -91,17 +99,44 @@ export const addComment = (newComment) => (dispatch, getState) => {
     .then(res => {
 
       // if postid is null, set to 1
-      const postsLoadedId = !!res.data.post ? res.data.post : 1
+
       const comment = commentInit(res.data);
-      
+
       if(comment.parent) dispatch(handleCommentReplyToggle(comment.parent))();
+      const comments = {...state.comments.commentPageLinks[comment.post], [comment.id]: comment};
       dispatch({
         type: ADD_COMMENT,
         payload: {
-          comments: comment,
-          postsLoadedIds: postsLoadedId
+          commentLinks: comments,
+          comment: comment,
+          postId: comment.post
         }
       });
     })
     .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
+
+export const handleCommentCollapse = (commentId) => (dispatch, getState) => () => {
+  const state = getState();
+  const currentPostCollapsed = {...state.comments.collapsed[state.posts.currentPostId]};
+  console.log("collapse")
+  if(currentPostCollapsed.hasOwnProperty(commentId)) {
+    delete currentPostCollapsed[commentId];
+    dispatch({
+      type: COMMENT_UNCOLLAPSE,
+      payload: {
+        currentPostCollapsed: currentPostCollapsed,
+        postId: state.posts.currentPostId
+      }
+    });
+  } else {
+    currentPostCollapsed[commentId] = true;
+    dispatch({
+      type: COMMENT_COLLAPSE,
+      payload: {
+        currentPostCollapsed: currentPostCollapsed,
+        postId: state.posts.currentPostId
+      }
+    });
+  }
+}

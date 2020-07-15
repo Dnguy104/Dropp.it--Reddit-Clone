@@ -20,7 +20,6 @@ const ThreadPage = props => {
   useEffect(() => {
     (async() => {
       if(!commentsLoaded) {
-        console.log("getting comments")
         const comments = await getComments();
         setCommentsLoaded(true);
       }
@@ -33,7 +32,7 @@ const ThreadPage = props => {
         <div className='nav-spacer'></div>
         <div className='post-container'>
           <Post/>
-          <Form submitHandler={addComment} submit='Comment' xl initialState={{'content': ''}}>
+          <Form submitHandler={addComment} submit='Comment' lg initialState={{'content': ''}}>
             <Input
               type="text"
               name="content"

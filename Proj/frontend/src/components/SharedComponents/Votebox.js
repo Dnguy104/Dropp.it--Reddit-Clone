@@ -1,13 +1,34 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import theme from '../../utils/theme.js';
 import styled from 'styled-components';
 
+export const VoteArrow = styled.div`
+  height: 16px;
+  width: 16px;
+  background: url('/assets/vote_sm.png');
+  background-position: ${props=>{
+    if(props.type=='up') return '0px 0px';
+    else if(props.type=='down') return '-15.75px 0px';
+    else if(props.type=='upvote') return '-31.25px 0px';
+    else if(props.type=='downvote') return '-46.75px 0px';
+  }};
+  /* .up.hover {
+    background-position: -31.25px 0px;
+  }
+  .down {
+    background-position: -15.75px 0px;
+    &.hover {
+      background-position: -46.75px 0px;
+    }
+  } */
+`
+
 const Votebox = (props) => {
   const {
     className,
-
+    noScore,
     ...attr
    } = props;
 
@@ -23,12 +44,25 @@ const Votebox = (props) => {
    // if(!!md) height = theme.size.md;
    // if(!!lg) height = theme.size.lg;
    // if(!!xl) height = theme.size.xl;
+   const [upvoteStyle, setupvoteStyle] = useState('');
+   const [downvoteStyle, setdownvoteStyle] = useState('');
+   const handleVote = useCallback((setter, val)=> () =>{
+       setter((prev)=>{
+         return val ? 'vote' : '';
+       })
+     });
+
+
 
   return (
     <div className={`${className} `} {...attr} dispatch=''>
-      <button className="upvote"></button>
-      <p>•</p>
-      <button className="downvote"></button>
+      <div className="vote-button" onMouseEnter={handleVote(setupvoteStyle, true)} onMouseLeave={handleVote(setupvoteStyle, false)} >
+        <VoteArrow type={'up'+upvoteStyle}/>
+      </div>
+      {noScore ? null : <p>•</p>}
+      <div className="vote-button"  onMouseEnter={handleVote(setdownvoteStyle, true)} onMouseLeave={handleVote(setdownvoteStyle, false)}>
+        <VoteArrow type={'down'+downvoteStyle}/>
+      </div>
     </div>
   );
 }
@@ -38,38 +72,25 @@ const StyledVotebox = styled(Votebox)`
   display: flex;
   flex-direction: column;
   width: fit-content;
-
-  button {
+  .vote-button {
     border-style: none;
-    padding: 0;
-    height: 16px;
-    width: 16px;
-    background: url('/assets/vote_sm.png');
+    border-radius: 2px;
+    padding: 4px;
     &:hover {
-      pointer-events: none;
+      box-shadow: inset 0 0 100px 100px rgba(155, 155, 155, 0.1);
     }
-  }
-  .upvote {
-    background-position: -32px 0px;
-  }
-
-  .upvote:hover {
-    background-position: -32px 0px;
-
-  }
-
-  .downvote {
-    background-position: -16px 0px;
-    &:hover {
-      background-position: -48px 0px;
+    &:focus {
+      outline: none;
     }
   }
 
   p {
     font-weight: 700;
     font-size: 12px;
-    padding: 4px 0px;
+    padding: 8px 0px;
     align-self: center;
+    color: ${(props) => theme.themes[props.globaltheme].colorB};
+    line-height: 0;
   }
 `
 

@@ -24,9 +24,14 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
+
   body {
     height: 100vh;
     font-family: Verdana, Geneva, sans-serif;
+  }
+
+  a, u {
+      text-decoration: none;
   }
 
   #app {
