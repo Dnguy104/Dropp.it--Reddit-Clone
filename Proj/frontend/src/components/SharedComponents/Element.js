@@ -5,10 +5,10 @@ import theme from '../../utils/theme.js';
 import styled from 'styled-components';
 
 const Element = (props) => {
-  const { globalTheme } = props;
+  const { globalTheme, style } = props;
 
   return (
-    <StyledElement globalTheme={globalTheme} >
+    <StyledElement globalTheme={globalTheme} style={style}>
       {props.children}
     </StyledElement>
   );

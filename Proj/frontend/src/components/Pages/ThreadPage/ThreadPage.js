@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { getComments, addComment } from '../../../actions/comments.js'
-import { Form, Input } from '../../SharedComponents';
+import { Form, Input, Element } from '../../SharedComponents';
 import CommentSection from './CommentSection.js';
 import Post from './Post.js';
 import theme from '../../../utils/theme.js';
@@ -31,18 +31,25 @@ const ThreadPage = props => {
       <div className={modal} onClick={e => e.stopPropagation()}>
         <div className='nav-spacer'></div>
         <div className='post-container'>
-          <Post/>
-          <Form submitHandler={addComment} submit='Comment' lg initialState={{'content': ''}}>
-            <Input
-              type="text"
-              name="content"
-              placeholder="What are your thought?"
-              xs
-              resize
-              text
-            />
-          </Form>
-          <CommentSection/>
+          <div className='left-dash'>
+            <Post/>
+            <Form submitHandler={addComment} submit='Comment' initialState={{'content': ''}}>
+              <Input
+                type="text"
+                name="content"
+                placeholder="What are your thought?"
+                xs
+                resize
+                text
+              />
+            </Form>
+            <CommentSection/>
+          </div>
+          <div className='right-dash'>
+            <Element style={{
+              height: '300px'
+            }}/>
+          </div>
         </div>
       </div>
     </div>
@@ -54,34 +61,52 @@ ThreadPage.propTypes = {
 };
 
 const StyledThreadPage = styled(ThreadPage)`
+&.modal-wrapper {
+  position: fixed;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(30,30,30,0.9);
+  overflow-y: scroll;
+
+}
   .modal {
-    width: calc(100% - 100px);
+    width: calc(100% - 160px);
+    /* max-width: 1248px; */
     height: fit-content;
+    min-height: 100%;
+    margin: 0px auto;
     max-width: 1280px;
+    padding: 32px 16px 0px;
     background-color: ${props => theme.themes[props.globalTheme].background};
   }
   .post-container {
-    margin-right: 32px;
-    margin-left: 32px;
-    padding-top: 8px;
-    padding-left: 5px;
-    padding-right: 5px;
-    background-color: ${(props)=>(theme.themes[props.globalTheme].element)}
-  }
-  &.modal-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(30,30,30,0.9);
-    overflow-y: scroll;
+    padding: 8px 5px 0px;
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    height: auto;
 
   }
   ${Form} {
     margin-bottom: 20px;
+  }
+  .right-dash {
+    background-color: transparent;
+    flex: 0 0 300px;
+    height: auto;
+    width: 300px;
+    margin-left: 15px;
+  }
+  .left-dash {
+    background-color: ${props => theme.themes[props.globalTheme].element};
+    padding: 10px;
+    border-radius: 3px;
+    flex: 0 2 740px;
+    width: 740px;
+
   }
 
 `

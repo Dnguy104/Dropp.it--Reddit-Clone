@@ -87,8 +87,11 @@ const StyledComment = styled(Comment)`
     margin-left: 5px;
     margin-right: 6px;
   }
-  .minimized:hover {
-    color: ${props=>theme.themes[props.globalTheme].colorB};
+  .minimized {
+    transition-duration: 0.5s;
+    &:hover {
+      color: ${props=>theme.themes[props.globalTheme].colorB};
+    }
   }
 
 `;

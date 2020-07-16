@@ -14,6 +14,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 import Header from './Header/Header.js';
 import MainPage from './Pages/MainPage/MainPage.js';
 import ThreadPage from './Pages//ThreadPage/ThreadPage.js';
+import theme from '../utils/theme.js';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -107,14 +108,35 @@ const App = (props) => {
 
 const StyledApp = styled(App)`
   height: 100%;
+  width: 100%;
+  background-color: ${props => theme.themes[props.globalTheme].background};
 
   &.fixed {
-    overflow: hidden;
+    position: fixed;
   }
+
+  /* .modal {
+    width: calc(100% - 100px);
+    height: fit-content;
+    max-width: 1280px;
+  }
+  &.modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(30,30,30,0.9);
+    overflow-y: scroll;
+    display: flex;
+    justify-content: center;
+
+  } */
 `
 
 const mapStateToProps = (state) => ({
   loaded: state.posts.loaded,
+  globalTheme: state.global.theme,
 })
 
 export default compose(

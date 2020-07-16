@@ -13,16 +13,13 @@ const CommentSection = (props) => {
   const { className, commentPageLinks, collapsed, commentForm, addComment, postId } = props;
   const [prevProps, setPrevProps] = useState(props);
 
-  const commentThreadViewInit = ()=>{
-    console.log("calling init");
-    console.log(commentPageLinks);
-
+  const commentThreadViewInit = () => {
     let collapsingDepth = 0;
     // handled removing link chains that are collapsed
     return Object.keys(commentPageLinks).reduce((obj, key)=>{
       if(!!collapsingDepth && collapsingDepth < commentPageLinks[key].depth) return obj;
       else collapsingDepth = 0;
-      
+
       if(!!collapsed && collapsed.hasOwnProperty(key)) {
         collapsingDepth = commentPageLinks[key].depth;
         obj[key] = {id: key, threadHover: false, minimized: true};
@@ -38,7 +35,10 @@ const CommentSection = (props) => {
   if(prevProps.commentPageLinks !== commentPageLinks
     || prevProps.collapsed !== collapsed
     || prevProps.commentForm !== commentForm) {
-    console.log('setting setCommentThreadView')
+    // console.log('setting setCommentThreadView')
+    // console.log(commentPageLinks)
+    // console.log(collapsed)
+    // console.log(commentForm)
     setCommentThreadView(()=>commentThreadViewInit())
     setPrevProps(props);
   }
@@ -50,7 +50,6 @@ const CommentSection = (props) => {
   let commentThreadLinks = [];
   const renderCommentList = () => {
     console.log("rendering list:");
-    console.log(commentThreadView)
 
     return Object.keys(commentThreadView).map((key) => {
       const commentPageLink = commentPageLinks[key];
