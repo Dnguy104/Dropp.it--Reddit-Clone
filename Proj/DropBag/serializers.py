@@ -1,14 +1,18 @@
 from rest_framework import serializers
-from DropBag.models import Post, Thread, Comment
+from DropBag.models import Post, Thread, Comment, User
 from django.db import IntegrityError
+
+class UserSerializer(serializers.ModelSerializer):
+    date_joined = serializers.ReadOnlyField()
+
+    class Meta(object):
+        model = User
+        fields = ('id', 'email', 'first_name', 'last_name',
+                  'date_joined', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
 
 #Post Serializer
 class PostSerializer(serializers.ModelSerializer):
-    # def is_valid(self, raise_exception=False):
-    #     try:
-    #         return super(PostSerializer, self).is_valid()
-    #     except IntegrityError:
-
     class Meta:
         model = Post
         fields = '__all__'
