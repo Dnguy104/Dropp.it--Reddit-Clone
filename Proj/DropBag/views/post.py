@@ -1,5 +1,5 @@
 # from .mixins import mixins
-from .mixins import CreateModelMixin, UpdateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin
+from .mixins import CreateModelMixin, UpdateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin,RequireTokenMixin
 from DropBag import status
 from django.http import Http404, JsonResponse
 from django.utils.translation import gettext as _
@@ -47,7 +47,8 @@ class PostView(RetrieveModelMixin,
         return JsonResponse(self.data, status=self.status, safe=False)
 
 #Post ViewSet
-class PostCRView(CreateModelMixin,
+class PostCRView(RequireTokenMixin,
+                CreateModelMixin,
                 ListModelMixin,
                 GenericAPIView):
 
@@ -60,7 +61,7 @@ class PostCRView(CreateModelMixin,
         if self.is_valid:
             print("valid ", kwargs, args)
             # data = serializer.initial_data
-            if not Thread.object.filter(id = kwargs.get("t_id")).exists():
+            if not Thread.objects.filter(id = kwargs.get("t_id")).exists():
                 self.status = status.HTTP_404_NOT_FOUND
                 self.data = {
                     "threadid": [
@@ -77,9 +78,18 @@ class PostCRView(CreateModelMixin,
         print(request.path)
         print(request.content_type)
         print(request.content_params)
-        serializer = self.get_serializer(data=self.request)
+
+        data =  self.request.copy()
+        data.update(kwargs)
+        data['thread'] = data.pop('t_id')
+
+        serializer = self.get_serializer(data=data)
+        user = self.authenticate(request)
+        data['user'] = user.id
+        serializer = self.get_serializer(data=data)
         self.validate(serializer, args, **kwargs)
-        if self.is_valid:
+
+        if self.is_valid and self.user.id is not None:
             print('valid')
             self.create(serializer)
         return JsonResponse(self.data, status=self.status, safe=False)

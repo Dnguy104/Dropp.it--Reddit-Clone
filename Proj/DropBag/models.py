@@ -56,6 +56,13 @@ class Thread(models.Model):
     user = models.ForeignKey(User, related_name="threads", on_delete=models.SET_NULL, null=True)
     objects = models.Manager()
 
+class Thread_Subscription(models.Model):
+    user = models.ForeignKey(User, related_name="thread_subscribe", on_delete=models.SET_NULL, null=True)
+    thread = models.ForeignKey(Thread, related_name="thread_subscribe", on_delete=models.SET_NULL, null=True, blank=False)
+
+    class Meta:
+        unique_together = [['user', 'thread']]
+
 class Post(models.Model):
     title = models.CharField(max_length=40)
     slug = models.SlugField(unique=True, max_length=100, blank=True)
