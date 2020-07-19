@@ -40,7 +40,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .nav-spacer {
-    height: 100px;
+    height: 50px;
     width: 100%;
     padding-bottom: 20px;
 
