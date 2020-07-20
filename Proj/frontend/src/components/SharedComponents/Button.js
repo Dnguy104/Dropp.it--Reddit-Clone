@@ -40,6 +40,7 @@ const StyledButton = styled(Button)`
   color: ${props => theme.themes[props.globaltheme].element};
   height: 100%;
   width: 100%;
+  padding: 0px 10px;
   &:hover {
     box-shadow: inset 0 0 100px 100px rgba(155, 155, 155, 0.1);
   }

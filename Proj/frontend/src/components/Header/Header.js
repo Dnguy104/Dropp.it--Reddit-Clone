@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
+import { Button, Input } from '../SharedComponents';
 import styled from 'styled-components';
 import theme from '../../utils/theme.js';
 
 const Header = (props) => {
-  const { className, auth, logout } = props
+  const { className, auth, logout, handleAuth, handleRegister } = props
+
   const authLinks = (
-    <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li className="nav-item">
+    <ul className="">
+      <li className="">
         <button
           onClick={logout}
           className="nav-link btn btn-info btn-sml">Logout</button>
@@ -20,27 +22,30 @@ const Header = (props) => {
   );
 
   const guestLinks = (
-    <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li className="nav-item">
-        <Link to="/register" className="nav-link">Register</Link>
-      </li>
-      <li className="nav-item">
-        <Link to="/login" className="nav-link">Login</Link>
-      </li>
-    </ul>
+    <div className="button-wrapper">
+      <Button type="submit" invert onClick={handleRegister}>
+        Register
+      </Button>
+      <Button type="submit" invert onClick={handleAuth}>
+        Login
+      </Button>
+    </div>
   );
 
   return (
     <nav className={className}>
-      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a className="navbar-brand" href="#">DroppIt</a>
-        {
-          auth.isAuthenticated ? authLinks : guestLinks
-        }
-      </div>
+      <a className="navbar-brand" href="#">DroppIt</a>
+      <Input
+        type="text"
+        name="Search"
+        placeholder="Search"
+        style={{
+          height: '40px'
+        }}
+      />
+      {
+        auth.isAuthenticated ? authLinks : guestLinks
+      }
     </nav>
   );
 };
@@ -50,12 +55,22 @@ const StyledHeader = styled(Header)`
   border-bottom: 1px solid;
   background-color: ${props => theme.themes[props.globalTheme].element};
   border-color: ${props => theme.themes[props.globalTheme].colorA};
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 0px 10px;
   position: fixed;
   width: 100%;
+  height: 50px;
   z-index: 1;
 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  .button-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: calc(100% - 5px);
+  }
 `
 
 Header.propTypes = {

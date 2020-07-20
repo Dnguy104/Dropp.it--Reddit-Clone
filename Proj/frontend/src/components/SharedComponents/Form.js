@@ -76,7 +76,7 @@ const Form = (props) => {
       >
         {inputTags}
         <div className="button-wrapper">
-          <Button type="submit" invert>
+          <Button type="submit" >
             {submit}
           </Button>
         </div>
