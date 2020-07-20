@@ -11,6 +11,7 @@ import { loadUser } from '../actions/auth'
 import { getPosts } from '../actions/posts.js'
 import styled, { createGlobalStyle } from 'styled-components'
 
+import { Modal } from './SharedComponents';
 import Header from './Header/Header.js';
 import MainPage from './Pages/MainPage/MainPage.js';
 import ThreadPage from './Pages//ThreadPage/ThreadPage.js';
@@ -46,6 +47,18 @@ const GlobalStyle = createGlobalStyle`
 
   }
 
+  .modal-wrapper {
+    position: fixed;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(30,30,30,0.9);
+    overflow-y: scroll;
+
+  }
+
   // html, body, div, span, applet, object, iframe,
   // h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   // a, abbr, acronym, address, big, cite, code,
@@ -62,6 +75,9 @@ const GlobalStyle = createGlobalStyle`
 const App = (props) => {
   const { loaded, className, location, getPosts } = props;
   const [ previousLocation, setPreviousLocation] = useState(location);
+  const [ authModal, setAuthModal] = useState(false);
+  const [ authModalRender, setAuthModalRender] = useState('');
+
 
   // let isModal = false;
   if (!(location.state && location.state.modal) && previousLocation !== location) {
@@ -72,6 +88,22 @@ const App = (props) => {
   useEffect(() => {
     if(!loaded) getPosts();
   });
+
+  const handleAuth = () => {
+    setAuthModalRender('auth')
+    setAuthModal(true);
+  }
+
+  const handleRegister = () => {
+    setAuthModalRender('register')
+    setAuthModal(true);
+  }
+
+  const handleAuthModalClose = () => {
+    setAuthModal(false);
+  }
+
+
 
   const isModal = (
     location.state &&
@@ -85,7 +117,7 @@ const App = (props) => {
   return (
     <div className={`${className} ${fixedStyle}`}>
       <GlobalStyle />
-      <Header />
+      <Header handleAuth={handleAuth} handleRegister={handleRegister}/>
       <Alert />
       <>
         <Switch location={isModal ? previousLocation : location}>
@@ -98,9 +130,23 @@ const App = (props) => {
         </Switch>
 
         {isModal
-          ? <Route exact path="/r/:id"><ThreadPage isModal={isModal}/></Route>
+          ?
+            <Route exact path="/r/:id">
+              <ThreadPage isModal={isModal}/>
+            </Route>
           : null
         }
+
+        {authModal
+          ?
+          <Modal handleAuthModalClose={handleAuthModalClose}>
+            { authModalRender == 'auth' ?
+              <Login goToRegister={handleRegister}/> : <Register goToAuth={handleAuth}/>
+            }
+          </Modal>
+          : null
+        }
+
       </>
     </div>
   );

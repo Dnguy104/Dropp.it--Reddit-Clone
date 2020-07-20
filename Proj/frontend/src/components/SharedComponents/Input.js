@@ -40,7 +40,7 @@ const Styleddiv = styled.div`
     border-radius: var(--b-radius);
     border-style: solid;
     box-sizing: border-box;
-    background-color: ${props => theme.themes[props.globalTheme].element};
+    background-color: transparent;
     border-color: ${props => theme.themes[props.globalTheme].colorA};
     border-width: 2px;
     color: ${props => theme.themes[props.globalTheme].colorA};

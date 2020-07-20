@@ -61,17 +61,6 @@ ThreadPage.propTypes = {
 };
 
 const StyledThreadPage = styled(ThreadPage)`
-&.modal-wrapper {
-  position: fixed;
-  box-sizing: border-box;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(30,30,30,0.9);
-  overflow-y: scroll;
-
-}
   .modal {
     width: calc(100% - 160px);
     /* max-width: 1248px; */

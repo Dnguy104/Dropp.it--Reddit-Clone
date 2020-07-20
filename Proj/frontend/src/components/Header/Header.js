@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import theme from '../../utils/theme.js';
 
 const Header = (props) => {
-  const { className, auth, logout } = props
+  const { className, auth, logout, handleAuth, handleRegister } = props
 
   const authLinks = (
     <ul className="">
@@ -23,16 +23,12 @@ const Header = (props) => {
 
   const guestLinks = (
     <div className="button-wrapper">
-      <Link to="/register" className="nav-link">
-        <Button type="submit" invert>
-          Register
-        </Button>
-      </Link>
-      <Link to="/login" className="nav-link">
-        <Button type="submit" invert>
-          Login
-        </Button>
-      </Link>
+      <Button type="submit" invert onClick={handleRegister}>
+        Register
+      </Button>
+      <Button type="submit" invert onClick={handleAuth}>
+        Login
+      </Button>
     </div>
   );
 
