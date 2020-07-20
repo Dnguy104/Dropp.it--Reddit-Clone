@@ -6,6 +6,33 @@ from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from django.db import IntegrityError
 # from DropBag.models import Post
+from django.contrib.auth import authenticate
+
+class RequireTokenMixin:
+    user = None
+
+    def authenticate(self, request):
+        authorization = request.headers['Authorization']
+        try:
+            self.user = authenticate(request, token=authorization)
+        except:
+            pass
+        if self.user.id is not None:
+            # A backend authenticated the credentials
+            print('authenticated')
+            # redirect('comment_create')
+        else:
+            print('not-authenticated')
+            self.status = status.HTTP_400_BAD_REQUEST
+            self.data = {
+                "authenticate": [
+                    "must be logged in"
+                ]
+            }
+            # No backend authenticated the credentials
+        print('mixin: ', self.user)
+        return self.user
+
 
 
 class CreateModelMixin:

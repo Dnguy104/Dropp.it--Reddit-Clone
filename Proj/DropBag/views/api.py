@@ -31,7 +31,7 @@ class GenericAPIView(ContextMixin, View):
             if isinstance(queryset, QuerySet):
                 queryset = queryset.all()
         elif self.model is not None:
-            queryset = self.model.object.all()
+            queryset = self.model.objects.all()
         else:
             raise ImproperlyConfigured(
                 "%(cls)s is missing a QuerySet. Define "

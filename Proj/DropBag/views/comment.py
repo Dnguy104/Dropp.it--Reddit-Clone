@@ -1,4 +1,5 @@
-from .mixins import CreateModelMixin, UpdateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin
+from .mixins import CreateModelMixin, UpdateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin, RequireTokenMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from DropBag import status
 import json
 from django.http import Http404, JsonResponse
@@ -8,8 +9,11 @@ from ..serializers import PostSerializer, ThreadSerializer, CommentSerializer
 from ..models import Post, Thread, Comment
 from .api import GenericAPIView
 
+from django.contrib.auth import authenticate
+
 #Comment ViewSet
-class CommentCRView(CreateModelMixin,
+class CommentCRView(RequireTokenMixin,
+                    CreateModelMixin,
                     ListModelMixin,
                     GenericAPIView):
 
@@ -20,8 +24,8 @@ class CommentCRView(CreateModelMixin,
         super(CommentCRView, self).validate(serializer)
         if self.is_valid:
             print("valid ", kwargs, args)
-            # data = serializer.initial_data
-            if not Post.object.filter(id = kwargs.get("p_id")).exists():
+
+            if not Post.objects.filter(id = kwargs.get("p_id")).exists():
                 self.status = status.HTTP_404_NOT_FOUND
                 self.data = {
                     "postid": [
@@ -29,29 +33,24 @@ class CommentCRView(CreateModelMixin,
                     ]
                 }
                 self.is_valid = False
-                print("invalid")
-
-    def get(self, request, *args, **kwargs):
-
-        print("get ", kwargs, args)
-        return self.list(request, args, kwargs)
 
     def post(self, request, *args, **kwargs):
         print("comment post ", kwargs, args)
         self.request = self.parse_request(request);
         print(request.POST)
         print(request.path)
-        print(request.content_type)
         print(request.content_params)
 
         data =  self.request.copy()
         data.update(kwargs)
         data['post'] = data.pop('p_id')
 
+        user = self.authenticate(request)
+        data['user'] = user.id
         serializer = self.get_serializer(data=data)
         self.validate(serializer, args, **kwargs)
-        if self.is_valid:
-            print('valid')
+
+        if self.is_valid and self.user.id is not None:
             self.create(serializer)
         return JsonResponse(self.data, status=self.status, safe=False)
 
@@ -74,7 +73,7 @@ class Get_Post_Comments(ListModelMixin,
             if isinstance(queryset, QuerySet):
                 queryset = queryset.filter(post=post)
         elif self.model is not None:
-            queryset = self.model.object.filter(post=post)
+            queryset = self.model.objects.filter(post=post)
         else:
             raise ImproperlyConfigured(
                 "%(cls)s is missing a QuerySet. Define "
@@ -89,7 +88,7 @@ class Get_Post_Comments(ListModelMixin,
     def validate(self, *args, **kwargs):
         print("valid ", args, kwargs, kwargs.get("p_id"))
         self.is_valid = True
-        if not Post.object.filter(id = kwargs.get('p_id')).exists():
+        if not Post.objects.filter(id = kwargs.get('p_id')).exists():
             self.status = status.HTTP_404_NOT_FOUND
             self.data = {
                 "postid": [

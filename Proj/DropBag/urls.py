@@ -1,8 +1,10 @@
 from .views.post import PostView, PostCRView
 from .views.thread import ThreadCRView, ThreadView
 from .views.comment import CommentView, CommentCRView, Get_Post_Comments
+from .views.user import CreateUserView, AuthenticateUser
 
 from django.urls import path
+from django.conf.urls import url
 from django.views.decorators.csrf import csrf_exempt
 
 # router = routers.DefaultRouter()
@@ -19,8 +21,8 @@ urlpatterns = [
 
     path('api/threads/', csrf_exempt(ThreadCRView.as_view()), name='threads'),
     path('api/threads/<int:t_id>/posts/', csrf_exempt(PostCRView.as_view()), name='thread_posts'),
-    path('api/threads/<int:t_id>/posts/<int:p_id>/comments/', csrf_exempt(CommentCRView.as_view()), name='thread_post'),
+    path('api/threads/<int:t_id>/posts/<int:p_id>/comments/', csrf_exempt(CommentCRView.as_view()), name='comment_create'),
 
-
-
+    url(r'api/register/', csrf_exempt(CreateUserView.as_view()), name='user'),
+    url(r'api/login/', csrf_exempt(AuthenticateUser.as_view()), name='userauth'),
 ]
