@@ -54,18 +54,6 @@ class CommentCRView(RequireTokenMixin,
             self.create(serializer)
         return JsonResponse(self.data, status=self.status, safe=False)
 
-
-class Get_Post_Comments(ListModelMixin,
-                    GenericAPIView):
-
-    serializer_class = CommentSerializer
-    model = Comment
-
-    # def list(self, queryset, *args, **kwargs):
-    #     data = [{i.id: i} for i in queryset]
-    #     print("data: ", data)
-    #     super(Get_Post_Comments, self).list(data)
-
     def get_queryset(self, post):
 
         if self.queryset is not None:
@@ -85,7 +73,7 @@ class Get_Post_Comments(ListModelMixin,
 
         return queryset
 
-    def validate(self, *args, **kwargs):
+    def check_post(self, *args, **kwargs):
         print("valid ", args, kwargs, kwargs.get("p_id"))
         self.is_valid = True
         if not Post.objects.filter(id = kwargs.get('p_id')).exists():
@@ -99,15 +87,17 @@ class Get_Post_Comments(ListModelMixin,
             print("invalid")
 
     def get(self, request, *args, **kwargs):
-        self.validate(args, **kwargs)
+        self.check_post(*args, **kwargs)
 
         if self.is_valid:
             print("get collection", kwargs, args)
             queryset = self.get_queryset(kwargs['p_id'])
             self.list(queryset, args, kwargs)
-            print(self.data)
             self.data = {i['id']: i for i in self.data}
         return JsonResponse(self.data, status=self.status, safe=False)
+
+
+
 
 #Comment ViewSet
 class CommentView(RetrieveModelMixin,

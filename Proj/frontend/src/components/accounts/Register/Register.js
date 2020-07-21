@@ -16,7 +16,8 @@ const Register = (props) => {
     createMessage,
     isAuthenticated,
     className,
-    goToAuth
+    goToAuth,
+    handleAuthModalClose
   } = props;
 
   // const [username, setUserName] = useState('');
@@ -73,6 +74,7 @@ const Register = (props) => {
           <p onClick={goToAuth} style={{color: 'blue', cursor: 'pointer'}}>Login</p>
         </div>
       </div>
+      <div className='x' onClick={handleAuthModalClose}>x</div>
     </div>
   );
 }
@@ -110,6 +112,14 @@ const StyledRegister = styled(Register)`
     background-size: cover;
     height 100%;
     width: 150px;
+  }
+  .x {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
+    font-size: 35px;
+    cursor: pointer;
   }
 `
 

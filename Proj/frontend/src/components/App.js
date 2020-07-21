@@ -73,8 +73,18 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const App = (props) => {
-  const { loaded, className, location, getPosts } = props;
+  const {
+    loaded,
+    className,
+    location,
+    getPosts,
+    isAuthenticated,
+    loadUser,
+    user,
+    token,
+  } = props;
   const [ previousLocation, setPreviousLocation] = useState(location);
+  const [ previousAuth, setPreviousAuth] = useState(isAuthenticated);
   const [ authModal, setAuthModal] = useState(false);
   const [ authModalRender, setAuthModalRender] = useState('');
 
@@ -83,10 +93,17 @@ const App = (props) => {
   if (!(location.state && location.state.modal) && previousLocation !== location) {
     setPreviousLocation(location)
   }
-
+  useEffect(() => {
+    if(token && !user) loadUser();
+  }, []);
 
   useEffect(() => {
     if(!loaded) getPosts();
+    if(previousAuth != isAuthenticated) {
+      setPreviousAuth(isAuthenticated);
+      if(isAuthenticated) setAuthModal(false);
+    }
+    if(!user && isAuthenticated) loadUser();
   });
 
   const handleAuth = () => {
@@ -139,11 +156,14 @@ const App = (props) => {
 
         {authModal
           ?
-          <Modal handleAuthModalClose={handleAuthModalClose}>
-            { authModalRender == 'auth' ?
-              <Login goToRegister={handleRegister}/> : <Register goToAuth={handleAuth}/>
-            }
-          </Modal>
+          <Modal
+            handleAuthModalClose={handleAuthModalClose}
+            render={(handleAuthModalClose)=>(
+              authModalRender == 'auth' ?
+              <Login goToRegister={handleRegister} handleAuthModalClose={handleAuthModalClose}/>
+              : <Register goToAuth={handleAuth} handleAuthModalClose={handleAuthModalClose}/>
+          )}/>
+
           : null
         }
 
@@ -183,9 +203,12 @@ const StyledApp = styled(App)`
 const mapStateToProps = (state) => ({
   loaded: state.posts.loaded,
   globalTheme: state.global.theme,
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user,
+  token: state.auth.token
 })
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPosts })
+  connect(mapStateToProps, { getPosts, loadUser })
 )(StyledApp);

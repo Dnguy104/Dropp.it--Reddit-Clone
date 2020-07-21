@@ -3,9 +3,6 @@ import { createMessage, returnErrors } from './messages';
 import { tokenConfig } from './auth';
 import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST } from './types';
 
-// axios.defaults.xsrfCookieName = 'csrftoken'
-// axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
-
 // SET POST sets the post that will load on thread page components
 export const setPost = (post) => (dispatch, getState) => () => {
 

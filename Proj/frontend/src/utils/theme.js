@@ -43,6 +43,13 @@ const theme = {
       colorC: colors.grey60,
       colorA: colors.grey50,
       colorB: colors.white70,
+    },
+    light: {
+      background: '#dae0e6',
+      element: 'white',
+      colorC: colors.grey70,
+      colorA: '#cccccc',
+      colorB: 'black',
     }
   }
 

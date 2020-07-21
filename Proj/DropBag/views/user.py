@@ -1,11 +1,11 @@
 # from .mixins import mixins
-from .mixins import CreateModelMixin, UpdateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin
+from .mixins import CreateModelMixin, UpdateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin, RequireTokenMixin
 from DropBag import status
 from django.http import Http404, JsonResponse
 from django.utils.translation import gettext as _
 from django.db.models import QuerySet
 from ..serializers import UserSerializer
-from ..models import User
+from ..models import User, Thread_Subscription
 from .api import GenericAPIView
 from django.contrib.auth.signals import user_logged_in
 from rest_framework_jwt.settings import api_settings
@@ -14,6 +14,7 @@ from django.shortcuts import redirect
 
 from rest_framework_jwt.settings import api_settings
 key = api_settings.JWT_SECRET_KEY
+from django.contrib.auth import authenticate
 import jwt
 import json
 
@@ -23,14 +24,6 @@ class CreateUserView(CreateModelMixin,
 
     serializer_class = UserSerializer
     model = User
-    # permission_classes = (AllowAny,)
-
-    # def validate(self, serializer, *args, **kwargs):
-    #     super(PostCRView, self).validate(serializer)
-    #     if self.is_valid:
-    #         print("valid ", kwargs, args)
-    #         # data = serializer.initial_data
-
 
     def post(self, request, *args, **kwargs):
         print("post ", kwargs, args)
@@ -75,7 +68,7 @@ class AuthenticateUser(CreateModelMixin,
                     user_logged_in.send(sender=user.__class__,
                                         request=request, user=user)
                     response = JsonResponse(user_details, status=status.HTTP_200_OK)
-                    response.set_cookie('token', user_details['token'], max_age=300)
+                    # response.set_cookie('token', user_details['token'], max_age=300)
                     return response
 
                 except Exception as e:
@@ -112,3 +105,38 @@ class AuthenticateUser(CreateModelMixin,
     #     # user = authenticate(request, email=email, password=password)
     #
     #     return JsonResponse(self.data, status=self.status)
+
+class UserProfile(RequireTokenMixin,
+                ListModelMixin,
+                GenericAPIView):
+
+    model = User
+
+    def validate(self, *args, **kwargs):
+        self.is_valid = True
+        # if not Post.objects.filter(id = kwargs.get('p_id')).exists():
+        #     self.status = status.HTTP_404_NOT_FOUND
+        #     self.data = {
+        #         "postid": [
+        #             "this field is incorrect"
+        #         ]
+        #     }
+        #     self.is_valid = False
+        #     print("invalid")
+
+    def get(self, request, *args, **kwargs):
+        print(request.headers)
+        print(request.path)
+        print(args)
+        print(kwargs)
+        user = self.authenticate(request)
+        self.validate(*args, **kwargs)
+
+        if self.is_valid and self.user.id is not None:
+            subs = Thread_Subscription.objects.filter(user=user.id)
+            print('subs: ')
+            print(subs)
+            self.data['username'] = 'joe'
+            self.status = status.HTTP_200_OK
+
+        return JsonResponse(self.data, status=self.status, safe=False)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from DropBag.models import Post, Thread, Comment, User
+from DropBag.models import Post, Thread, Comment, User,Thread_Subscription
 from django.db import IntegrityError
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,6 +21,11 @@ class PostSerializer(serializers.ModelSerializer):
 class ThreadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Thread
+        fields = '__all__'
+
+class ThreadSubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Thread_Subscription
         fields = '__all__'
 
 class CommentSerializer(serializers.ModelSerializer):

@@ -10,6 +10,7 @@ import Title from './Title';
 import Button from './Button';
 import Votebox from './Votebox';
 import Modal from './Modal';
+import Menu from './Menu';
 
 export {
   Button,
@@ -17,6 +18,7 @@ export {
   Form,
   Input,
   Modal,
+  Menu,
   PostCard,
   PostCards,
   PostFooter,

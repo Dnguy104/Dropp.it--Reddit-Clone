@@ -20,7 +20,7 @@ class GenericAPIView(ContextMixin, View):
     request = None
 
     # data that will be in response
-    data = None
+    data = {}
     status = None
     is_valid = False
 

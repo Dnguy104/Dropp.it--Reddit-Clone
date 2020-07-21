@@ -15,6 +15,7 @@ const Login = (props) => {
     isAuthenticated,
     className,
     goToRegister,
+    handleAuthModalClose
   } = props;
 
   // const [username, setUserName] = useState('');
@@ -54,6 +55,7 @@ const Login = (props) => {
           <p onClick={goToRegister} style={{color: 'blue', cursor: 'pointer'}}>Register</p>
         </div>
       </div>
+      <div className='x' onClick={handleAuthModalClose}>x</div>
     </div>
   );
 }
@@ -65,6 +67,7 @@ Login.propTypes = {
 
 const StyledLogin = styled(Login)`
   background-color: white;
+  position: relative;
   height: 640px;
   width: 850px;
   box-shadow: 0 1px 1px rgba(0,0,0,0.12),
@@ -72,7 +75,7 @@ const StyledLogin = styled(Login)`
               0 4px 4px rgba(0,0,0,0.12),
               0 8px 8px rgba(0,0,0,0.12),
               0 16px 16px rgba(0,0,0,0.12);
-  border-radius: 3px;
+  border-radius: 4px;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -92,6 +95,14 @@ const StyledLogin = styled(Login)`
     background-size: cover;
     height 100%;
     width: 150px;
+  }
+  .x {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
+    font-size: 35px;
+    cursor: pointer;
   }
 `
 

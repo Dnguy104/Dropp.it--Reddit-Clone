@@ -11,16 +11,23 @@ import {
   REGISTER_FAIL
 } from './types';
 
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
   // User Loading
   dispatch({type: USER_LOADING });
-
-  axios.get('http://localhost:8000/api/auth/user', tokenConfig(getState) )
+  console.log(localStorage.getItem('token'));
+  axios.get('http://localhost:8000/api/user/', tokenConfig(getState) )
     .then(res => {
+      console.log(res.data)
+      console.log('//////////////////////////////////////////')
       dispatch({
         type: USER_LOADED,
-        payload: res.data
+        payload: {
+          user: res.data
+        }
       });
     }).catch(err => {
       dispatch(returnErrors(err.response.data, err.response.status));
@@ -38,10 +45,11 @@ export const login = (username, password) => dispatch => {
   };
 
   // REquest Body
-  const body = JSON.stringify({ username, password });
+  const body = JSON.stringify({ email: username, password });
 
-  axios.post('http://localhost:8000/api/auth/login', body, config)
+  axios.post('http://localhost:8000/api/login/', body, config)
     .then(res => {
+      console.log(res.data)
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
@@ -54,16 +62,20 @@ export const login = (username, password) => dispatch => {
 
 // LOGOUT
 export const logout = () => (dispatch, getState) => {
-  axios
-    .post('http://localhost:8000/api/auth/logout', null, tokenConfig(getState))
-    .then(res => {
-      dispatch({
-        type: LOGOUT_SUCCESS,
-        payload: res.data
-      });
-    }).catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-    });
+  // axios
+  //   .post('http://localhost:8000/api/logout/', null, tokenConfig(getState))
+  //   .then(res => {
+  //     dispatch({
+  //       type: LOGOUT_SUCCESS,
+  //       payload: res.data
+  //     });
+  //   }).catch(err => {
+  //     dispatch(returnErrors(err.response.data, err.response.status));
+  //   });
+  dispatch({
+    type: LOGOUT_SUCCESS,
+    payload: {}
+  });
 };
 
 // REGISTER USER
@@ -78,7 +90,7 @@ export const register = ({username, password, email}) => dispatch => {
   // REquest Body
   const body = JSON.stringify({ username, password, email });
 
-  axios.post('http://localhost:8000/api/auth/register', body, config)
+  axios.post('http://localhost:8000/api/register/', body, config)
     .then(res => {
       dispatch({
         type: REGISTER_SUCCESS,
@@ -100,7 +112,7 @@ export const tokenConfig = getState => {
     }
   };
   if(token) {
-    config.headers['Authorization'] = `Token ${token}`;
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
 
   return config;

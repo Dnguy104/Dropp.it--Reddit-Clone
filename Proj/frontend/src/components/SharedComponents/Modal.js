@@ -8,12 +8,12 @@ import theme from '../../utils/theme.js';
 
 
 const Modal = props => {
-  const { className, children, handleAuthModalClose } = props;
+  const { className, render, handleAuthModalClose } = props;
 
 
   return (
     <div className={className} onClick={handleAuthModalClose}>
-      {children}
+      {render(handleAuthModalClose)}
     </div>
   );
 };

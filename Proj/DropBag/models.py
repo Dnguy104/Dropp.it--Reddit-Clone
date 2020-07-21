@@ -34,6 +34,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=40, unique=True)
+    username = models.CharField(max_length=30, blank=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     is_active = models.BooleanField(default=True)
@@ -59,6 +60,7 @@ class Thread(models.Model):
 class Thread_Subscription(models.Model):
     user = models.ForeignKey(User, related_name="thread_subscribe", on_delete=models.SET_NULL, null=True)
     thread = models.ForeignKey(Thread, related_name="thread_subscribe", on_delete=models.SET_NULL, null=True, blank=False)
+    objects = models.Manager()
 
     class Meta:
         unique_together = [['user', 'thread']]

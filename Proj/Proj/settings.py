@@ -63,7 +63,7 @@ JWT_AUTH = {
     'rest_framework_jwt.utils.jwt_response_payload_handler',
     'JWT_VERIFY': True,
     'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3000),
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
     'JWT_SECRET_KEY': SECRET_KEY,
 }
@@ -91,6 +91,7 @@ CORS_ALLOW_HEADERS = (
     'xsrfcookiename',
     'content-type',
     'XSRF-TOKEN',
+    'Authorization'
 )
 
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
