@@ -8,8 +8,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
         fields = ('id', 'email', 'first_name', 'last_name',
-                  'date_joined', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
+                  'date_joined', 'password', 'username')
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'username':{'required': True}
+        }
 
 #Post Serializer
 class PostSerializer(serializers.ModelSerializer):

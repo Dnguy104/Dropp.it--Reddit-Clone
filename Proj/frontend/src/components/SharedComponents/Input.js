@@ -10,6 +10,7 @@ const Input = (props) => {
     resize,
     xs, sm, md, lg, xl,
     text,
+    light,
     ...attr
    } = props;
 
@@ -20,7 +21,7 @@ const Input = (props) => {
    if(!!lg) height = theme.size.lg;
    if(!!xl) height = theme.size.xl;
 
-   const style = { height};
+   const style = { height, light};
    let InputElement = 'input';
    if(!!text) InputElement = 'textarea';
 
@@ -38,9 +39,10 @@ const Styleddiv = styled.div`
 
   * {
     border-radius: var(--b-radius);
-    border-style: solid;
+    border-style: none;
     box-sizing: border-box;
-    background-color: transparent;
+    background-color:${({light}) => light ? 'rgb(0,0,0,0.1)' : 'rgb(0,0,0,0.4)'};
+    opacity:  0.8;
     border-color: ${props => theme.themes[props.globalTheme].colorA};
     border-width: 2px;
     color: ${props => theme.themes[props.globalTheme].colorA};

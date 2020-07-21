@@ -28,11 +28,9 @@ class CreateUserView(CreateModelMixin,
     def post(self, request, *args, **kwargs):
         print("post ", kwargs, args)
         self.request = self.parse_request(request);
-        print(request.POST)
-        print(request.path)
-        print(request.content_type)
-        print(request.content_params)
+
         serializer = self.get_serializer(data=self.request)
+        print('validate')
         self.validate(serializer, *args, **kwargs)
         if self.is_valid:
             print('valid')
@@ -50,10 +48,10 @@ class AuthenticateUser(CreateModelMixin,
             print(kwargs)
             # body_unicode = request.body.decode('utf-8')
             body = json.loads(request.body)
-            email = body['email']
+            username = body['username']
             password = body['password']
 
-            user = User.objects.get(email=email, password=password)
+            user = User.objects.get(username=username, password=password)
             if user:
                 try:
                     # encoded = jwt.encode({'some': 'payload'}, key, algorithm='HS256')
@@ -136,7 +134,8 @@ class UserProfile(RequireTokenMixin,
             subs = Thread_Subscription.objects.filter(user=user.id)
             print('subs: ')
             print(subs)
-            self.data['username'] = 'joe'
+            self.data['username'] = user.username
+            self.data['subs'] = {i['id']: i for i in subs}
             self.status = status.HTTP_200_OK
 
         return JsonResponse(self.data, status=self.status, safe=False)

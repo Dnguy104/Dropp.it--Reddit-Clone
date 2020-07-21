@@ -21,8 +21,6 @@ export const loadUser = () => (dispatch, getState) => {
   console.log(localStorage.getItem('token'));
   axios.get('http://localhost:8000/api/user/', tokenConfig(getState) )
     .then(res => {
-      console.log(res.data)
-      console.log('//////////////////////////////////////////')
       dispatch({
         type: USER_LOADED,
         payload: {
@@ -45,7 +43,7 @@ export const login = (username, password) => dispatch => {
   };
 
   // REquest Body
-  const body = JSON.stringify({ email: username, password });
+  const body = JSON.stringify({ username, password });
 
   axios.post('http://localhost:8000/api/login/', body, config)
     .then(res => {
@@ -54,6 +52,7 @@ export const login = (username, password) => dispatch => {
         type: LOGIN_SUCCESS,
         payload: res.data
       });
+      dispatch(loadUser());
     }).catch(err => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({ type: LOGIN_FAIL });
@@ -62,16 +61,7 @@ export const login = (username, password) => dispatch => {
 
 // LOGOUT
 export const logout = () => (dispatch, getState) => {
-  // axios
-  //   .post('http://localhost:8000/api/logout/', null, tokenConfig(getState))
-  //   .then(res => {
-  //     dispatch({
-  //       type: LOGOUT_SUCCESS,
-  //       payload: res.data
-  //     });
-  //   }).catch(err => {
-  //     dispatch(returnErrors(err.response.data, err.response.status));
-  //   });
+
   dispatch({
     type: LOGOUT_SUCCESS,
     payload: {}

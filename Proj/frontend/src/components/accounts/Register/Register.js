@@ -47,23 +47,27 @@ const Register = (props) => {
       <div className='panel'></div>
       <div className='left-container'>
         <Title fontSize='xl' title='Sign up'/>
-        <Form submitHandler={onSubmit} submit='SIGN UP' lg initialState={{'Email': '', 'username': '', 'password' : '', 'password2' : ''}}>
+        <Form submitHandler={onSubmit} submit='SIGN UP' lg initialState={{'email': '', 'username': '', 'password' : '', 'password2' : ''}}>
           <Input
+            light
             type="text"
             name="email"
             placeholder="EMAIL"
           />
           <Input
+            light
             type="text"
             name="username"
             placeholder="USERNAME"
           />
           <Input
+            light
             type="text"
             name="password"
             placeholder="PASSWORD"
           />
           <Input
+            light
             type="text"
             name="password2"
             placeholder="RE-PASSWORD"
@@ -90,8 +94,14 @@ const StyledRegister = styled(Register)`
   box-shadow: 0 1px 1px rgba(0,0,0,0.12),
               0 2px 2px rgba(0,0,0,0.12),
               0 4px 4px rgba(0,0,0,0.12),
-              0 8px 8px rgba(0,0,0,0.12),
-              0 16px 16px rgba(0,0,0,0.12);
+              0 20px 20px rgba(0,0,0,0.12),
+              0 24px 24px rgba(0,0,0,0.12),
+              2px 0px 2px rgba(0,0,0,0.12),
+              4px 0px 4px rgba(0,0,0,0.12),
+              20px 0px 20px rgba(0,0,0,0.12),
+              -2px 0px 2px rgba(0,0,0,0.12),
+              -4px 0px 4px rgba(0,0,0,0.12),
+              -20px 0px 20px rgba(0,0,0,0.12);
   border-radius: 3px;
   display: flex;
   flex-direction: row;

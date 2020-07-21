@@ -14,6 +14,7 @@ export class Alert extends Component {
       if(error.msg.content) alert.show(`Content: ${error.msg.content.join()}`);
       if(error.msg.non_field_errors) alert.show(error.msg.non_field_errors.join());
       if(error.msg.username) alert.show(error.msg.username.join());
+      else if(error.msg) alert.show(error.msg[Object.keys(error.msg)[0]][0]);
 
     }
      if(message !== prevProps.message) {
@@ -24,7 +25,7 @@ export class Alert extends Component {
   }
 
   render() {
-    return <div />
+    return <div style={{zIndex: 10}}/>
   }
 }
 

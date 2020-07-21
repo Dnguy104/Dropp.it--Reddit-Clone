@@ -85,6 +85,8 @@ class PostCRView(RequireTokenMixin,
 
         serializer = self.get_serializer(data=data)
         user = self.authenticate(request)
+        if user is False:
+            return JsonResponse(self.data, status=self.status, safe=False)
         data['user'] = user.id
         serializer = self.get_serializer(data=data)
         self.validate(serializer, args, **kwargs)

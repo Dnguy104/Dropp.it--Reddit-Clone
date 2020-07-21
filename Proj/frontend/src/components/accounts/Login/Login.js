@@ -37,14 +37,13 @@ const Login = (props) => {
         <Title fontSize='xl' title='Login'/>
         <Form submitHandler={onSubmit} submit='LOG IN' lg initialState={{'username': '', 'password' : ''}}>
           <Input
-          style={{
-
-          }}
+            light
             type="text"
             name="username"
             placeholder="USERNAME"
           />
           <Input
+            light
             type="text"
             name="password"
             placeholder="PASSWORD"
@@ -73,8 +72,15 @@ const StyledLogin = styled(Login)`
   box-shadow: 0 1px 1px rgba(0,0,0,0.12),
               0 2px 2px rgba(0,0,0,0.12),
               0 4px 4px rgba(0,0,0,0.12),
-              0 8px 8px rgba(0,0,0,0.12),
-              0 16px 16px rgba(0,0,0,0.12);
+              0 20px 20px rgba(0,0,0,0.12),
+              0 24px 24px rgba(0,0,0,0.12),
+              2px 0px 2px rgba(0,0,0,0.12),
+              4px 0px 4px rgba(0,0,0,0.12),
+              20px 0px 20px rgba(0,0,0,0.12),
+              -2px 0px 2px rgba(0,0,0,0.12),
+              -4px 0px 4px rgba(0,0,0,0.12),
+              -20px 0px 20px rgba(0,0,0,0.12);
+
   border-radius: 4px;
   display: flex;
   flex-direction: row;

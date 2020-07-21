@@ -30,7 +30,7 @@ const StyledModal = styled(Modal)`
   width: 100%;
   height: 100vh;
 
-  background-color: rgba(30,30,30,0.2);
+  background-color: rgba(30,30,30,0.4);
   display: flex;
   justify-content: center;
   align-items: center;

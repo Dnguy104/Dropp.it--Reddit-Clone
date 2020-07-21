@@ -12,7 +12,17 @@ class RequireTokenMixin:
     user = None
 
     def authenticate(self, request):
+        if 'Authorization' not in request.headers:
+            self.status = status.HTTP_400_BAD_REQUEST
+            self.data = {
+                "authenticate": [
+                    "must be logged in"
+                ]
+            }
+            return False
+
         authorization = request.headers['Authorization']
+
         try:
             self.user = authenticate(request, token=authorization)
         except:

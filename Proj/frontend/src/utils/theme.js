@@ -39,7 +39,7 @@ const theme = {
   themes: {
     dark: {
       background: 'black',
-      element: colors.grey10,
+      element: '#15202b',
       colorC: colors.grey60,
       colorA: colors.grey50,
       colorB: colors.white70,

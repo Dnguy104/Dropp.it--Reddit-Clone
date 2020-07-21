@@ -36,7 +36,7 @@ const Header = (props) => {
   return (
     <nav className={className}>
       <div className='left'>
-        <a className="navbar-brand" href="#">DroppIt</a>
+        <a className="navbar-brand" href="/">DroppIt</a>
         <div className='searchbar'>
           <Input
             type="text"
@@ -68,6 +68,9 @@ const StyledHeader = styled(Header)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  a {
+    color: ${props => theme.themes[props.globalTheme].colorB};
+  }
   ${Menu} {
     align-self: flex-start;
     padding-top: 4px;
