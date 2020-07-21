@@ -35,20 +35,32 @@ const Login = (props) => {
       <div className='panel'></div>
       <div className='left-container'>
         <Title fontSize='xl' title='Login'/>
-        <Form submitHandler={onSubmit} submit='LOG IN' lg initialState={{'username': '', 'password' : ''}}>
-          <Input
-            light
-            type="text"
-            name="username"
-            placeholder="USERNAME"
-          />
-          <Input
-            light
-            type="text"
-            name="password"
-            placeholder="PASSWORD"
-          />
-        </Form>
+        <Form
+          submitHandler={onSubmit}
+          submit='LOG IN'
+          lg
+          initialState={{'username': '', 'password' : ''}}
+          render={(onChange, state) => (
+            <>
+              <Input
+                light
+                type="text"
+                name="username"
+                placeholder="USERNAME"
+                onChange={onChange}
+                value={state['username']}
+              />
+              <Input
+                light
+                type="text"
+                name="password"
+                placeholder="PASSWORD"
+                onChange={onChange}
+                value={state['password']}
+              />
+            </>
+          )}
+        />
         <div>
           <p>Dont have an account?</p>
           <p onClick={goToRegister} style={{color: 'blue', cursor: 'pointer'}}>Register</p>

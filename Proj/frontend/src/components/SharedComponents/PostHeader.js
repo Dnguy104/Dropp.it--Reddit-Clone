@@ -7,12 +7,12 @@ import Subtitle from '../SharedComponents/Subtitle.js';
 
 
 const PostHeader = (props) => {
-  const { title, author, created_on } = props;
+  const { title, author, created_on, thread } = props;
 
   return (
     <>
       <Title title={title} lg/>
-      <Subtitle author={author} created_on={created_on}/>
+      <Subtitle author={author} thread={thread} created_on={created_on}/>
     </>
   );
 }

@@ -14,7 +14,7 @@ const Form = (props) => {
     className,
     submitHandler,
     submit,
-    children,
+    render,
     initialState,
     parent = null,
     md, lg, xl,
@@ -60,21 +60,21 @@ const Form = (props) => {
     };
   },[state]);
 
-  const inputTags = React.Children.map(
-    children,
-    (child, i) => {
-      return React.cloneElement(child, {
-        onChange: handleOnChange,
-        value: state[child.props.name]
-      });
-  });
+  // const inputTags = React.Children.map(
+  //   children,
+  //   (child, i) => {
+  //     return React.cloneElement(child, {
+  //       onChange: handleOnChange,
+  //       value: state[child.props.name]
+  //     });
+  // });
 
   return (
     <div className={className}>
       <form onSubmit={handleOnSubmit} autoComplete="off"
         style={style}
       >
-        {inputTags}
+        {render(handleOnChange, state)}
         <div className="button-wrapper">
           <Button type="submit" >
             {submit}

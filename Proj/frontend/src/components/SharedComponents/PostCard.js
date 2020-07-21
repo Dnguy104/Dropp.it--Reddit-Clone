@@ -17,7 +17,7 @@ const PostCard = (props) => {
         <Votebox/>
       </div>
       <div className='content-container'>
-        <PostHeader title={post.title} author={post.author} created_on={post.created_on} />
+        <PostHeader title={post.title} author={post.author} thread={post.thread} created_on={post.created_on} />
         <PostFooter/>
       </div>
     </div>
@@ -54,7 +54,7 @@ const StyledPostCard = styled(PostCard)`
 `;
 
 const mapStateToProps = (state, props) => ({
-  post: state.posts.posts.find(x => x.id === props.id),
+  post: state.posts.posts[props.id],
   globalTheme: state.global.theme,
 });
 

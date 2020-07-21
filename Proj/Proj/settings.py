@@ -46,9 +46,9 @@ INSTALLED_APPS = [
     # 'frontend',
 ]
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_jwt.authentication.JSONWebTokenAuthentication',)
-# }
+REST_FRAMEWORK = {
+    
+}
 
 JWT_AUTH = {
     'JWT_ENCODE_HANDLER':

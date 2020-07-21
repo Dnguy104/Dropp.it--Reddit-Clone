@@ -4,7 +4,7 @@ from DropBag import status
 from django.http import Http404, JsonResponse
 from django.utils.translation import gettext as _
 from django.db.models import QuerySet
-from ..serializers import UserSerializer
+from ..serializers import UserSerializer, ThreadSubSerializer
 from ..models import User, Thread_Subscription
 from .api import GenericAPIView
 from django.contrib.auth.signals import user_logged_in
@@ -51,10 +51,10 @@ class AuthenticateUser(CreateModelMixin,
             username = body['username']
             password = body['password']
 
-            user = User.objects.get(username=username, password=password)
-            if user:
+            if User.objects.filter(username=username, password=password).exists():
                 try:
                     # encoded = jwt.encode({'some': 'payload'}, key, algorithm='HS256')
+                    user = User.objects.get(username=username, password=password)
                     payload = jwt_payload_handler(user)
                     print(payload)
                     # token = jwt_encode_handler(payload)
@@ -70,10 +70,12 @@ class AuthenticateUser(CreateModelMixin,
                     return response
 
                 except Exception as e:
-                    raise e
+                    res = {
+                        'error': 'wrong credentials'}
+                    return JsonResponse(res, status=status.HTTP_403_FORBIDDEN)
             else:
                 res = {
-                    'error': 'can not authenticate with the given credentials or the account has been deactivated'}
+                    'error': 'wrong credentials'}
                 return JsonResponse(res, status=status.HTTP_403_FORBIDDEN)
         except KeyError:
             self.status = status.HTTP_404_NOT_FOUND
@@ -109,6 +111,7 @@ class UserProfile(RequireTokenMixin,
                 GenericAPIView):
 
     model = User
+    serializer_class = ThreadSubSerializer
 
     def validate(self, *args, **kwargs):
         self.is_valid = True
@@ -123,19 +126,25 @@ class UserProfile(RequireTokenMixin,
         #     print("invalid")
 
     def get(self, request, *args, **kwargs):
-        print(request.headers)
-        print(request.path)
-        print(args)
-        print(kwargs)
+
         user = self.authenticate(request)
         self.validate(*args, **kwargs)
 
         if self.is_valid and self.user.id is not None:
-            subs = Thread_Subscription.objects.filter(user=user.id)
+            subs = Thread_Subscription.objects.filter(user_id=user.id)
             print('subs: ')
+            print(user.id)
             print(subs)
             self.data['username'] = user.username
-            self.data['subs'] = {i['id']: i for i in subs}
+            self.data['id'] = user.id
+            tsubs =  self.list(subs, args, kwargs)
+            self.data['subs'] = {}
+
+            print('valid')
+            print(tsubs)
+            self.data['subs'] = {i['id']: i for i in tsubs}
             self.status = status.HTTP_200_OK
+        else:
+            self.data = {}
 
         return JsonResponse(self.data, status=self.status, safe=False)

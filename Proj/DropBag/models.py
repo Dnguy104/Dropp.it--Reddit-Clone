@@ -3,6 +3,8 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin, BaseUserManager
 )
+import datetime
+
 class UserManager(BaseUserManager):
 
     def _create_user(self, email, password, **extra_fields):
@@ -69,7 +71,7 @@ class Post(models.Model):
     title = models.CharField(max_length=40)
     slug = models.SlugField(unique=True, max_length=100, blank=True)
     content = models.CharField(max_length=1000)
-    created_on = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(auto_now_add=True, blank=True)
     author = models.CharField(max_length=10)
     thread = models.ForeignKey(Thread, related_name="posts", on_delete=models.SET_NULL, null=True, blank=False)
     user = models.ForeignKey(User, related_name="posts", on_delete=models.SET_NULL, null=True)

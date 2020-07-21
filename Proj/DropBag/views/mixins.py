@@ -109,7 +109,7 @@ class ListModelMixin:
         print("important list: ", queryset)
         serializer = self.get_serializer(queryset, many=True)
         self.status = status.HTTP_200_OK
-        self.data = serializer.data
+        return serializer.data
 
 class RetrieveModelMixin:
     """

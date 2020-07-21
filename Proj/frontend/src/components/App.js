@@ -75,6 +75,7 @@ const GlobalStyle = createGlobalStyle`
 const App = (props) => {
   const {
     loaded,
+    postLoading,
     className,
     location,
     getPosts,
@@ -98,7 +99,7 @@ const App = (props) => {
   }, []);
 
   useEffect(() => {
-    if(!loaded) getPosts();
+    if(!loaded && !postLoading) getPosts();
     if(previousAuth != isAuthenticated) {
       setPreviousAuth(isAuthenticated);
       if(isAuthenticated) setAuthModal(false);
@@ -201,6 +202,7 @@ const StyledApp = styled(App)`
 
 const mapStateToProps = (state) => ({
   loaded: state.posts.loaded,
+  postLoading: state.posts.isLoading,
   globalTheme: state.global.theme,
   isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user,

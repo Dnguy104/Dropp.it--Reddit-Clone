@@ -7,6 +7,7 @@ from django.db.models import QuerySet
 from ..serializers import PostSerializer, ThreadSerializer, CommentSerializer
 from ..models import Post, Thread, Comment
 from .api import GenericAPIView
+import datetime
 
 class PostView(RetrieveModelMixin,
                UpdateModelMixin,
@@ -105,5 +106,9 @@ class PostCRView(RequireTokenMixin,
         print(request.content_params)
         # if self.is_valid:
         print('valid')
-        self.list(queryset, args, kwargs)
+        self.data = self.list(queryset, args, kwargs)
+        self.data = {i['id']: i for i in self.data}
+        # for key, val in self.data.items():
+        #     val['created_on'] = datetime.datetime(val['created_on']).timestamp()
+        print(self.data)
         return JsonResponse(self.data, status=self.status, safe=False)

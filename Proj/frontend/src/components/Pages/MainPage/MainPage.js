@@ -9,7 +9,20 @@ import theme from '../../../utils/theme.js';
 
 
 const MainPage = props => {
-  const { className, addPost } = props;
+  const { className, addPost, user } = props;
+
+  const renderthreadSelect = (onChange, value) => {
+    let threads = user ? Object.keys(user.subs).map((id)=>{
+      return (
+        <option value={id} key={id}>{id}</option>
+      );
+    }) : null;
+    return (
+      <select name="threads" onChange={onChange} value={value}>
+        {threads}
+      </select>
+    );
+  }
 
   return (
     <>
@@ -18,26 +31,34 @@ const MainPage = props => {
         <div className='left-dash'>
           <Element>
             <Title fontSize='xl' title='Add Post'/>
-            <Form submitHandler={addPost} submit='Submit' lg initialState={{'title': '', 'author': '', 'content' : ''}}>
-              <Input
-                type="text"
-                name="title"
-                placeholder="Title"
-              />
-              <Input
-                type="text"
-                name="author"
-                placeholder="Author"
-              />
-              <Input
-                type="text"
-                name="content"
-                placeholder="Text"
-                xs
-                resize
-                text
-              />
-            </Form>
+            <Form
+              submitHandler={addPost}
+              submit='Submit'
+              lg
+              initialState={{'title': '','threads': '','content' : ''}}
+              render={(onChange, state) => (
+                <>
+                  {renderthreadSelect(onChange, state['value'])}
+                  <Input
+                    type="text"
+                    name="title"
+                    placeholder="Title"
+                    onChange={onChange}
+                    value={state['title']}
+                  />
+                  <Input
+                    type="text"
+                    name="content"
+                    placeholder="Text"
+                    xs
+                    resize
+                    text
+                    onChange={onChange}
+                    value={state['content']}
+                  />
+                </>
+              )}
+            />
           </Element>
           <PostCards />
         </div>
@@ -87,6 +108,7 @@ const StyledMainPage = styled(MainPage)`
 `
 const mapStateToProps = state => ({
   globalTheme: state.global.theme,
+  user: state.auth.user,
 });
 
 export default connect(

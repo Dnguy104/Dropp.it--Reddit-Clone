@@ -19,6 +19,7 @@ const Subtitle = (props) => {
   const {
     children,
     author,
+    thread,
     created_on,
     globalTheme,
     minimized,
@@ -36,7 +37,7 @@ const Subtitle = (props) => {
   return (
     <Subtitlediv globalTheme={globalTheme} size={size} className={minimizedStyle}>
       {children}
-      r/Thread ~ Posted by u/{author} on {created_on}
+      r/{thread} ~ Posted by u/{author} on {created_on}
     </Subtitlediv>
   );
 }

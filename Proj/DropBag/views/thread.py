@@ -146,6 +146,6 @@ class ThreadSubscribe(RequireTokenMixin,
         if self.is_valid:
             print("get thread subs", kwargs, args)
             queryset = self.get_queryset(kwargs['u_id'])
-            self.list(queryset, args, kwargs)
+            self.data = self.list(queryset, args, kwargs)
             self.data = {i['id']: i for i in self.data}
         return JsonResponse(self.data, status=self.status, safe=False)

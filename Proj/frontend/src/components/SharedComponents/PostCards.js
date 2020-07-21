@@ -9,16 +9,16 @@ import styled from 'styled-components';
 const PostCards = (props) => {
   const { className, loaded, posts, deletePost } = props;
 
-  const postCards = posts.map((post) => (
+  const postCards = Object.keys(posts).map((key) => (
     <Link
-      key={post.slug}
+      key={posts[key].slug}
       to={{
-        pathname:`/r/${post.id}`,
+        pathname:`/r/${posts[key].id}`,
         state: {
           modal: true,
         }
       }}>
-      <PostCard id={post.id}/>
+      <PostCard id={posts[key].id}/>
     </Link>
   ));
 
@@ -38,7 +38,7 @@ const StyledPostCards = styled(PostCards)`
 `;
 
 PostCards.propTypes = {
-  posts: PropTypes.array.isRequired,
+  posts: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({

@@ -47,32 +47,49 @@ const Register = (props) => {
       <div className='panel'></div>
       <div className='left-container'>
         <Title fontSize='xl' title='Sign up'/>
-        <Form submitHandler={onSubmit} submit='SIGN UP' lg initialState={{'email': '', 'username': '', 'password' : '', 'password2' : ''}}>
-          <Input
-            light
-            type="text"
-            name="email"
-            placeholder="EMAIL"
-          />
-          <Input
-            light
-            type="text"
-            name="username"
-            placeholder="USERNAME"
-          />
-          <Input
-            light
-            type="text"
-            name="password"
-            placeholder="PASSWORD"
-          />
-          <Input
-            light
-            type="text"
-            name="password2"
-            placeholder="RE-PASSWORD"
-          />
-        </Form>
+        <Form
+          submitHandler={onSubmit}
+          submit='SIGN UP'
+          lg
+          initialState={{'email': '', 'username': '', 'password' : '', 'password2' : ''}}
+          render={(onChange, state) => (
+            <>
+              <Input
+                light
+                type="text"
+                name="email"
+                placeholder="EMAIL"
+                onChange={onChange}
+                value={state['email']}
+              />
+              <Input
+                light
+                type="text"
+                name="username"
+                placeholder="USERNAME"
+                onChange={onChange}
+                value={state['username']}
+              />
+              <Input
+                light
+                type="text"
+                name="password"
+                placeholder="PASSWORD"
+                onChange={onChange}
+                value={state['password']}
+              />
+              <Input
+                light
+                type="text"
+                name="password2"
+                placeholder="RE-PASSWORD"
+                onChange={onChange}
+                value={state['password2']}
+              />
+            </>
+          )}
+        />
+
         <div>
           <p>Already have an account?</p>
           <p onClick={goToAuth} style={{color: 'blue', cursor: 'pointer'}}>Login</p>
