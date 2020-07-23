@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import {  deletePost } from '../../actions/posts.js'
 import PostCard from './PostCard.js';
 import styled from 'styled-components';
+import theme, { colors as Colors } from '../../utils/theme.js';
 
 const PostCards = (props) => {
-  const { className, loaded, posts, deletePost } = props;
+  const { className, loaded, posts, deletePost, postStyle, globalTheme } = props;
 
   const postCards = Object.keys(posts).map((key) => (
     <Link
@@ -18,13 +19,12 @@ const PostCards = (props) => {
           modal: true,
         }
       }}>
-      <PostCard id={posts[key].id}/>
+      <PostCard className={postStyle} id={posts[key].id}/>
     </Link>
   ));
 
   return (
     <div className={className}>
-      <h2>Posts</h2>
       {postCards}
     </div>
   );
@@ -32,8 +32,24 @@ const PostCards = (props) => {
 
 
 const StyledPostCards = styled(PostCards)`
-  a:nth-child(2) > ${PostCard} {
-    border-radius: 8px 8px 0px 0px;
+  .classic {
+    &:nth-child(1) > ${PostCard} {
+      border-radius: 8px 8px 0px 0px;
+    }
+    &:hover {
+      border-color: ${Colors.white90};
+    }
+    border-style: solid;
+    border-width: 1px;
+    border-color: ${props => theme.themes[props.globalTheme].colorA};
+  }
+  .card {
+    margin: 10px 0px;
+    border-radius: 6px;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+
   }
 `;
 
@@ -44,6 +60,8 @@ PostCards.propTypes = {
 const mapStateToProps = state => ({
   posts: state.posts.posts,
   loaded: state.posts.loaded,
+  postStyle: state.posts.postStyle,
+  globalTheme: state.global.theme,
 });
 
 export default connect(

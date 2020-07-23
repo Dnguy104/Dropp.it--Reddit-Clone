@@ -5,64 +5,66 @@ export const commentsInit = (comments) => {
       commentForm: false,
     };
   })
-  return comments;
+  return generateTimes(comments);
 }
 
 export const commentInit = (comment) => {
-  return {
+  const newComment = {
     ...comment,
     commentForm: false,
   };
+
+  return generateTime(newComment);
 }
 
-export const generateTimes = (posts) => {
-  Object.keys(posts).forEach(key=>{
-    const elapsed =  Math.floor((Date.now() / 1000) - posts[key].created_on)
-    let postTime;
+export const generateTimes = (objs) => {
+  Object.keys(objs).forEach(key=>{
+    const elapsed =  Math.floor((Date.now() / 1000) - objs[key].created_on)
+    let objTime;
     if(elapsed < 3600) {
-      postTime = Math.floor(elapsed / 60).toString() + ' minutes ago' ;
+      objTime = Math.floor(elapsed / 60).toString() + ' minutes ago' ;
     }
     else if(elapsed < 7200) {
-      postTime = Math.floor(elapsed / 60 / 24).toString() + ' hour ago' ;
+      objTime = (1).toString() + ' hour ago' ;
     }
     else if(elapsed < 86400) {
-      postTime = Math.floor(elapsed / 60 / 24).toString() + ' hours ago' ;
+      objTime = Math.floor(elapsed / 60 / 60).toString() + ' hours ago' ;
     }
     else if(elapsed < 172800) {
-      postTime = Math.floor(elapsed / 60 / 24 / 30).toString() + ' day ago' ;
+      objTime = (1).toString() + ' day ago' ;
     }
     else if(elapsed < 2592000) {
-      postTime = Math.floor(elapsed / 60 / 24 / 30).toString() + ' days ago' ;
+      objTime = Math.floor(elapsed / 60 / 60 / 24).toString() + ' days ago' ;
     }
 
-    posts[key] = {
-      ...posts[key],
-      created_on: postTime,
+    objs[key] = {
+      ...objs[key],
+      created_on: objTime,
     };
   })
-  return posts;
+  return objs;
 }
 
-export const generateTime = (post) => {
-  const elapsed = Math.floor((Date.now() / 1000) - post.created_on)
-  let postTime;
+export const generateTime = (obj) => {
+  const elapsed = Math.floor((Date.now() / 1000) - obj.created_on)
+  let objTime;
   if(elapsed < 3600) {
-    postTime = Math.floor(elapsed / 60).toString() + ' minutes ago' ;
+    objTime = Math.floor(elapsed / 60).toString() + ' minutes ago' ;
   }
   else if(elapsed < 7200) {
-    postTime = Math.floor(elapsed / 60 / 24).toString() + ' hour ago' ;
+    objTime = (1).toString() + ' hour ago' ;
   }
   else if(elapsed < 86400) {
-    postTime = Math.floor(elapsed / 60 / 24).toString() + ' hours ago' ;
+    objTime = Math.floor(elapsed / 60 / 60).toString() + ' hours ago' ;
   }
   else if(elapsed < 172800) {
-    postTime = Math.floor(elapsed / 60 / 24 / 30).toString() + ' day ago' ;
+    objTime = (1).toString() + ' day ago' ;
   }
   else if(elapsed < 2592000) {
-    postTime = Math.floor(elapsed / 60 / 24 / 30).toString() + ' days ago' ;
+    objTime = Math.floor(elapsed / 60 / 60 / 24).toString() + ' days ago' ;
   }
   return {
-    ...post,
-    created_on: elapsed
+    ...obj,
+    created_on: objTime
   };
 }

@@ -12,7 +12,7 @@ import theme from '../../../utils/theme.js';
 
 
 const ThreadPage = props => {
-  const { className, isModal, history, getComments, addComment } = props;
+  const { className, isModal, history, getComments, addComment, user } = props;
   const [commentsLoaded, setCommentsLoaded] = useState(false);
 
   const modal = isModal ? 'modal' : '';
@@ -26,6 +26,28 @@ const ThreadPage = props => {
     })();
   })
 
+  const renderForm = () => {
+    return (
+      <Form
+        submitHandler={addComment}
+        submit='Comment'
+        initialState={{'content': ''}}
+        render={(onChange, state) => (
+          <Input
+            type="text"
+            name="content"
+            placeholder="What are your thought?"
+            xs
+            resize
+            text
+            onChange={onChange}
+            value={state['content']}
+          />
+        )}
+      />
+    );
+  }
+
   return (
     <div className={`${className} modal-wrapper`} onClick={(e)=>(history.goBack())}>
       <div className={modal} onClick={e => e.stopPropagation()}>
@@ -33,16 +55,7 @@ const ThreadPage = props => {
         <div className='post-container'>
           <div className='left-dash'>
             <Post/>
-            <Form submitHandler={addComment} submit='Comment' initialState={{'content': ''}}>
-              <Input
-                type="text"
-                name="content"
-                placeholder="What are your thought?"
-                xs
-                resize
-                text
-              />
-            </Form>
+            {renderForm()}
             <CommentSection/>
           </div>
           <div className='right-dash'>
@@ -102,6 +115,7 @@ const StyledThreadPage = styled(ThreadPage)`
 
 const mapStateToProps = state => ({
   // commentLoaded: state.comments.commentLoaded,
+  user: state.auth.user,
   globalTheme: state.global.theme,
 });
 

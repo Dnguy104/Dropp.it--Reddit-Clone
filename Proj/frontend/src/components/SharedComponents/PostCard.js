@@ -2,6 +2,8 @@ import React  from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PostHeader from './PostHeader.js';
+import Subtitle from './Subtitle.js';
+import Title from './Title.js';
 import PostFooter from './PostFooter.js';
 import Votebox from './Votebox.js';
 import styled from 'styled-components';
@@ -9,17 +11,40 @@ import theme, { colors as Colors } from '../../utils/theme.js';
 import { setPost } from '../../actions/posts.js'
 
 const PostCard = (props) => {
-  const { className, post, handlePostCardClick, setPost } = props;
+  const { className, post, handlePostCardClick, setPost, id, postStyle } = props;
+
+  const renderContent = () => {
+    if (postStyle == 'classic') {
+      return (
+        <div className='content-container'>
+          <Title title={post.title} xl/>
+          <Subtitle author={post.author} thread={post.thread} created_on={post.created_on}/>
+          <PostFooter/>
+        </div>
+      );
+    }
+    else if(postStyle == 'card') {
+      return (
+        <div className='content-container'>
+          <Subtitle author={post.author} thread={post.thread} created_on={post.created_on}/>
+          <Title title={post.title} xl/>
+          <div className='content'>
+            <p>
+              {post.content}
+            </p>
+          </div>
+          <PostFooter/>
+        </div>
+      );
+    }
+  }
 
   return (
-    <div className={className} onClick={setPost(post)} >
+    <div className={`${className} ${postStyle}`} onClick={setPost(post)} >
       <div className='left-container'>
         <Votebox/>
       </div>
-      <div className='content-container'>
-        <PostHeader title={post.title} author={post.author} thread={post.thread} created_on={post.created_on} />
-        <PostFooter/>
-      </div>
+      {renderContent()}
     </div>
   );
 }
@@ -29,10 +54,7 @@ PostCard.propTypes = {
 };
 
 const StyledPostCard = styled(PostCard)`
-  border-style: solid;
   background-color: ${props => theme.themes[props.globalTheme].element};
-  border-color: ${props => theme.themes[props.globalTheme].colorA};
-  border-width: 1px;
 
   display: flex;
   flex-direction: row;
@@ -40,21 +62,28 @@ const StyledPostCard = styled(PostCard)`
   .left-container {
     margin: 8px 8px;
   }
-
   .content-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    margin-top: 8px;
+    margin: 10px 12px 0px 0px;
   }
+  .content {
+    mask-image: linear-gradient(180deg,#000 60%,transparent);
+    color: ${props => theme.themes[props.globalTheme].colorB};
+    font-size: 14px;
+    padding-top: 10px;
+  }
+
   &:hover {
-    border-color: ${Colors.white90};
+    filter: brightness(1.3);
   }
 `;
 
 const mapStateToProps = (state, props) => ({
   post: state.posts.posts[props.id],
+  postStyle: state.posts.postStyle,
   globalTheme: state.global.theme,
 });
 

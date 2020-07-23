@@ -20,6 +20,7 @@ const StyledPostFooter = styled(PostFooter)`
     left: -4px;
     font-size: 12px;
   }
+  padding-top: 10px
 
 `
 

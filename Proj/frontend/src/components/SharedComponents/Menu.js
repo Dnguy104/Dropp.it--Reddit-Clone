@@ -7,7 +7,14 @@ import theme from '../../utils/theme.js';
 
 
 const Menu = props => {
-  const { className, children, user, render } = props;
+  const {
+    className,
+    children,
+    render,
+    display,
+    left,
+    style
+  } = props;
   const [menuState, setMenuState] = useState(false)
 
   const toggleMenu = useCallback((e) => {
@@ -22,16 +29,12 @@ const Menu = props => {
   }
 
   return (
-    <div className={`${className}`}>
+    <div className={`${className}`} style={style}>
       <div className='button' onClick={toggleMenu}>
         <div style={{
           height: 'fit-content'
         }}>
-          {user ?
-            <p>{user.username}</p>
-            :
-            <p>Menu</p>
-          }
+          {display}
         </div>
       </div>
       <div className={menuClass}>
@@ -53,7 +56,8 @@ const StyledMenu = styled(Menu)`
     display: block;
   }
   .button {
-    height: 40px;
+    height: auto;
+    width: fit-content;
     border-style: solid;
     border-width: 2px;
     border-radius: 2px;
@@ -64,20 +68,22 @@ const StyledMenu = styled(Menu)`
     justify-content: flex-start;
     align-items: center;
     box-sizing: border-box;
-    padding: 4px;
+    padding: 2px 4px;
+    align-self: ${props => props.right ? 'flex-end' : 'flex-start'};
   }
   p {
     font-size: 12px;
     height: fit-content;
   }
-  background-color: ${props => theme.themes[props.globalTheme].element};
   width: 130px;
+  display: flex;
+  flex-direction: column;
+
 `
 
 const mapStateToProps = state => ({
   // commentLoaded: state.comments.commentLoaded,
   globalTheme: state.global.theme,
-  user: state.auth.user
 });
 
 export default connect(mapStateToProps, {  })(StyledMenu);

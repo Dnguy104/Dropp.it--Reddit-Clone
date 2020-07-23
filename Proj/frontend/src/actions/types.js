@@ -3,6 +3,7 @@ export const DELETE_POST = "DELETE_POST";
 export const ADD_POST = "ADD_POST";
 export const SET_POST = "SET_POST";
 export const POST_LOADING = "POST_LOADING";
+export const SET_POST_STYLE = "SET_POST_STYLE";
 
 export const GET_ERRORS = "GET_ERRORS";
 export const CREATE_MESSAGE = "CREATE_MESSAGE";

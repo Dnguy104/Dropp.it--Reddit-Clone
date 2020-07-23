@@ -7,8 +7,24 @@ import { Button, Input, Menu } from '../SharedComponents';
 import styled from 'styled-components';
 import theme from '../../utils/theme.js';
 
+const DivMenu = styled.div`
+  border-style: solid;
+  border-width: 1px;
+  border-color: ${props => theme.themes[props.globalTheme].colorA};
+
+  div {
+    height: 25px;
+    color: ${props => theme.themes[props.globalTheme].colorB};
+    background-color: ${props => theme.themes[props.globalTheme].element};
+    &:hover {
+      color: ${props => theme.themes[props.globalTheme].element};
+      background-color: ${props => theme.themes[props.globalTheme].colorB};
+    }
+  }
+`
+
 const Header = (props) => {
-  const { className, isAuthenticated, logout, handleAuth, handleRegister } = props
+  const { globalTheme, className, isAuthenticated, logout, handleAuth, handleRegister, user } = props
 
   const links = (toggleMenu) => {
     console.log(isAuthenticated)
@@ -21,14 +37,14 @@ const Header = (props) => {
     }
     else {
       return (
-        <>
-          <Button type="submit" invert onClick={()=>{handleRegister(); toggleMenu();}}>
+        <DivMenu globalTheme={globalTheme}>
+          <div onClick={()=>{handleRegister(); toggleMenu();}}>
             Register
-          </Button>
-          <Button type="submit" invert onClick={()=>{handleAuth(); toggleMenu();}}>
+          </div>
+          <div onClick={()=>{handleAuth(); toggleMenu();}}>
             Login
-          </Button>
-        </>
+          </div>
+        </DivMenu>
       )
     }
   };
@@ -48,7 +64,20 @@ const Header = (props) => {
           />
         </div>
       </div>
-      <Menu render={links}/>
+      <Menu
+        render={links}
+        right
+        display={
+        <div style={{
+          height: '30px'
+        }}>
+          {user ?
+          <p>{user.username}</p>
+          :
+          <p>Menu</p>}
+        </div>
+        }
+      />
     </nav>
   );
 };
@@ -92,7 +121,8 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  globalTheme: state.global.theme
+  globalTheme: state.global.theme,
+  user: state.auth.user
 });
 
 export default connect(

@@ -34,7 +34,7 @@ const StyledPost = styled(Post)`
 `
 
 const mapStateToProps = (state) => ({
-  post: state.posts.posts.find(x => x.id === state.posts.currentPostId),
+  post: state.posts.posts[state.posts.currentPostId],
   globalTheme: state.global.theme,
 })
 

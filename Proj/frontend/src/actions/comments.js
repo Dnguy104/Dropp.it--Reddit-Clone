@@ -84,18 +84,22 @@ export const addComment = (newComment) => (dispatch, getState) => {
   const state = getState();
   let config = tokenConfig(getState);
   // config.headers['']
-  console.log(newComment)
+  if(!state.auth.user) {
+    dispatch(createMessage({ error: {msg: "Must be logged in"}}));
+    return;
+  }
   const moreData = {
     depth: newComment.parent ? state.comments.commentModels[newComment.parent].depth + 1 : null,
-    author: 'author'
+    author: state.auth.user.username
   }
   const request = {
     ...newComment,
     ...moreData
   }
+  const threadId = state.posts.posts[state.posts.currentPostId].thread
 
   axios
-    .post(`http://localhost:8000/api/threads/${2}/posts/${state.posts.currentPostId}/comments/`, request, config)
+    .post(`http://localhost:8000/api/threads/${threadId}/posts/${state.posts.currentPostId}/comments/`, request, config)
     .then(res => {
 
       // if postid is null, set to 1

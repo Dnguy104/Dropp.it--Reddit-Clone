@@ -2,14 +2,20 @@ import axios from 'axios';
 import { createMessage, returnErrors } from './messages';
 import { generateTimes, generateTime } from '../utils/helpers.js';
 import { tokenConfig } from './auth';
-import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST, POST_LOADING } from './types';
+import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST, POST_LOADING, SET_POST_STYLE } from './types';
 
 // SET POST sets the post that will load on thread page components
 export const setPost = (post) => (dispatch, getState) => () => {
-
   dispatch({
     type: SET_POST,
     payload: post.id
+  });
+};
+
+export const setPostStyle = (style) => (dispatch, getState) => {
+  dispatch({
+    type: SET_POST_STYLE,
+    payload: style
   });
 };
 
@@ -49,8 +55,8 @@ export const deletePost = (id) => (dispatch, getState) => {
 export const addPost = (post) => (dispatch, getState) => {
   let config = tokenConfig(getState);
   const state = getState();
-  if(!state.auth.user.username) {
-    dispatch(createMessage({ error: "Must be logged in"}));
+  if(!state.auth.user) {
+    dispatch(createMessage({ error: {msg: "Must be logged in"}}));
     return;
   }
 
@@ -63,7 +69,7 @@ export const addPost = (post) => (dispatch, getState) => {
   axios
     .post(`http://localhost:8000/api/threads/${2}/posts/`, request, tokenConfig(getState)).then(res => {
       dispatch(createMessage({ addPost: "Post Added"}));
-      
+
       const newPost = generateTime(res.data)
       dispatch({
         type: ADD_POST,

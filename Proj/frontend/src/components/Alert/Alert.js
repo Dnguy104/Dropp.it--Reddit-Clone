@@ -14,14 +14,14 @@ export class Alert extends Component {
       if(error.msg.content) alert.show(`Content: ${error.msg.content.join()}`);
       if(error.msg.non_field_errors) alert.show(error.msg.non_field_errors.join());
       if(error.msg.username) alert.show(error.msg.username.join());
-      else if(error.msg && Array.isArray(error.msg)) alert.show(error.msg[Object.keys(error.msg)[0]][0]);
-      else alert.show(error.msg[Object.keys(error.msg)[0]]);
+
 
     }
      if(message !== prevProps.message) {
       if(message.deletePost) alert.show(message.deletePost);
       if(message.addPost) alert.show(message.addPost);
       if(message.passwordNotMatch) alert.show(message.passwordNotMatch);
+      else if(message.error ) alert.show(message.error.msg);
     }
   }
 

@@ -1,4 +1,4 @@
-import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST, POST_LOADING } from '../actions/types.js';
+import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST, POST_LOADING, SET_POST_STYLE } from '../actions/types.js';
 
 const initialState = {
   posts: {},
@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   currentPostId: null,
   threadPageShow: false,
+  postStyle: 'card',
 }
 
 export default (state = initialState, action) => {
@@ -15,7 +16,11 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: true
       };
-
+    case SET_POST_STYLE:
+      return {
+        ...state,
+        postStyle: action.payload
+      };
     case GET_POSTS:
       return {
         ...state,
