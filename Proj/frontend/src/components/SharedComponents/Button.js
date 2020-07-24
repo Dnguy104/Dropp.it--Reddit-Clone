@@ -27,7 +27,10 @@ const Button = (props) => {
    // if(!!xl) height = theme.size.xl;
 
   return (
-    <button className={`${className} ${color} ${iconStyle}`} {...attr} dispatch=''>
+    <button
+      className={`${className} ${color} ${iconStyle}`}
+      {...attr}
+      dispatch=''>
       {children}
     </button>
   );
@@ -50,8 +53,9 @@ const StyledButton = styled(Button)`
   }
 
   &.icon {
-    height: initial;
+    height: 25px;
     width: initial;
+    line-height: 0;
     font-weight: 800;
     font-size: 11px;
     padding: 5px 5px;

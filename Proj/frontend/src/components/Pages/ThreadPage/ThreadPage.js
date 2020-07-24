@@ -74,6 +74,8 @@ ThreadPage.propTypes = {
 };
 
 const StyledThreadPage = styled(ThreadPage)`
+  z-index: 5;
+
   .modal {
     width: calc(100% - 160px);
     /* max-width: 1248px; */

@@ -19,7 +19,7 @@ const PostCard = (props) => {
         <div className='content-container'>
           <Title title={post.title} xl/>
           <Subtitle author={post.author} thread={post.thread} created_on={post.created_on}/>
-          <PostFooter/>
+          <PostFooter postUser={post.user} postId={post.id}/>
         </div>
       );
     }
@@ -33,7 +33,7 @@ const PostCard = (props) => {
               {post.content}
             </p>
           </div>
-          <PostFooter/>
+          <PostFooter postUser={post.user} postId={post.id}/>
         </div>
       );
     }
@@ -42,7 +42,9 @@ const PostCard = (props) => {
   return (
     <div className={`${className} ${postStyle}`} onClick={setPost(post)} >
       <div className='left-container'>
-        <Votebox/>
+        <Votebox style={{
+          margin: '8px 8px',
+        }}/>
       </div>
       {renderContent()}
     </div>
@@ -58,26 +60,33 @@ const StyledPostCard = styled(PostCard)`
 
   display: flex;
   flex-direction: row;
-
+  position: relative;
   .left-container {
-    margin: 8px 8px;
+    background-color: ${props => theme.themes[props.globalTheme].element};
+    border-radius: 6px 0px 0px 6px;
+    box-shadow: inset 0 0 100px 100px rgba(20, 20, 20, 0.3);
   }
   .content-container {
+    padding-left: 8px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
     margin: 10px 12px 0px 0px;
+    padding-bottom: 35px;
   }
   .content {
-    mask-image: linear-gradient(180deg,#000 60%,transparent);
+    mask-image: linear-gradient(180deg,#000 10%,transparent);
     color: ${props => theme.themes[props.globalTheme].colorB};
     font-size: 14px;
     padding-top: 10px;
+
+    max-height: 100px;
   }
 
   &:hover {
-    filter: brightness(1.3);
+    box-shadow: inset 0 0 100px 100px rgba(100, 100, 100, 0.1);
+
   }
 `;
 

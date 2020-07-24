@@ -2,32 +2,16 @@ import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { addPost, setPostStyle } from '../../../actions/posts.js';
 import PropTypes from 'prop-types';
-import { Input, Element, Form, PostCards, Title, Menu } from '../../SharedComponents';
+import { Input, Element, Form, PostCards, Title, Menu, DivMenu } from '../../SharedComponents';
 import RightDash from '../Components/RightDash.js';
 import styled from 'styled-components';
 import theme from '../../../utils/theme.js';
-
-const DivMenu = styled.div`
-  border-style: solid;
-  border-width: 1px;
-  border-color: ${props => theme.themes[props.globalTheme].colorA};
-  background-color: transparent;
-
-  div {
-    height: 25px;
-    color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
-    background-color: ${props => theme.themes[props.globalTheme].element};
-    &:hover {
-      color: ${props=>theme.themes[props.globalTheme].colorB};
-    }
-  }
-`
 
 const MainPage = props => {
   const { globalTheme, className, addPost, setPostStyle, user } = props;
 
   const renderthreadSelect = (onChange, value) => {
-    let threads = !!user ? Object.keys(user.subs).map((id)=>{
+    let threads = !!user && !!user.subs ? Object.keys(user.subs).map((id)=>{
       return (
         <option value={id} key={id}>{id}</option>
       );
@@ -53,6 +37,7 @@ const MainPage = props => {
   };
 
   const renderForm = () => {
+    console.log(user.subs)
     return (
       <>
         <Title fontSize='xl' title='Add Post'/>
@@ -60,7 +45,11 @@ const MainPage = props => {
           submitHandler={addPost}
           submit='Submit'
           lg
-          initialState={{'title': '','thread': !!user ? user.subs[Object.keys(user.subs)[0]].id : '','content' : ''}}
+          initialState={{
+            'title': '',
+            'thread': !!user && !!Object.keys(user.subs).length ? user.subs[Object.keys(user.subs)[0]].id : '',
+            'content' : ''
+          }}
           render={(onChange, state) => (
             <>
               {renderthreadSelect(onChange, state['thread'])}
@@ -111,7 +100,12 @@ const MainPage = props => {
             <Menu
               right
               render={cardStyles}
-              display={<p>Style</p>}
+              display={
+              <div style={{
+                color: theme.themes[globalTheme].colorB,
+              }}>
+                <p>Style</p>
+              </div>}
             />
           </Element>
           <PostCards />
@@ -132,7 +126,7 @@ MainPage.propTypes = {
 
 const StyledMainPage = styled(MainPage)`
   background-color: ${props => theme.themes[props.globalTheme].background};
-  height: auto;
+  height: fit-content;
   min-height: 100%;
   /* padding-left: 50px;
   padding-right: 50px;

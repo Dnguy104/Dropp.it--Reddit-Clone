@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {  deletePost } from '../../actions/posts.js'
@@ -7,11 +7,33 @@ import PostCard from './PostCard.js';
 import styled from 'styled-components';
 import theme, { colors as Colors } from '../../utils/theme.js';
 
+const Link = (props) => {
+  const {
+    history,
+    location,
+    match,
+    to,
+    staticContext,
+    onClick,
+    ...rest
+  } = props
+  return (
+    <div
+      {...rest} // `children` is just another prop!
+      onClick={(event) => {
+        onClick && onClick(event)
+        history.push(to)
+      }}
+    />
+  )
+}
+const LinkDiv = withRouter(Link)
+
 const PostCards = (props) => {
   const { className, loaded, posts, deletePost, postStyle, globalTheme } = props;
 
   const postCards = Object.keys(posts).map((key) => (
-    <Link
+    <LinkDiv
       key={posts[key].slug}
       to={{
         pathname:`/r/${posts[key].id}`,
@@ -19,8 +41,8 @@ const PostCards = (props) => {
           modal: true,
         }
       }}>
-      <PostCard className={postStyle} id={posts[key].id}/>
-    </Link>
+      <PostCard id={posts[key].id}/>
+    </LinkDiv>
   ));
 
   return (
@@ -32,10 +54,12 @@ const PostCards = (props) => {
 
 
 const StyledPostCards = styled(PostCards)`
+  div:nth-of-type(1) > .classic {
+    border-radius: 8px 8px 0px 0px;
+
+  }
+  height: initial;
   .classic {
-    &:nth-child(1) > ${PostCard} {
-      border-radius: 8px 8px 0px 0px;
-    }
     &:hover {
       border-color: ${Colors.white90};
     }

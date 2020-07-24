@@ -69,7 +69,8 @@ const Header = (props) => {
         right
         display={
         <div style={{
-          height: '30px'
+          height: '30px',
+          color: theme.themes[globalTheme].colorB,
         }}>
           {user ?
           <p>{user.username}</p>
@@ -91,7 +92,7 @@ const StyledHeader = styled(Header)`
   position: fixed;
   width: 100%;
   height: 50px;
-  z-index: 1;
+  z-index: 10;
 
   display: flex;
   flex-direction: row;

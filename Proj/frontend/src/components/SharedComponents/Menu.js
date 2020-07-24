@@ -1,10 +1,29 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../../utils/theme.js';
 
+export const DivMenu = styled.div`
+  border-style: none solid solid solid;
+  border-width: 1px;
+  border-color: ${props => theme.themes[props.globalTheme].colorA};
+  background-color: transparent;
+  position: absolute;
+
+  div {
+    padding: 5px;
+    border-top-style: solid;
+    border-width: 0.5px;
+    border-color: ${props => theme.themes[props.globalTheme].colorA};
+    color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
+    background-color: ${props => theme.themes[props.globalTheme].element};
+    &:hover {
+      color: ${props=>theme.themes[props.globalTheme].colorB};
+    }
+  }
+`
 
 const Menu = props => {
   const {
@@ -16,12 +35,35 @@ const Menu = props => {
     style
   } = props;
   const [menuState, setMenuState] = useState(false)
+  const node = useRef();
 
-  const toggleMenu = useCallback((e) => {
-    console.log('toggle')
-    menuState ? setMenuState(false) : setMenuState(true);
+  const openMenu = useCallback((e) => {
+    if(!menuState) {
+      setMenuState(true);
+      document.addEventListener("mousedown", handleClick);
+    }
+    else {
+      setMenuState(false);
+    }
   }, [menuState])
 
+  const closeMenu = useCallback((e) => {
+    setMenuState(false);
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, []);
+
+  const handleClick = e => {
+    if (node.current.contains(e.target)) {
+      // inside click
+      return;
+    }
+    closeMenu();
+  };
 
   let menuClass = 'closed';
   if(menuState) {
@@ -29,16 +71,18 @@ const Menu = props => {
   }
 
   return (
-    <div className={`${className}`} style={style}>
-      <div className='button' onClick={toggleMenu}>
-        <div style={{
-          height: 'fit-content'
-        }}>
-          {display}
-        </div>
+    <div className={`${className}`} style={style} ref={node}>
+      <div
+        className='button'
+        onClick={(e)=> {
+          e.stopPropagation();
+          openMenu();
+        }}
+      >
+        {display}
       </div>
-      <div className={menuClass}>
-        {render(toggleMenu)}
+      <div className={`${menuClass} menu`}>
+        {render(closeMenu)}
       </div>
     </div>
   );
@@ -49,6 +93,9 @@ Menu.propTypes = {
 };
 
 const StyledMenu = styled(Menu)`
+  .menu {
+
+  }
   .closed {
     display: none;
   }
@@ -58,11 +105,7 @@ const StyledMenu = styled(Menu)`
   .button {
     height: auto;
     width: fit-content;
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 2px;
-    border-color: ${props => theme.themes[props.globalTheme].colorA};
-    color: ${(props) => theme.themes[props.globalTheme].colorB};
+
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -75,9 +118,9 @@ const StyledMenu = styled(Menu)`
     font-size: 12px;
     height: fit-content;
   }
-  width: 130px;
   display: flex;
   flex-direction: column;
+  z-index: 1;
 
 `
 

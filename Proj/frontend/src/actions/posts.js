@@ -40,7 +40,7 @@ export const deletePost = (id) => (dispatch, getState) => {
       .then(res => {
         dispatch(createMessage({ deletePost: "Post Deleted"}));
 
-        const state = getState();
+        const state = getState().posts.posts;
         let newState = {...state};
         delete newState[id];
 
