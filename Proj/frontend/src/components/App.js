@@ -13,6 +13,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 
 import { Modal } from './SharedComponents';
 import Header from './Header/Header.js';
+import PostForm from './Pages/Components/PostForm.js';
 import MainPage from './Pages/MainPage/MainPage.js';
 import ThreadPage from './Pages//ThreadPage/ThreadPage.js';
 import theme from '../utils/theme.js';
@@ -43,7 +44,7 @@ const GlobalStyle = createGlobalStyle`
   .nav-spacer {
     height: 50px;
     width: 100%;
-    padding-bottom: 20px;
+    margin-bottom: 20px;
 
   }
 
@@ -87,8 +88,9 @@ const App = (props) => {
   const [ previousLocation, setPreviousLocation] = useState(location);
   const [ previousAuth, setPreviousAuth] = useState(isAuthenticated);
   const [ authModal, setAuthModal] = useState(false);
+  const [ postModal, setPostModal] = useState(false);
   const [ authModalRender, setAuthModalRender] = useState('');
-
+  let fixedStyle = '';
 
   // let isModal = false;
   if (!(location.state && location.state.modal) && previousLocation !== location) {
@@ -120,7 +122,13 @@ const App = (props) => {
     setAuthModal(false);
   }
 
+  const handlePost = () => {
+    setPostModal(true);
+  }
 
+  const handlePostModalClose = () => {
+    setPostModal(false);
+  }
 
   const isModal = (
     location.state &&
@@ -129,7 +137,6 @@ const App = (props) => {
   );
   // console.log(previousLocation);
   // console.log(location);
-  let fixedStyle = '';
   if(isModal) fixedStyle = 'fixed';
   return (
     <div className={`${className} ${fixedStyle}`}>
@@ -139,7 +146,7 @@ const App = (props) => {
       <>
         <Switch location={isModal ? previousLocation : location}>
           <Route exact path="/">
-            <MainPage/>
+            <MainPage handlePost={handlePost}/>
           </Route>
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
@@ -157,13 +164,22 @@ const App = (props) => {
         {authModal
           ?
           <Modal
-            handleAuthModalClose={handleAuthModalClose}
+            handleModalClose={handleAuthModalClose}
             render={(handleAuthModalClose)=>(
               authModalRender == 'auth' ?
               <Login goToRegister={handleRegister} handleAuthModalClose={handleAuthModalClose}/>
               : <Register goToAuth={handleAuth} handleAuthModalClose={handleAuthModalClose}/>
           )}/>
+          : null
+        }
 
+        {postModal
+          ?
+          <Modal
+            handleModalClose={handlePostModalClose}
+            render={(handlePostModalClose)=>(
+              <PostForm/>
+          )}/>
           : null
         }
 

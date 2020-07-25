@@ -74,25 +74,34 @@ const CommentSection = (props) => {
           {(!!commentForm && commentForm[key]) && !commentThreadView[key].minimized ?
           (<CommentThread
             depth={commentPageLink.depth}
-            commentThreadLinks={[...commentThreadLinks]}
+            commentThreadLinks={[...commentThreadLinks, {...commentThreadView[key]}]}
             updateCommentThreadView={updateCommentThreadView}
             renderComment={()=>(
-              <Form submitHandler={addComment}
-                submit='Comment'
-                xl
-                key={'f'+commentPageLink.id}
-                parent={commentPageLink.id}
-                initialState={{'content': ''}}
-              >
-                <Input
-                  type="text"
-                  name="content"
-                  placeholder="What are your thought?"
-                  xs
-                  resize
-                  text
-                />
-              </Form>
+              <div style={{
+                width: '100%',
+                paddingLeft: '12px',
+              }}>
+                <Form submitHandler={addComment}
+                  submit='Comment'
+                  xl
+                  key={'f'+commentPageLink.id}
+                  parent={commentPageLink.id}
+                  initialState={{'content': ''}}
+                  render={(onChange, state) => (
+                    <Input
+                      type="text"
+                      name="content"
+                      placeholder="What are your thought?"
+                      xs
+                      resize
+                      text
+                      onChange={onChange}
+                      value={state['content']}
+                    />
+                  )}
+                >
+                </Form>
+              </div>
             )}
           ></CommentThread>) : null}
         </Fragment>

@@ -53,11 +53,11 @@ const ThreadPage = props => {
       <div className={modal} onClick={e => e.stopPropagation()}>
         <div className='nav-spacer'></div>
         <div className='post-container'>
-          <div className='left-dash'>
+          <Element className='left-dash'>
             <Post/>
             {renderForm()}
             <CommentSection/>
-          </div>
+          </Element>
           <div className='right-dash'>
             <Element style={{
               height: '300px'
@@ -105,9 +105,6 @@ const StyledThreadPage = styled(ThreadPage)`
     margin-left: 15px;
   }
   .left-dash {
-    background-color: ${props => theme.themes[props.globalTheme].element};
-    padding: 10px;
-    border-radius: 3px;
     flex: 0 2 740px;
     width: 740px;
 

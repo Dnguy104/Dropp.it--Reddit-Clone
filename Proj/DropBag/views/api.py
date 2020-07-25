@@ -85,8 +85,10 @@ class GenericAPIView(ContextMixin, View):
             }
         return obj
 
-    def get_serializer(self, *args, **kwargs):
+    def get_serializer(self, *args, serializer=None,**kwargs):
         serializer_class = self.get_serializer_class()
+        if serializer is not None:
+            serializer_class = serializer
         kwargs.setdefault('context', self.get_serializer_context())
         return serializer_class(*args, **kwargs)
 

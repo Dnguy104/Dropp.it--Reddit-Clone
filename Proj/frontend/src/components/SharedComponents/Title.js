@@ -9,6 +9,7 @@ const Title = (props) => {
     title,
     globalTheme,
     className,
+    style,
     xs, sm, md, lg, xl,
   } = props;
 
@@ -20,7 +21,7 @@ const Title = (props) => {
   if(!!xl) size = theme.fontSize.xl;
 
   return (
-      <StyledH1 globalTheme={globalTheme} size={size}>{title}</StyledH1>
+      <StyledH1 style={style} globalTheme={globalTheme} size={size}>{title}</StyledH1>
   );
 };
 

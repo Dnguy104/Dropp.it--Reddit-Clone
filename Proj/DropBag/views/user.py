@@ -132,16 +132,14 @@ class UserProfile(RequireTokenMixin,
 
         if self.is_valid and self.user.id is not None:
             subs = Thread_Subscription.objects.filter(user_id=user.id)
-            print('subs: ')
-            print(user.id)
-            print(subs)
+
             self.data['username'] = user.username
             self.data['id'] = user.id
             tsubs =  self.list(subs, args, kwargs)
             self.data['subs'] = {}
 
-            print('valid')
-            print(tsubs)
+            # print('valid')
+            # print(tsubs)
             self.data['subs'] = {i['id']: i for i in tsubs}
             self.status = status.HTTP_200_OK
         else:

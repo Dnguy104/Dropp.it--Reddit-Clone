@@ -14,53 +14,48 @@ export const VoteArrow = styled.div`
     else if(props.type=='upvote') return '-31.25px 0px';
     else if(props.type=='downvote') return '-46.75px 0px';
   }};
-  /* .up.hover {
-    background-position: -31.25px 0px;
-  }
-  .down {
-    background-position: -15.75px 0px;
-    &.hover {
-      background-position: -46.75px 0px;
-    }
-  } */
+
 `
 
 const Votebox = (props) => {
   const {
     className,
     noScore,
+    score,
+    voteState,
+    id,
+    handleUpvote,
+    handleDownvote,
+    dispatch,
     ...attr
-   } = props;
+  } = props;
+  console.log(voteState)
+  const [upvoteStyle, setupvoteStyle] = useState(voteState == 1 ? 'vote' : '');
+  const [downvoteStyle, setdownvoteStyle] = useState(voteState == -1 ? 'vote' : '');
 
-   // let color = '';
-   // if(!!invert) color = 'invert';
-   //
-   // let iconStyle = '';
-   // if(!!icon) iconStyle = 'icon';
+  const handleUpvoteHover = useCallback((val)=> () =>{
+    if(voteState != 1) setupvoteStyle(val ? 'vote' : '');
+  });
 
-   // let height = '31px';
-   // if(!!xs) height = theme.size.xs;
-   // if(!!sm) height = theme.size.sm;
-   // if(!!md) height = theme.size.md;
-   // if(!!lg) height = theme.size.lg;
-   // if(!!xl) height = theme.size.xl;
-   const [upvoteStyle, setupvoteStyle] = useState('');
-   const [downvoteStyle, setdownvoteStyle] = useState('');
-   const handleVote = useCallback((setter, val)=> () =>{
-       setter((prev)=>{
-         return val ? 'vote' : '';
-       })
-     });
+  const handleDownvoteHover = useCallback((val)=> () =>{
+    if(voteState != -1) setdownvoteStyle(val ? 'vote' : '');
+  });
 
 
+  const renderScore = () => {
+    if(score) {
+      return (<p>{score}</p>);
+    }
+    return (<p>•</p>);
+  };
 
   return (
-    <div className={`${className} `} {...attr} dispatch=''>
-      <div className="vote-button" onMouseEnter={handleVote(setupvoteStyle, true)} onMouseLeave={handleVote(setupvoteStyle, false)} >
+    <div className={`${className} `} {...attr} onClick={(e)=>e.stopPropagation()}>
+      <div className="vote-button" onMouseEnter={handleUpvoteHover(true)} onMouseLeave={handleUpvoteHover(false)} >
         <VoteArrow type={'up'+upvoteStyle}/>
       </div>
-      {noScore ? null : <p>•</p>}
-      <div className="vote-button"  onMouseEnter={handleVote(setdownvoteStyle, true)} onMouseLeave={handleVote(setdownvoteStyle, false)}>
+      {noScore ? null : renderScore()}
+      <div className="vote-button"  onMouseEnter={handleDownvoteHover(true)} onMouseLeave={handleDownvoteHover(false)}>
         <VoteArrow type={'down'+downvoteStyle}/>
       </div>
     </div>
@@ -87,9 +82,13 @@ const StyledVotebox = styled(Votebox)`
   p {
     font-weight: 700;
     font-size: 12px;
-    padding: 8px 0px;
+    padding: 12px 0px;
     align-self: center;
-    color: ${(props) => theme.themes[props.globaltheme].colorB};
+    color: ${(props) => {
+      if(props.voteState == 0) return theme.themes[props.globaltheme].colorB;
+      else if(props.voteState == 1) return '#ff4400';
+      else return '#7193ff';
+    }};
     line-height: 0;
   }
 `

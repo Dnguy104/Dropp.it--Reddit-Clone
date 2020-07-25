@@ -4,8 +4,8 @@ from DropBag import status
 from django.http import Http404, JsonResponse
 from django.utils.translation import gettext as _
 from django.db.models import QuerySet
-from ..serializers import PostSerializer, ThreadSerializer, CommentSerializer
-from ..models import Post, Thread, Comment
+from ..serializers import PostSerializer, ThreadSerializer, CommentSerializer, UserVoteSerializer
+from ..models import Post, Thread, Comment, UserVote
 from .api import GenericAPIView
 import datetime
 
@@ -75,10 +75,6 @@ class PostCRView(RequireTokenMixin,
     def post(self, request, *args, **kwargs):
         print("post ", kwargs, args)
         self.request = self.parse_request(request);
-        print(request.POST)
-        print(request.path)
-        print(request.content_type)
-        print(request.content_params)
 
         data =  self.request.copy()
         data.update(kwargs)
@@ -97,18 +93,36 @@ class PostCRView(RequireTokenMixin,
             self.create(serializer)
         return JsonResponse(self.data, status=self.status, safe=False)
 
+    def get_userpost_data(self, posts):
+        print(posts)
+        data = {}
+        if UserVote.objects.filter(user = self.user.id, post__in = posts).exists():
+            try:
+                votes = UserVote.objects.filter(user = self.user.id, post__in = posts, comment__isnull=True)
+                serializer = self.get_serializer(votes, serializer=UserVoteSerializer, many=True)
+                data.update({'votes': {i['post']: i for i in serializer.data}})
+
+            except Exception as e:
+                print(e)
+
+        return data
+
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        print("get collection", args, kwargs)
-        print(request.POST)
-        print(request.path)
-        print(request.content_type)
-        print(request.content_params)
-        # if self.is_valid:
-        print('valid')
+
+        user = self.authenticate(request)
         self.data = self.list(queryset, args, kwargs)
         self.data = {i['id']: i for i in self.data}
-        # for key, val in self.data.items():
-        #     val['created_on'] = datetime.datetime(val['created_on']).timestamp()
+        data = {}
+        if self.user is not None and self.user.id is not None:
+            data = self.get_userpost_data(list(self.data.keys()))
+        print(data)
+        for key in self.data.keys():
+            if 'votes' in data and key in data['votes']:
+                self.data[key].update(votestate=data['votes'][key]['vote'])
+            else:
+                self.data[key].update(votestate=0)
+
+            self.data[key].update(score=self.data[key]['upvote']-self.data[key]['downvote'])
         print(self.data)
         return JsonResponse(self.data, status=self.status, safe=False)

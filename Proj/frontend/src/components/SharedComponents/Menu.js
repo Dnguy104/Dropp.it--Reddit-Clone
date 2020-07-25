@@ -6,9 +6,11 @@ import styled from 'styled-components';
 import theme from '../../utils/theme.js';
 
 export const DivMenu = styled.div`
-  border-style: none solid solid solid;
-  border-width: 1px;
-  border-color: ${props => theme.themes[props.globalTheme].colorA};
+  box-shadow: ${({globalTheme}) => {
+    return (
+      '0px 0px 3px 0px ' + theme.themes[globalTheme].colorB
+    )
+  }};
   background-color: transparent;
   position: absolute;
 

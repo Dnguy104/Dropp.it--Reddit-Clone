@@ -51,9 +51,10 @@ class ThreadView(RetrieveModelMixin,
         return JsonResponse(self.data, status=self.status, safe=False)
 
 #Thread ViewSet
-class ThreadCRView(CreateModelMixin,
-               ListModelMixin,
-               GenericAPIView):
+class ThreadCRView(RequireTokenMixin,
+                    CreateModelMixin,
+                    ListModelMixin,
+                    GenericAPIView):
 
     serializer_class = ThreadSerializer
     model = Thread
@@ -65,11 +66,16 @@ class ThreadCRView(CreateModelMixin,
     def post(self, request, *args, **kwargs):
         print("post ", kwargs, args)
         self.request = self.parse_request(request);
-        serializer = self.get_serializer(data=self.request)
+
+        data =  self.request.copy()
+        user = self.authenticate(request)
+        data['user'] = user.id
+        serializer = self.get_serializer(data=data)
         self.validate(serializer)
-        if self.is_valid:
+
+        if self.is_valid and self.user.id is not None:
             self.create(serializer)
-        return JsonResponse(self.data, status=self.status)
+        return JsonResponse(self.data, status=self.status, safe=False)
 
 #Thread ViewSet
 class ThreadSubscribe(RequireTokenMixin,

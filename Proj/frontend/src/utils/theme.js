@@ -41,8 +41,8 @@ const theme = {
       background: 'black',
       element: '#15202b',
       colorC: colors.grey60,
-      colorA: colors.grey50,
-      colorB: colors.white70,
+      colorA: '#748490',
+      colorB: '#fdfdfd',
     },
     light: {
       background: '#dae0e6',

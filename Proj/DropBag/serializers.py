@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from DropBag.models import Post, Thread, Comment, User,Thread_Subscription
+from DropBag.models import Post, Thread, Comment, User, Thread_Subscription, UserVote
 from django.db import IntegrityError
 from datetime import datetime
 import time
@@ -20,17 +20,13 @@ class UserSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super(PostSerializer, self).to_representation(instance)
-
-        print(type(instance.created_on))
         timestamp = datetime.timestamp(instance.created_on)
         representation['created_on'] = timestamp
-        print(representation['created_on'])
-
         return representation
 
     class Meta:
         model = Post
-        fields = ('title', 'slug', 'content', 'created_on', 'author', 'thread', 'user', 'id')
+        fields = ('title', 'slug', 'content', 'created_on', 'author', 'thread', 'user', 'id', 'upvote', 'downvote')
 
         extra_kwargs = {
             'threadid':{'required': True}
@@ -39,12 +35,8 @@ class PostSerializer(serializers.ModelSerializer):
 class ThreadSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super(ThreadSerializer, self).to_representation(instance)
-
         timestamp = datetime.timestamp(instance.created_on)
-        print(type(instance.created_on))
         representation['created_on'] = timestamp
-        print(representation['created_on'])
-
         return representation
 
     class Meta:
@@ -54,6 +46,11 @@ class ThreadSerializer(serializers.ModelSerializer):
 class ThreadSubSerializer(serializers.ModelSerializer):
     class Meta:
         model = Thread_Subscription
+        fields = '__all__'
+
+class UserVoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserVote
         fields = '__all__'
 
 class CommentSerializer(serializers.ModelSerializer):

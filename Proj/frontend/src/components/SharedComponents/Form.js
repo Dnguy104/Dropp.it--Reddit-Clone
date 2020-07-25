@@ -17,6 +17,7 @@ const Form = (props) => {
     render,
     initialState,
     parent = null,
+    buttonStyle,
     md, lg, xl,
   } = props;
   const [state, setState] = useState(initialState);
@@ -77,7 +78,7 @@ const Form = (props) => {
       >
         {render(handleOnChange, state)}
         <div className="button-wrapper">
-          <Button type="submit" >
+          <Button type="submit" buttonStyle={buttonStyle}>
             {submit}
           </Button>
         </div>

@@ -8,10 +8,19 @@ import PostFooter from './PostFooter.js';
 import Votebox from './Votebox.js';
 import styled from 'styled-components';
 import theme, { colors as Colors } from '../../utils/theme.js';
-import { setPost } from '../../actions/posts.js'
+import { setPost, handleUpvote, handleDownvote } from '../../actions/posts.js'
 
 const PostCard = (props) => {
-  const { className, post, handlePostCardClick, setPost, id, postStyle } = props;
+  const {
+    className,
+    post,
+    handlePostCardClick,
+    setPost,
+    id,
+    postStyle,
+    handleUpvote,
+    handleDownvote
+  } = props;
 
   const renderContent = () => {
     if (postStyle == 'classic') {
@@ -42,9 +51,15 @@ const PostCard = (props) => {
   return (
     <div className={`${className} ${postStyle}`} onClick={setPost(post)} >
       <div className='left-container'>
-        <Votebox style={{
-          margin: '8px 8px',
-        }}/>
+        <Votebox
+          style={{
+            margin: '8px 8px',
+          }}
+          id={post.id}
+          voteState={post.votestate}
+          score={post.score}
+          handleUpvote={handleUpvote} handleDownvote={handleDownvote}
+        />
       </div>
       {renderContent()}
     </div>
@@ -57,6 +72,7 @@ PostCard.propTypes = {
 
 const StyledPostCard = styled(PostCard)`
   background-color: ${props => theme.themes[props.globalTheme].element};
+  box-shadow: inset 0px 0px 15px 0px rgba(200,200,200, 0.1);
 
   display: flex;
   flex-direction: row;
@@ -76,7 +92,7 @@ const StyledPostCard = styled(PostCard)`
     padding-bottom: 35px;
   }
   .content {
-    mask-image: linear-gradient(180deg,#000 10%,transparent);
+    mask-image: linear-gradient(180deg,#000 20%,transparent);
     color: ${props => theme.themes[props.globalTheme].colorB};
     font-size: 14px;
     padding-top: 10px;
@@ -103,5 +119,5 @@ const mapStateToProps = (state, props) => ({
 
 export default connect(
   mapStateToProps,
-  { setPost }
+  { setPost, handleUpvote, handleDownvote }
 )(StyledPostCard);

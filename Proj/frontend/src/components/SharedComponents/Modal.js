@@ -8,12 +8,11 @@ import theme from '../../utils/theme.js';
 
 
 const Modal = props => {
-  const { className, render, handleAuthModalClose } = props;
-
+  const { className, render, handleModalClose, style } = props;
 
   return (
-    <div className={className} onClick={handleAuthModalClose}>
-      {render(handleAuthModalClose)}
+    <div className={`${className}`} onClick={handleModalClose} style={style}>
+      {render(handleModalClose)}
     </div>
   );
 };
@@ -34,6 +33,8 @@ const StyledModal = styled(Modal)`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
+
 `
 
 const mapStateToProps = state => ({

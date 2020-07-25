@@ -85,9 +85,8 @@ const Header = (props) => {
 
 const StyledHeader = styled(Header)`
   box-sizing: border-box;
-  border-bottom: 1px solid;
   background-color: ${props => theme.themes[props.globalTheme].element};
-  border-color: ${props => theme.themes[props.globalTheme].colorA};
+  box-shadow: 0px 0px 15px 15px rgba(0,0,0, 0.3), inset 0px -5px 15px 0px rgba(200,200,200, 0.1);
   padding-left: 10px;
   position: fixed;
   width: 100%;

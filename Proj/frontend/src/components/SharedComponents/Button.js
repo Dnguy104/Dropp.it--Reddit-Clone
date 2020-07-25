@@ -9,6 +9,7 @@ const Button = (props) => {
     className,
     children,
     invert,
+    buttonStyle,
     icon,
     ...attr
    } = props;
@@ -30,7 +31,9 @@ const Button = (props) => {
     <button
       className={`${className} ${color} ${iconStyle}`}
       {...attr}
-      dispatch=''>
+      style={buttonStyle}
+      dispatch=''
+    >
       {children}
     </button>
   );

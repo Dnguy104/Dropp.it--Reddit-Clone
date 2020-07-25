@@ -4,110 +4,22 @@ import { addPost, setPostStyle } from '../../../actions/posts.js';
 import PropTypes from 'prop-types';
 import { Input, Element, Form, PostCards, Title, Menu, DivMenu } from '../../SharedComponents';
 import RightDash from '../Components/RightDash.js';
+import PostElement from '../Components/PostElement.js';
 import styled from 'styled-components';
 import theme from '../../../utils/theme.js';
 
 const MainPage = props => {
-  const { globalTheme, className, addPost, setPostStyle, user } = props;
-
-  const renderthreadSelect = (onChange, value) => {
-    let threads = !!user && !!user.subs ? Object.keys(user.subs).map((id)=>{
-      return (
-        <option value={id} key={id}>{id}</option>
-      );
-    }) : null;
-    return (
-      <select name="thread" onChange={onChange} value={value}>
-        {threads}
-      </select>
-    );
-  }
-
-  const cardStyles = (toggleMenu) => {
-    return (
-      <DivMenu globalTheme={globalTheme}>
-        <div onClick={()=>{setPostStyle('card'); toggleMenu();}}>
-          Card
-        </div>
-        <div onClick={()=>{setPostStyle('classic'); toggleMenu();}}>
-          Classic
-        </div>
-      </DivMenu>
-    );
-  };
-
-  const renderForm = () => {
-    console.log(user.subs)
-    return (
-      <>
-        <Title fontSize='xl' title='Add Post'/>
-        <Form
-          submitHandler={addPost}
-          submit='Submit'
-          lg
-          initialState={{
-            'title': '',
-            'thread': !!user && !!Object.keys(user.subs).length ? user.subs[Object.keys(user.subs)[0]].id : '',
-            'content' : ''
-          }}
-          render={(onChange, state) => (
-            <>
-              {renderthreadSelect(onChange, state['thread'])}
-              <Input
-                type="text"
-                name="title"
-                placeholder="Title"
-                onChange={onChange}
-                value={state['title']}
-              />
-              <Input
-                type="text"
-                name="content"
-                placeholder="Text"
-                xs
-                resize
-                text
-                onChange={onChange}
-                value={state['content']}
-              />
-            </>
-          )}
-        />
-      </>
-    );
-  }
+  const { globalTheme, className, user, handlePost } = props;
 
   return (
     <>
       <div className='nav-spacer'></div>
       <div className={`${className}`}>
         <div className='left-dash'>
-          {!!user ?
-            <Element style={{
-              marginBottom: '12px',
-            }}>
-              {renderForm()}
-            </Element>
+          {true ?
+            <PostElement handlePost={handlePost}/>
             : null
           }
-          <Element style={{
-            height: '25px',
-            marginBottom: '12px',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-          }}>
-            <Menu
-              right
-              render={cardStyles}
-              display={
-              <div style={{
-                color: theme.themes[globalTheme].colorB,
-              }}>
-                <p>Style</p>
-              </div>}
-            />
-          </Element>
           <PostCards />
         </div>
         <div className='right-dash'>
@@ -160,6 +72,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(
-  mapStateToProps,
-  { addPost, setPostStyle }
+  mapStateToProps
 )(StyledMainPage);

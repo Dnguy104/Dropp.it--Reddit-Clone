@@ -46,12 +46,21 @@ const Register = (props) => {
     <div className={className} onClick={e => e.stopPropagation()}>
       <div className='panel'></div>
       <div className='left-container'>
-        <Title fontSize='xl' title='Sign up'/>
+        <Title
+          style={{
+            color: 'rgb(0,0,0,0.7)',
+          }}
+          fontSize='xl'
+          title='Sign up'
+        />
         <Form
           submitHandler={onSubmit}
           submit='SIGN UP'
           lg
           initialState={{'email': '', 'username': '', 'password' : '', 'password2' : ''}}
+          buttonStyle={{
+            backgroundColor: 'rgb(0,0,0,0.1)',
+          }}
           render={(onChange, state) => (
             <>
               <Input
@@ -108,6 +117,7 @@ const StyledRegister = styled(Register)`
   background-color: white;
   height: 650px;
   width: 850px;
+  position: relative;
   box-shadow: 0 1px 1px rgba(0,0,0,0.12),
               0 2px 2px rgba(0,0,0,0.12),
               0 4px 4px rgba(0,0,0,0.12),

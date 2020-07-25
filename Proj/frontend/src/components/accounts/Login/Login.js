@@ -34,12 +34,21 @@ const Login = (props) => {
     <div className={className} onClick={e => e.stopPropagation()}>
       <div className='panel'></div>
       <div className='left-container'>
-        <Title fontSize='xl' title='Login'/>
+        <Title
+          fontSize='xl'
+          title='Login'
+          style={{
+            color: 'rgb(0,0,0,0.7)',
+          }}
+        />
         <Form
           submitHandler={onSubmit}
           submit='LOG IN'
           lg
           initialState={{'username': '', 'password' : ''}}
+          buttonStyle={{
+            backgroundColor: 'rgb(0,0,0,0.1)',
+          }}
           render={(onChange, state) => (
             <>
               <Input

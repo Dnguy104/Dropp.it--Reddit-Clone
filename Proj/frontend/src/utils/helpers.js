@@ -3,6 +3,7 @@ export const commentsInit = (comments) => {
     comments[key] = {
       ...comments[key],
       commentForm: false,
+      score: comment.upvote - coment.downvote,
     };
   })
   return generateTimes(comments);
@@ -12,6 +13,7 @@ export const commentInit = (comment) => {
   const newComment = {
     ...comment,
     commentForm: false,
+    score: comment.upvote - coment.downvote,
   };
 
   return generateTime(newComment);

@@ -5,10 +5,10 @@ import theme from '../../utils/theme.js';
 import styled from 'styled-components';
 
 const Element = (props) => {
-  const { globalTheme, style } = props;
+  const { globalTheme, style, className, ...attr } = props;
 
   return (
-    <StyledElement globalTheme={globalTheme} style={style}>
+    <StyledElement className={className} globalTheme={globalTheme} style={style} {...attr}>
       {props.children}
     </StyledElement>
   );
@@ -18,8 +18,9 @@ const StyledElement = styled.div`
   border-radius: 8px;
   border-style: solid;
   background-color: ${props => theme.themes[props.globalTheme].element};
-  border-color: ${props => theme.themes[props.globalTheme].colorA};
-  border-width: 2px;
+  border-color: transparent;
+  box-shadow: inset 0px 0px 15px 0px rgba(200,200,200, 0.1);
+  border-width: 1px;
   padding: 10px;
 `
 
