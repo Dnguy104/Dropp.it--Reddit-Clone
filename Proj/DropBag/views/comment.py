@@ -130,7 +130,7 @@ class CommentView(RetrieveModelMixin,
         print("put ", kwargs, args)
         self.request = self.parse_request(request);
         self.get_update(request, args, kwargs)
-        serializer = self.get_serializer(instance, data=self.request, partial=partial)
+        serializer = self.get_serializer(instance, data=self.request, partial=True)
         self.validate(serializer)
         if self.is_valid:
             self.perform_update(serializer)

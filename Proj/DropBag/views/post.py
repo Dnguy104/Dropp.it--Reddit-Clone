@@ -34,7 +34,8 @@ class PostView(RetrieveModelMixin,
 
     def delete(self, request, *args, **kwargs):
         print("delete ", kwargs, args)
-        self.destroy(request, args, kwargs)
+        instance = self.get_object()
+        self.destroy(instance=instance)
         return JsonResponse(self.data, status=self.status)
 
     def put(self, request, *args, **kwargs):

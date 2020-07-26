@@ -82,6 +82,9 @@ const StyledPostCard = styled(PostCard)`
     border-radius: 6px 0px 0px 6px;
     box-shadow: inset 0 0 100px 100px rgba(20, 20, 20, 0.3);
   }
+  &.classic > .left-container {
+    border-radius: 0px;
+  }
   .content-container {
     padding-left: 8px;
     display: flex;

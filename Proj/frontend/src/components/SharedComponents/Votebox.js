@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import theme from '../../utils/theme.js';
@@ -33,6 +33,17 @@ const Votebox = (props) => {
   const [upvoteStyle, setupvoteStyle] = useState(voteState == 1 ? 'vote' : '');
   const [downvoteStyle, setdownvoteStyle] = useState(voteState == -1 ? 'vote' : '');
 
+  useLayoutEffect(()=>{
+    if(voteState == 1) {
+      setupvoteStyle('vote');
+      setdownvoteStyle('');
+    }
+    else if(voteState == -1) {
+      setupvoteStyle('');
+      setdownvoteStyle('vote');
+    }
+  });
+
   const handleUpvoteHover = useCallback((val)=> () =>{
     if(voteState != 1) setupvoteStyle(val ? 'vote' : '');
   });
@@ -42,20 +53,21 @@ const Votebox = (props) => {
   });
 
 
-  const renderScore = () => {
-    if(score) {
-      return (<p>{score}</p>);
-    }
-    return (<p>•</p>);
-  };
-
   return (
     <div className={`${className} `} {...attr} onClick={(e)=>e.stopPropagation()}>
-      <div className="vote-button" onMouseEnter={handleUpvoteHover(true)} onMouseLeave={handleUpvoteHover(false)} >
+      <div className="vote-button"
+        onMouseEnter={handleUpvoteHover(true)}
+        onMouseLeave={handleUpvoteHover(false)}
+        onClick={handleUpvote(id)}
+      >
         <VoteArrow type={'up'+upvoteStyle}/>
       </div>
-      {noScore ? null : renderScore()}
-      <div className="vote-button"  onMouseEnter={handleDownvoteHover(true)} onMouseLeave={handleDownvoteHover(false)}>
+      {noScore ? null : <p>{score}</p>}
+      <div className="vote-button"
+        onMouseEnter={handleDownvoteHover(true)}
+        onMouseLeave={handleDownvoteHover(false)}
+        onClick={handleDownvote(id)}
+      >
         <VoteArrow type={'down'+downvoteStyle}/>
       </div>
     </div>

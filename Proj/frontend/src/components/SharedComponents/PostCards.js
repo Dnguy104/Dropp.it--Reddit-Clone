@@ -65,7 +65,7 @@ const StyledPostCards = styled(PostCards)`
     }
     border-style: solid;
     border-width: 1px;
-    border-color: ${props => theme.themes[props.globalTheme].colorA};
+    border-color: transparent;
   }
   .card {
     margin: 10px 0px;

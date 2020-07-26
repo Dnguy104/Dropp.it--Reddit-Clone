@@ -130,8 +130,7 @@ class DestroyModelMixin:
     """
     Destroy a model instance.
     """
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
+    def destroy(self, instance=None):
         if isinstance(instance, dict):
             self.status = status.HTTP_404_NOT_FOUND
             self.data = instance

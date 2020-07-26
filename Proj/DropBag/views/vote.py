@@ -12,6 +12,7 @@ import datetime
 class VoteView(RequireTokenMixin,
                 CreateModelMixin,
                 UpdateModelMixin,
+                DestroyModelMixin,
                 GenericAPIView):
 
     serializer_class = UserVoteSerializer
@@ -19,7 +20,7 @@ class VoteView(RequireTokenMixin,
 
     def validate(self, serializer, *args, **kwargs):
         super(VoteView, self).validate(serializer)
-        print("valid ", kwargs, args, kwargs.get("t_id"))
+
         if self.is_valid:
             print("valid ", kwargs, args)
             # data = serializer.initial_data
@@ -40,7 +41,7 @@ class VoteView(RequireTokenMixin,
         data =  self.request.copy()
         data.update(kwargs)
         data['post'] = data.pop('p_id')
-        data['comment'] = data.pop('c_id')
+        # data['comment'] = data.pop('c_id')
 
         serializer = self.get_serializer(data=data)
         user = self.authenticate(request)
@@ -57,7 +58,14 @@ class VoteView(RequireTokenMixin,
 
     def delete(self, request, *args, **kwargs):
         print("delete ", kwargs, args)
-        self.destroy(request, args, kwargs)
+        user = self.authenticate(request)
+        if user is False:
+            print('flase user:', user)
+            return JsonResponse(self.data, status=self.status, safe=False)
+        vote = {}
+        if UserVote.objects.filter(user = self.user.id, post = kwargs.get('p_id')).exists():
+            vote = UserVote.objects.get(user = self.user.id, post = kwargs.get('p_id'))
+        self.destroy(instance=vote)
         return JsonResponse(self.data, status=self.status)
 
     def get_userpost_data(self, posts):
@@ -76,10 +84,17 @@ class VoteView(RequireTokenMixin,
     def put(self, request, *args, **kwargs):
         print("put ", kwargs, args)
         self.request = self.parse_request(request);
-        self.get_update(request, args, kwargs)
-        serializer = self.get_serializer(instance, data=self.request, partial=partial)
-        self.validate(serializer)
-        if self.is_valid:
+        data =  self.request.copy()
+        user = self.authenticate(request)
+        data.update(kwargs)
+        data['post'] = data.pop('p_id')
+
+        vote = {}
+        if UserVote.objects.filter(user = self.user.id, post = data['post']).exists():
+            vote = UserVote.objects.get(user = self.user.id, post = data['post'])
+        serializer = self.get_serializer(vote, data=data, partial=True)
+        self.validate(serializer, *args, **kwargs)
+        if self.is_valid and self.user.id is not None:
             self.perform_update(serializer)
         return JsonResponse(self.data, status=self.status, safe=False)
 

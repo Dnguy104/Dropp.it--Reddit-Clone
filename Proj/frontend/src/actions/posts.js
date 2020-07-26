@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createMessage, returnErrors } from './messages';
 import { generateTimes, generateTime } from '../utils/helpers.js';
 import { tokenConfig } from './auth';
-import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST, POST_LOADING, SET_POST_STYLE } from './types';
+import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST, POST_LOADING, SET_POST_STYLE, CAST_VOTE } from './types';
 
 // SET POST sets the post that will load on thread page components
 export const setPost = (post) => (dispatch, getState) => () => {
@@ -12,29 +12,103 @@ export const setPost = (post) => (dispatch, getState) => () => {
   });
 };
 
-export const handleUpvote = (post) => (dispatch, getState) => () => {
-  dispatch({
-    type: SET_POST,
-    payload: post.id
-  });
-  axios
-    .post(`http://localhost:8000/api/threads/${2}/posts/`, request, tokenConfig(getState)).then(res => {
-      dispatch(createMessage({ addPost: "Post Added"}));
+export const handleUpvote = (postId) => (dispatch, getState) => () => {
+  const post = getState().posts.posts[postId];
+  let newPost;
 
-      const newPost = generateTime(res.data)
+  let options = {
+    method: '',
+    headers: tokenConfig(getState).headers,
+    data: {},
+    url: `http://localhost:8000/api/posts/${postId}/votes/`,
+  };
+  if(post.votestate == 0) {
+    options.data = { score: 1 };
+    options.method = 'POST';
+    newPost = {
+      ...post,
+      votestate: 1,
+      score: post.score + 1,
+    }
+
+  }
+  else if(post.votestate == -1) {
+    options.data = { score: 1 };
+    options.method = 'PUT';
+    newPost = {
+      ...post,
+      votestate: 1,
+      score: post.score + 2,
+    }
+
+  }
+  else {
+    options.data = { score: 0 };
+    options.method = 'DELETE';
+    newPost = {
+      ...post,
+      votestate: 0,
+      score: post.score - 1,
+    }
+  }
+
+  axios(options)
+    .then(res => {
       dispatch({
-        type: ADD_POST,
+        type: CAST_VOTE,
         payload: newPost
       });
     }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
-export const handleDownvote = (post) => (dispatch, getState) => () => {
-  dispatch({
-    type: SET_POST,
-    payload: post.id
-  });
-}
+export const handleDownvote = (postId) => (dispatch, getState) => () => {
+  const post = getState().posts.posts[postId];
+  let newPost;
+
+  let options = {
+    method: '',
+    headers: tokenConfig(getState).headers,
+    data: {},
+    url: `http://localhost:8000/api/posts/${postId}/votes/`,
+  };
+  if(post.votestate == 0) {
+    options.data = { score: -1 };
+    options.method = 'POST';
+    newPost = {
+      ...post,
+      votestate: -1,
+      score: post.score - 1,
+    }
+
+  }
+  else if(post.votestate == 1) {
+    options.data = { score: -1 };
+    options.method = 'PUT';
+    newPost = {
+      ...post,
+      votestate: -1,
+      score: post.score - 2,
+    }
+
+  }
+  else {
+    options.data = { score: 0 };
+    options.method = 'DELETE';
+    newPost = {
+      ...post,
+      votestate: 0,
+      score: post.score + 1,
+    }
+  }
+
+  axios(options)
+    .then(res => {
+      dispatch({
+        type: CAST_VOTE,
+        payload: newPost
+      });
+    }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+};
 
 
 export const setPostStyle = (style) => (dispatch, getState) => {
