@@ -12,6 +12,31 @@ export const setPost = (post) => (dispatch, getState) => () => {
   });
 };
 
+export const handleUpvote = (post) => (dispatch, getState) => () => {
+  dispatch({
+    type: SET_POST,
+    payload: post.id
+  });
+  axios
+    .post(`http://localhost:8000/api/threads/${2}/posts/`, request, tokenConfig(getState)).then(res => {
+      dispatch(createMessage({ addPost: "Post Added"}));
+
+      const newPost = generateTime(res.data)
+      dispatch({
+        type: ADD_POST,
+        payload: newPost
+      });
+    }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+
+export const handleDownvote = (post) => (dispatch, getState) => () => {
+  dispatch({
+    type: SET_POST,
+    payload: post.id
+  });
+}
+
+
 export const setPostStyle = (style) => (dispatch, getState) => {
   dispatch({
     type: SET_POST_STYLE,
@@ -59,15 +84,14 @@ export const addPost = (post) => (dispatch, getState) => {
     dispatch(createMessage({ error: {msg: "Must be logged in"}}));
     return;
   }
-
+  console.log(post)
   const request = {
     ...post,
-    threadid: 2,
     author: state.auth.user.username
   }
 
   axios
-    .post(`http://localhost:8000/api/threads/${2}/posts/`, request, tokenConfig(getState)).then(res => {
+    .post(`http://localhost:8000/api/threads/${post.thread}/posts/`, request, tokenConfig(getState)).then(res => {
       dispatch(createMessage({ addPost: "Post Added"}));
 
       const newPost = generateTime(res.data)

@@ -26,7 +26,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'slug', 'content', 'created_on', 'author', 'thread', 'user', 'id', 'upvote', 'downvote')
+        fields = ('title', 'slug', 'content', 'created_on', 'author', 'thread', 'user', 'id')
 
         extra_kwargs = {
             'threadid':{'required': True}

@@ -72,7 +72,7 @@ PostCard.propTypes = {
 
 const StyledPostCard = styled(PostCard)`
   background-color: ${props => theme.themes[props.globalTheme].element};
-  box-shadow: inset 0px 0px 15px 0px rgba(200,200,200, 0.1);
+  box-shadow: inset 0px 0px 20px 0px rgba(200,200,200, 0.2);
 
   display: flex;
   flex-direction: row;

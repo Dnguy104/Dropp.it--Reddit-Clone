@@ -19,13 +19,9 @@ VALUES
 (1, 'post 1', 'post-1-1', 'content 1', '2020-07-21 22:59:31.020391', 'username-1', 1, 1, 50, 2),
 (2, 'post 2', 'post-2-1', 'content 2v', '2020-07-21 22:59:31.020391', 'username-2', 1, 2, 14, 0);
 
-INSERT INTO dropbag_uservote (id, user_id, post_id, vote)
+INSERT INTO dropbag_uservote (id, user_id, post_id, score)
 VALUES
 (1, 1, 1, 1),
 (2, 2, 1, 1),
 (3, 2, 2, 1),
-(4, 1, 2, 1);
-
-INSERT INTO dropbag_uservote (id, user_id, post_id, vote)
-VALUES
 (4, 1, 2, 1);

@@ -70,8 +70,8 @@ class Thread_Subscription(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=40)
     slug = models.SlugField(unique=True, max_length=100, blank=True)
-    upvote = models.IntegerField(blank=True, null=True)
-    downvote = models.IntegerField(blank=True, null=True)
+    # upvote = models.IntegerField(blank=True, null=True)
+    # downvote = models.IntegerField(blank=True, null=True)
     content = models.CharField(max_length=1000)
     created_on = models.DateTimeField(auto_now_add=True, blank=True)
     author = models.CharField(max_length=10)
@@ -87,10 +87,10 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title) + "-" + str(self.id)
-        if not self.upvote:
-            self.upvote = 0
-        if not self.downvote:
-            self.downvote = 0
+        # if not self.upvote:
+        #     self.upvote = 0
+        # if not self.downvote:
+        #     self.downvote = 0
         super(Post, self).save(*args, **kwargs)
 
     class Meta:
@@ -107,8 +107,6 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, related_name="comments", on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="comments", null=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
-    upvote = models.IntegerField(blank=True, null=True)
-    downvote = models.IntegerField(blank=True, null=True)
     slug = models.SlugField(unique=True, max_length=100, blank=True)
     objects = models.Manager()
 
@@ -117,15 +115,11 @@ class Comment(models.Model):
             self.depth = 1
         if not self.slug:
             self.slug = slugify(self.title) + "-" + str(self.id)
-        if not self.upvote:
-            self.upvote = 0
-        if not self.downvote:
-            self.downvote = 0
         super(Comment, self).save(*args, **kwargs)
 
 class UserVote(models.Model):
     user = models.ForeignKey(User, related_name="UserVote", on_delete=models.CASCADE, null=True)
-    vote = models.IntegerField()
+    score = models.IntegerField()
     post = models.ForeignKey(Post, related_name="UserVote", on_delete=models.CASCADE, null=True)
     comment = models.ForeignKey(Comment, related_name="UserVote", on_delete=models.SET_NULL, null=True)
     objects = models.Manager()

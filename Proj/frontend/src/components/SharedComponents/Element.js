@@ -19,7 +19,7 @@ const StyledElement = styled.div`
   border-style: solid;
   background-color: ${props => theme.themes[props.globalTheme].element};
   border-color: transparent;
-  box-shadow: inset 0px 0px 15px 0px rgba(200,200,200, 0.1);
+  box-shadow: inset 0px 0px 20px 0px rgba(200,200,200, 0.2);
   border-width: 1px;
   padding: 10px;
 `
