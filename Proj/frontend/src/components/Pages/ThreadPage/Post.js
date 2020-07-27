@@ -12,7 +12,13 @@ const Post = props => {
     <div className={className}>
       {post ? (
         <>
-          <Subtitle author={post.author} created_on={post.created_on}/>
+          <Subtitle
+            render={()=>(
+              <>
+                r/{post.thread} ~ Posted by u/{post.author} on {post.created_on}
+              </>
+            )}
+          />
           <Title title={post.title} fontSize='xxl'/>
           <p>
             {post.content}

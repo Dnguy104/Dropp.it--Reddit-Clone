@@ -85,13 +85,14 @@ class Post(models.Model):
     #             'slug': self.slug,
     #         })
     def save(self, *args, **kwargs):
+        super(Post, self).save(*args, **kwargs)
         if not self.slug:
             self.slug = slugify(self.title) + "-" + str(self.id)
+            self.save()
         # if not self.upvote:
         #     self.upvote = 0
         # if not self.downvote:
         #     self.downvote = 0
-        super(Post, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['created_on']
@@ -111,11 +112,13 @@ class Comment(models.Model):
     objects = models.Manager()
 
     def save(self, *args, **kwargs):
+        super(Comment, self).save(*args, **kwargs)
         if not self.depth:
             self.depth = 1
+            self.save()
         if not self.slug:
-            self.slug = slugify(self.title) + "-" + str(self.id)
-        super(Comment, self).save(*args, **kwargs)
+            self.slug = slugify(self.author) + "-" + str(self.id)
+            self.save()
 
 class UserVote(models.Model):
     user = models.ForeignKey(User, related_name="UserVote", on_delete=models.CASCADE, null=True)
@@ -125,4 +128,4 @@ class UserVote(models.Model):
     objects = models.Manager()
 
     class Meta:
-        unique_together = [['user', 'post']]
+        unique_together = [['user', 'post', 'comment']]

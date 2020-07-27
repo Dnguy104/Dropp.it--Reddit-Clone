@@ -97,7 +97,11 @@ const App = (props) => {
     setPreviousLocation(location)
   }
   useEffect(() => {
-    if(token && !user) loadUser();
+    (async ()=>{
+      if(token && !user) {
+        const loaded = await loadUser();
+      }
+    })();
   }, []);
 
   useEffect(() => {

@@ -27,10 +27,12 @@ export const loadUser = () => (dispatch, getState) => {
           user: res.data
         }
       });
+      return true;
     }).catch(err => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({type: AUTH_ERROR});
     });
+  return false;
 };
 
 // LOGIN USER

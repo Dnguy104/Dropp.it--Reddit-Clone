@@ -4,6 +4,7 @@ import { GET_COMMENTS,
   ADD_COMMENT_REPLY,
   COMMENT_COLLAPSE,
   COMMENT_UNCOLLAPSE,
+  CAST_C_VOTE,
 } from '../actions/types.js';
 
 const initialState = {
@@ -42,6 +43,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         collapsed: {...state.collapsed, [action.payload.postId]: action.payload.currentPostCollapsed}
+      }
+    case CAST_C_VOTE:
+      return {
+        ...state,
+        commentModels: {...state.comments, [action.payload.id]: action.payload}
       }
     default:
       return state;

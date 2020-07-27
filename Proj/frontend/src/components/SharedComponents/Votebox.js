@@ -23,7 +23,6 @@ const Votebox = (props) => {
     noScore,
     score,
     voteState,
-    id,
     handleUpvote,
     handleDownvote,
     dispatch,
@@ -58,7 +57,7 @@ const Votebox = (props) => {
       <div className="vote-button"
         onMouseEnter={handleUpvoteHover(true)}
         onMouseLeave={handleUpvoteHover(false)}
-        onClick={handleUpvote(id)}
+        onClick={handleUpvote}
       >
         <VoteArrow type={'up'+upvoteStyle}/>
       </div>
@@ -66,7 +65,7 @@ const Votebox = (props) => {
       <div className="vote-button"
         onMouseEnter={handleDownvoteHover(true)}
         onMouseLeave={handleDownvoteHover(false)}
-        onClick={handleDownvote(id)}
+        onClick={handleDownvote}
       >
         <VoteArrow type={'down'+downvoteStyle}/>
       </div>

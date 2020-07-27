@@ -5,8 +5,8 @@ import json
 from django.http import Http404, JsonResponse
 from django.utils.translation import gettext as _
 from django.db.models import QuerySet
-from ..serializers import PostSerializer, ThreadSerializer, CommentSerializer
-from ..models import Post, Thread, Comment
+from ..serializers import PostSerializer, ThreadSerializer, CommentSerializer, UserVoteSerializer
+from ..models import Post, Thread, Comment, UserVote
 from .api import GenericAPIView
 
 from django.contrib.auth import authenticate
@@ -86,14 +86,49 @@ class CommentCRView(RequireTokenMixin,
             self.is_valid = False
             print("invalid")
 
+    def get_usercomment_data(self, comments):
+        data = {}
+        if UserVote.objects.filter(user = self.user.id, comment__in = comments).exists():
+            try:
+                votes = UserVote.objects.filter(user = self.user.id, comment__in = comments)
+                serializer = self.get_serializer(votes, serializer=UserVoteSerializer, many=True)
+                data.update({'votes': {i['comment']: i for i in serializer.data}})
+            except Exception as e:
+                print(e)
+
+        return data
+
+    def get_score(self, comments):
+        for key in comments.keys():
+            score = {'score': 0}
+            if UserVote.objects.filter(post = comments[key]['post'], comment=key).exists():
+                try:
+                    score = UserVote.objects.filter(post = comments[key]['post'], comment=key).aggregate(score=Sum('score'))
+                except Exception as e:
+                    print(e)
+            print(score)
+            comments[key].update(score)
+
     def get(self, request, *args, **kwargs):
         self.check_post(*args, **kwargs)
+        user = self.authenticate(request)
 
         if self.is_valid:
-            print("get collection", kwargs, args)
             queryset = self.get_queryset(kwargs['p_id'])
             self.data = self.list(queryset, args, kwargs)
             self.data = {i['id']: i for i in self.data}
+
+            self.get_score(self.data)
+            data = {}
+            if self.user is not None and self.user.id is not None:
+                data = self.get_usercomment_data(list(self.data.keys()))
+
+            for key in self.data.keys():
+                if 'votes' in data and key in data['votes']:
+                    self.data[key].update(votestate=data['votes'][key]['score'])
+                else:
+                    self.data[key].update(votestate=0)
+            print('selfdata: ', self.data)
         return JsonResponse(self.data, status=self.status, safe=False)
 
 

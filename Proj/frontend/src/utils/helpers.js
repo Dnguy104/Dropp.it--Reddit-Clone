@@ -1,19 +1,22 @@
 export const commentsInit = (comments) => {
-  Object.keys(comments).forEach(key=>{
-    comments[key] = {
-      ...comments[key],
-      commentForm: false,
-      score: comment.upvote - coment.downvote,
-    };
-  })
+  if(Object.keys(comments).length > 0) {
+    console.log('got data')
+    console.log(comments)
+     Object.keys(comments).forEach(key=>{
+      comments[key] = {
+        ...comments[key],
+        commentForm: false,
+      };
+    })
+  }
+
   return generateTimes(comments);
 }
 
 export const commentInit = (comment) => {
-  const newComment = {
+  let newComment = {
     ...comment,
     commentForm: false,
-    score: comment.upvote - coment.downvote,
   };
 
   return generateTime(newComment);

@@ -36,19 +36,28 @@ const Comment = (props) => {
       }
       <div className='content-container'>
         {minimized ?
-          <Subtitle author={comment.author} created_on={comment.created_on} minimized={minimized}>
-            <div className='uncollapse-button' onClick={handleCommentCollapse(comment.id)}>
-              <AiOutlinePlusCircle style={{
-                color: theme.themes[globalTheme].colorB,
-                fontSize: '15px',
-              }}/>
-            </div>
-          </Subtitle>
-        : null}
-
-        {minimized ? null :
+          <Subtitle
+            minimized={minimized}
+            render={()=>(
+              <>
+                <div className='uncollapse-button' onClick={handleCommentCollapse(comment.id)}>
+                  <AiOutlinePlusCircle style={{
+                    color: theme.themes[globalTheme].colorB,
+                    fontSize: '15px',
+                  }}/>
+                </div>
+                <p>{comment.author} {comment.score} points · {comment.created_on}</p>
+              </>
+            )}
+          />
+          :
           <>
-            <Subtitle author={comment.author} created_on={comment.created_on} minimized={minimized}/>
+            <Subtitle
+              minimized={minimized}
+              render={()=>(
+                <p>{comment.author} {comment.score} points · {comment.created_on}</p>
+              )}
+            />
             <p>
               {comment.content}
             </p>

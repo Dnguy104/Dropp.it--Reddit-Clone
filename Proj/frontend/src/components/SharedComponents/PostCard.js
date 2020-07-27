@@ -8,7 +8,8 @@ import PostFooter from './PostFooter.js';
 import Votebox from './Votebox.js';
 import styled from 'styled-components';
 import theme, { colors as Colors } from '../../utils/theme.js';
-import { setPost, handleUpvote, handleDownvote } from '../../actions/posts.js'
+import { setPost } from '../../actions/posts.js'
+import { handleUpvote, handleDownvote } from '../../actions/votes.js'
 
 const PostCard = (props) => {
   const {
@@ -27,7 +28,13 @@ const PostCard = (props) => {
       return (
         <div className='content-container'>
           <Title title={post.title} xl/>
-          <Subtitle author={post.author} thread={post.thread} created_on={post.created_on}/>
+          <Subtitle
+            render={()=>(
+              <>
+                r/{post.thread} ~ Posted by u/{post.author} on {post.created_on}
+              </>
+            )}
+          />
           <PostFooter postUser={post.user} postId={post.id}/>
         </div>
       );
@@ -35,7 +42,11 @@ const PostCard = (props) => {
     else if(postStyle == 'card') {
       return (
         <div className='content-container'>
-          <Subtitle author={post.author} thread={post.thread} created_on={post.created_on}/>
+          <Subtitle
+            render={()=>(
+              <p>r/{post.thread} ~ Posted by u/{post.author} on {post.created_on}</p>
+            )}
+          />
           <Title title={post.title} xl/>
           <div className='content'>
             <p>
@@ -55,10 +66,9 @@ const PostCard = (props) => {
           style={{
             margin: '8px 8px',
           }}
-          id={post.id}
           voteState={post.votestate}
           score={post.score}
-          handleUpvote={handleUpvote} handleDownvote={handleDownvote}
+          handleUpvote={handleUpvote(post.id)} handleDownvote={handleDownvote(post.id)}
         />
       </div>
       {renderContent()}
@@ -104,7 +114,8 @@ const StyledPostCard = styled(PostCard)`
   }
 
   &:hover {
-    box-shadow: inset 0 0 100px 100px rgba(100, 100, 100, 0.1);
+    box-shadow: inset 0 0 100px 100px rgba(100, 100, 100, 0.1),
+                inset 0px 0px 20px 0px rgba(200,200,200, 0.2);
 
   }
 `;

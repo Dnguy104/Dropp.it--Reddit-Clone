@@ -51,10 +51,9 @@ export const getComments = () => (dispatch, getState) => {
   axios
     .get(`http://localhost:8000/api/posts/${state.posts.currentPostId}/comments/`, tokenConfig(getState))
     .then(res => {
-      console.log("getComment: " )
-      console.log(res)
       const comments = commentsInit(res.data);
-
+      console.log(res)
+      console.log(comments)
       dispatch({
         type: GET_COMMENTS,
         payload: {
@@ -63,7 +62,12 @@ export const getComments = () => (dispatch, getState) => {
           postId: state.posts.currentPostId
         }
       });
-    }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+    }).catch(err =>
+    {
+      console.log(err)
+      dispatch(returnErrors(err.response.data, err.response.status));
+
+    });
 };
 
 // DELETE POSTS
@@ -101,10 +105,9 @@ export const addComment = (newComment) => (dispatch, getState) => {
   axios
     .post(`http://localhost:8000/api/threads/${threadId}/posts/${state.posts.currentPostId}/comments/`, request, config)
     .then(res => {
-
-      // if postid is null, set to 1
-
       const comment = commentInit(res.data);
+
+      console.log(comment)
 
       if(comment.parent) dispatch(handleCommentReplyToggle(comment.parent))();
       const comments = {...state.comments.commentPageLinks[comment.post], [comment.id]: comment};

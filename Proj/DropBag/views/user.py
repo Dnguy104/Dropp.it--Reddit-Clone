@@ -43,9 +43,7 @@ class AuthenticateUser(CreateModelMixin,
         try:
             jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
             jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-            print(request.body)
-            print(args)
-            print(kwargs)
+
             # body_unicode = request.body.decode('utf-8')
             body = json.loads(request.body)
             username = body['username']

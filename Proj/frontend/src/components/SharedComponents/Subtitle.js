@@ -17,15 +17,12 @@ const Subtitlediv = styled.div`
 
 const Subtitle = (props) => {
   const {
-    children,
-    author,
-    thread,
-    created_on,
+    render,
     globalTheme,
     minimized,
     xs, sm, md, lg, xl,
   } = props;
-
+  console.log(props)
   const minimizedStyle = minimized ? 'minimized' : '';
 
   let size = '12px';
@@ -36,8 +33,7 @@ const Subtitle = (props) => {
   if(!!xl) size = theme.fontSize.xl;
   return (
     <Subtitlediv globalTheme={globalTheme} size={size} className={minimizedStyle}>
-      {children}
-      r/{thread} ~ Posted by u/{author} on {created_on}
+      {render()}
     </Subtitlediv>
   );
 }

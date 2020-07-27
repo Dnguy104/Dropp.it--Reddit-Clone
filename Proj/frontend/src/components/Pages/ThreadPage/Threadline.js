@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { handleCommentCollapse, handleUpvote, handleDownvote } from '../../../actions/comments.js';
+import { handleCommentCollapse } from '../../../actions/comments.js';
+import { handleUpvote, handleDownvote } from '../../../actions/votes.js';
 import styled from 'styled-components';
 import { Votebox } from '../../SharedComponents';
 import theme from '../../../utils/theme.js';
@@ -28,7 +29,7 @@ const ThreadLine = (props) => {
     <div className={className}>
       {vote ?
       (
-        <Votebox noScore id={commentId} voteState={comment.voteState} handleUpvote={handleUpvote} handleDownvote={handleDownvote}/>
+        <Votebox noScore voteState={comment.votestate} handleUpvote={handleUpvote(comment.post, comment.id)} handleDownvote={handleDownvote(comment.post, comment.id)}/>
       ) : null}
       <div className={`line ${lineStyle} ${hoverStyle}`}
         onMouseEnter={updateCommentThreadView(commentId, true)}
@@ -73,7 +74,7 @@ const StyledThreadLine = styled(ThreadLine)`
 
 const mapStateToProps = (state, props) => ({
   globalTheme: state.global.theme,
-  comment: state.comments.comments[props.commentId]
+  comment: state.comments.commentModels[props.commentId]
 });
 
 

@@ -6,6 +6,8 @@ export const POST_LOADING = "POST_LOADING";
 export const SET_POST_STYLE = "SET_POST_STYLE";
 
 export const CAST_VOTE = "CAST_VOTE";
+export const CAST_C_VOTE = "CAST_C_VOTE";
+
 
 export const GET_ERRORS = "GET_ERRORS";
 export const CREATE_MESSAGE = "CREATE_MESSAGE";

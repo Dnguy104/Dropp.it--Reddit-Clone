@@ -33,7 +33,7 @@ const StyledModal = styled(Modal)`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  z-index: 10;
 
 `
 

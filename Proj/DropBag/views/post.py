@@ -129,11 +129,10 @@ class PostCRView(RequireTokenMixin,
         data = {}
         if self.user is not None and self.user.id is not None:
             data = self.get_userpost_data(list(self.data.keys()))
-        print(data)
         for key in self.data.keys():
             if 'votes' in data and key in data['votes']:
                 self.data[key].update(votestate=data['votes'][key]['score'])
             else:
                 self.data[key].update(votestate=0)
-        print(self.data)
+
         return JsonResponse(self.data, status=self.status, safe=False)
