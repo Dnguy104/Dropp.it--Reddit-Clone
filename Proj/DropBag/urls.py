@@ -25,9 +25,9 @@ urlpatterns = [
     path('api/threads/<int:t_id>/posts/', csrf_exempt(PostCRView.as_view()), name='thread_posts'),
     path('api/threads/<int:t_id>/posts/<int:p_id>/comments/', csrf_exempt(CommentCRView.as_view()), name='comment_create'),
 
-    path('api/user/<int:u_id>/threadsub/', csrf_exempt(ThreadSubscribe.as_view()), name='thread_sub'),
+    # path('api/user/<int:u_id>/threads/', csrf_exempt(ThreadSubscribe.as_view()), name='thread_sub'),
 
-
+    url(r'api/user/<int:u_id>/threads/', csrf_exempt(ThreadCRView.as_view()), name='userthread'),
     url(r'api/user/', csrf_exempt(UserProfile.as_view()), name='loaduser'),
     url(r'api/register/', csrf_exempt(CreateUserView.as_view()), name='user'),
     url(r'api/login/', csrf_exempt(AuthenticateUser.as_view()), name='userauth'),

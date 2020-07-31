@@ -6,18 +6,34 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
-  REGISTER_FAIL
+  REGISTER_FAIL,
+  INIT_LOADING,
+  INIT_LOADED,
 } from '../actions/types.js';
 
 const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
   isLoading: false,
+  init: false,
+  initLoading: false,
   user: null
 }
 
 export default (state = initialState, action) => {
   switch(action.type) {
+    case INIT_LOADING:
+      return {
+        ...state,
+        initLoading: true
+      };
+    case INIT_LOADED:
+      return {
+        ...state,
+        initLoading: false,
+        init: true
+      };
+    
     case USER_LOADING:
       return {
         ...state,

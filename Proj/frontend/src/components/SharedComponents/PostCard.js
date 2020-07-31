@@ -15,6 +15,7 @@ const PostCard = (props) => {
   const {
     className,
     post,
+    thread,
     handlePostCardClick,
     setPost,
     id,
@@ -22,6 +23,7 @@ const PostCard = (props) => {
     handleUpvote,
     handleDownvote
   } = props;
+  const threadName = !!thread ? thread.title : null;
 
   const renderContent = () => {
     if (postStyle == 'classic') {
@@ -31,7 +33,7 @@ const PostCard = (props) => {
           <Subtitle
             render={()=>(
               <>
-                r/{post.thread} ~ Posted by u/{post.author} on {post.created_on}
+                r/{threadName} ~ Posted by u/{post.author} on {post.created_on}
               </>
             )}
           />
@@ -44,7 +46,7 @@ const PostCard = (props) => {
         <div className='content-container'>
           <Subtitle
             render={()=>(
-              <p>r/{post.thread} ~ Posted by u/{post.author} on {post.created_on}</p>
+              <p>r/{threadName} ~ Posted by u/{post.author} on {post.created_on}</p>
             )}
           />
           <Title title={post.title} xl/>
@@ -87,6 +89,7 @@ const StyledPostCard = styled(PostCard)`
   display: flex;
   flex-direction: row;
   position: relative;
+  color: ${props=>theme.themes[props.globalTheme].colorA};
   .left-container {
     background-color: ${props => theme.themes[props.globalTheme].element};
     border-radius: 6px 0px 0px 6px;
@@ -124,6 +127,7 @@ const mapStateToProps = (state, props) => ({
   post: state.posts.posts[props.id],
   postStyle: state.posts.postStyle,
   globalTheme: state.global.theme,
+  thread: state.threads.threadModels[state.posts.posts[props.id].thread],
 });
 
 // const mapDispatchToProps = dispatch => ({

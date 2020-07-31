@@ -53,7 +53,7 @@ const StyledThreadLine = styled(ThreadLine)`
     width: 11.25px;
     height: 100%;
     border-right-style: solid;
-    border-right-color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
+    border-right-color: rgba(100,100,100, 0.3);
     border-right-width: 2px;
     align-self: base-line;
     /* &:hover {

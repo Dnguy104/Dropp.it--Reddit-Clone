@@ -60,8 +60,27 @@ class ThreadCRView(RequireTokenMixin,
     model = Thread
 
     def get(self, request, *args, **kwargs):
-        print("get ", kwargs, args)
-        return self.list(request, args, kwargs)
+        user = self.authenticate(request)
+        threads = {}
+        type = request.GET.get('type')
+        if type == 'trending':
+            threads = Thread.objects.order_by('id')[:5]
+            print(threads)
+        else:
+            threads = Thread.objects.all()
+        # if self.user.id is not None:
+        #     threads = Thread.objects.filter(thread_subscribe__user = self.user.id)
+        # else:
+        #     threads = Thread.objects.all()
+
+        self.data = self.list(threads, args, kwargs)
+        if type == 'trending':
+            self.data = {'trending': {i['id']: i['id'] for i in self.data}}
+        else:
+            self.data = {'threads': {i['id']: i for i in self.data}}
+        data = {}
+
+        return JsonResponse(self.data, status=self.status, safe=False)
 
     def post(self, request, *args, **kwargs):
         print("post ", kwargs, args)
@@ -153,5 +172,6 @@ class ThreadSubscribe(RequireTokenMixin,
             print("get thread subs", kwargs, args)
             queryset = self.get_queryset(kwargs['u_id'])
             self.data = self.list(queryset, args, kwargs)
+            print('thread subsssss: ', self.data)
             self.data = {i['id']: i for i in self.data}
         return JsonResponse(self.data, status=self.status, safe=False)

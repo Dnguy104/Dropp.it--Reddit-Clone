@@ -11,7 +11,7 @@ import Post from './Post.js';
 import theme from '../../../utils/theme.js';
 
 
-const ThreadPage = props => {
+const PostPage = props => {
   const { className, isModal, history, getComments, addComment, user } = props;
   const [commentsLoaded, setCommentsLoaded] = useState(false);
 
@@ -69,11 +69,11 @@ const ThreadPage = props => {
   );
 };
 
-ThreadPage.propTypes = {
+PostPage.propTypes = {
 
 };
 
-const StyledThreadPage = styled(ThreadPage)`
+const StyledPostPage = styled(PostPage)`
   z-index: 5;
 
   .modal {
@@ -121,4 +121,4 @@ const mapStateToProps = state => ({
 export default compose(
   withRouter,
   connect(mapStateToProps, { getComments, addComment })
-)(StyledThreadPage);
+)(StyledPostPage);

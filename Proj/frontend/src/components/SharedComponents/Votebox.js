@@ -28,29 +28,26 @@ const Votebox = (props) => {
     dispatch,
     ...attr
   } = props;
-  console.log(voteState)
-  const [upvoteStyle, setupvoteStyle] = useState(voteState == 1 ? 'vote' : '');
-  const [downvoteStyle, setdownvoteStyle] = useState(voteState == -1 ? 'vote' : '');
-
-  useLayoutEffect(()=>{
-    if(voteState == 1) {
-      setupvoteStyle('vote');
-      setdownvoteStyle('');
-    }
-    else if(voteState == -1) {
-      setupvoteStyle('');
-      setdownvoteStyle('vote');
-    }
-  });
+  const [upvoteHover, setupvoteHover] = useState(false);
+  const [downvoteHover, setdownvoteHover] = useState(false);
 
   const handleUpvoteHover = useCallback((val)=> () =>{
-    if(voteState != 1) setupvoteStyle(val ? 'vote' : '');
+    setupvoteHover(val);
   });
 
   const handleDownvoteHover = useCallback((val)=> () =>{
-    if(voteState != -1) setdownvoteStyle(val ? 'vote' : '');
+    setdownvoteHover(val);
   });
 
+  let upvoteStyle = upvoteHover ? 'vote' : '';
+  let downvoteStyle = downvoteHover ? 'vote' : '';
+
+  if(voteState == 1) {
+    upvoteStyle = 'vote';
+  }
+  else if(voteState == -1) {
+    downvoteStyle = 'vote';
+  }
 
   return (
     <div className={`${className} `} {...attr} onClick={(e)=>e.stopPropagation()}>

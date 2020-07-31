@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { returnErrors } from './messages';
+import { getPosts } from './posts.js';
+import { getThreads, getTrendingThreads } from './threads.js';
 import {
   USER_LOADING,
   USER_LOADED,
@@ -8,7 +10,10 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
-  REGISTER_FAIL
+  REGISTER_FAIL,
+  CLEAR_USER_POST,
+  INIT_LOADED,
+  INIT_LOADING
 } from './types';
 
 axios.defaults.xsrfCookieName = 'csrftoken'
@@ -18,7 +23,6 @@ axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 export const loadUser = () => (dispatch, getState) => {
   // User Loading
   dispatch({type: USER_LOADING });
-  console.log(localStorage.getItem('token'));
   axios.get('http://localhost:8000/api/user/', tokenConfig(getState) )
     .then(res => {
       dispatch({
@@ -27,12 +31,48 @@ export const loadUser = () => (dispatch, getState) => {
           user: res.data
         }
       });
+
+      dispatch(getPosts());
+      dispatch(getThreads());
       return true;
     }).catch(err => {
+      console.log(err)
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({type: AUTH_ERROR});
+      dispatch(clearUser)
     });
   return false;
+};
+
+export const loadInit = () => (dispatch, getState) => {
+
+  try {
+    (async ()=>{
+      dispatch({type: INIT_LOADING });
+      await dispatch(getPosts());
+      await dispatch(getThreads());
+      await dispatch(getTrendingThreads());
+      dispatch({type: INIT_LOADED });
+    })()
+  } catch (e) {
+      console.log(e)
+      throw new TypeError(e.message);
+  }
+};
+
+export const clearUser = (dispatch, getState) => {
+  const posts = getState().posts.posts;
+  const newPosts = Object.keys(posts).reduce((obj, key)=>{
+    obj[key] = {...posts[key], votestate: 0 };
+    return obj;
+  }, {})
+
+  dispatch({
+      type: CLEAR_USER_POST,
+      payload: {
+        posts: newPosts,
+      }
+  })
 };
 
 // LOGIN USER
@@ -57,6 +97,7 @@ export const login = (username, password) => dispatch => {
       dispatch(loadUser());
     }).catch(err => {
       dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(clearUser)
       dispatch({ type: LOGIN_FAIL });
     });
 };
@@ -64,6 +105,7 @@ export const login = (username, password) => dispatch => {
 // LOGOUT
 export const logout = () => (dispatch, getState) => {
 
+  dispatch(clearUser)
   dispatch({
     type: LOGOUT_SUCCESS,
     payload: {}

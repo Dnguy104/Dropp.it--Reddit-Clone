@@ -3,50 +3,35 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
-import { Button, Input, Menu } from '../SharedComponents';
+import { Button, Input, Menu, MenuCaret, DivMenu } from '../SharedComponents';
 import styled from 'styled-components';
 import theme from '../../utils/theme.js';
-
-const DivMenu = styled.div`
-  border-style: solid;
-  border-width: 1px;
-  border-color: ${props => theme.themes[props.globalTheme].colorA};
-
-  div {
-    height: 25px;
-    color: ${props => theme.themes[props.globalTheme].colorB};
-    background-color: ${props => theme.themes[props.globalTheme].element};
-    &:hover {
-      color: ${props => theme.themes[props.globalTheme].element};
-      background-color: ${props => theme.themes[props.globalTheme].colorB};
-    }
-  }
-`
-
+import {  FiUserPlus, FiLogOut, FiLogIn } from "react-icons/fi";
 const Header = (props) => {
   const { globalTheme, className, isAuthenticated, logout, handleAuth, handleRegister, user } = props
 
   const links = (toggleMenu) => {
-    console.log(isAuthenticated)
-    if(!!isAuthenticated) {
-      return (
-        <Button type="submit" invert onClick={()=>{logout(); toggleMenu();}}>
-          Logout
-        </Button>
-      )
-    }
-    else {
-      return (
-        <DivMenu globalTheme={globalTheme}>
-          <div onClick={()=>{handleRegister(); toggleMenu();}}>
-            Register
+    return (
+      <DivMenu globalTheme={globalTheme}>
+        { !!isAuthenticated ?
+          <div onClick={()=>{logout(); toggleMenu();}}>
+            <FiLogOut />
+            <p>Logout</p>
           </div>
-          <div onClick={()=>{handleAuth(); toggleMenu();}}>
-            Login
-          </div>
-        </DivMenu>
-      )
-    }
+        :
+          <>
+            <div onClick={()=>{handleRegister(); toggleMenu();}}>
+              <FiUserPlus />
+              <p>Register</p>
+            </div>
+            <div onClick={()=>{handleAuth(); toggleMenu();}}>
+              <FiLogIn />
+              <p>Login</p>
+            </div>
+          </>
+        }
+      </DivMenu>
+    )
   };
 
   return (
@@ -66,16 +51,13 @@ const Header = (props) => {
       </div>
       <Menu
         render={links}
-        right
         display={
-        <div style={{
-          height: '30px',
-          color: theme.themes[globalTheme].colorB,
-        }}>
+        <div className='menu-button'>
           {user ?
           <p>{user.username}</p>
           :
           <p>Menu</p>}
+          <MenuCaret/>
         </div>
         }
       />
@@ -113,6 +95,26 @@ const StyledHeader = styled(Header)`
     flex-direction: row;
     align-items: center;
   }
+
+  .menu-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 20px;
+    color: ${({globalTheme})=>theme.themes[globalTheme].colorA};
+    border-color: rgba(100,100,100, 0.5);
+    border-style: solid;
+    border-width: 1px;
+    padding: 10px;
+    border-radius: 10px;
+    :hover {
+      border-color: rgba(200,200,200, 0.5);
+    }
+  }
+  ${MenuCaret} {
+    border-top-color: ${({globalTheme})=>theme.themes[globalTheme].colorA};
+    margin-left: 5px;
+  }
 `
 
 Header.propTypes = {
@@ -127,4 +129,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { logout })(StyledHeader);
+  { logout }
+)(StyledHeader);

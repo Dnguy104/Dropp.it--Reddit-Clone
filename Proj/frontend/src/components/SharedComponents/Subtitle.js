@@ -5,14 +5,12 @@ import theme from '../../utils/theme.js';
 import styled from 'styled-components';
 
 const Subtitlediv = styled.div`
-  color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
-  font-size: ${(props) => props.size};
-
-  .minimized {
-    &:hover {
-      color: inherit;
-    }
+  p {
+    color: inherit;
+    font-size: ${(props) => props.size};
   }
+
+
 `
 
 const Subtitle = (props) => {
@@ -20,9 +18,9 @@ const Subtitle = (props) => {
     render,
     globalTheme,
     minimized,
+    className,
     xs, sm, md, lg, xl,
   } = props;
-  console.log(props)
   const minimizedStyle = minimized ? 'minimized' : '';
 
   let size = '12px';
@@ -32,7 +30,7 @@ const Subtitle = (props) => {
   if(!!lg) size = theme.fontSize.lg;
   if(!!xl) size = theme.fontSize.xl;
   return (
-    <Subtitlediv globalTheme={globalTheme} size={size} className={minimizedStyle}>
+    <Subtitlediv globalTheme={globalTheme} size={size} className={`${minimizedStyle}`}>
       {render()}
     </Subtitlediv>
   );

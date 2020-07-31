@@ -118,9 +118,7 @@ const CommentSection = (props) => {
 
 
 const StyledCommentSection = styled(CommentSection)`
-  p {
-    color: ${(props) => theme.themes[props.globalTheme].colorB};
-  }
+  
 `;
 
 CommentSection.propTypes = {

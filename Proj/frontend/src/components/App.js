@@ -7,15 +7,14 @@ import Alert from './Alert/Alert.js';
 import Login from './accounts/Login/Login.js';
 import Register from './accounts/Register/Register.js';
 import PrivateRoute from './common/PrivateRoute/PrivateRoute.js';
-import { loadUser } from '../actions/auth'
-import { getPosts } from '../actions/posts.js'
+import { loadUser, loadInit } from '../actions/auth'
 import styled, { createGlobalStyle } from 'styled-components'
 
 import { Modal } from './SharedComponents';
 import Header from './Header/Header.js';
 import PostForm from './Pages/Components/PostForm.js';
 import MainPage from './Pages/MainPage/MainPage.js';
-import ThreadPage from './Pages//ThreadPage/ThreadPage.js';
+import PostPage from './Pages/PostPage/PostPage.js';
 import theme from '../utils/theme.js';
 
 const GlobalStyle = createGlobalStyle`
@@ -75,11 +74,11 @@ const GlobalStyle = createGlobalStyle`
 
 const App = (props) => {
   const {
-    loaded,
-    postLoading,
+    loadInit,
+    init,
+    initLoading,
     className,
     location,
-    getPosts,
     isAuthenticated,
     loadUser,
     user,
@@ -101,11 +100,14 @@ const App = (props) => {
       if(token && !user) {
         const loaded = await loadUser();
       }
+      if(!init && !initLoading) {
+        await loadInit();
+      }
     })();
   }, []);
 
   useEffect(() => {
-    if(!loaded && !postLoading) getPosts();
+
     if(previousAuth != isAuthenticated) {
       setPreviousAuth(isAuthenticated);
       if(isAuthenticated) setAuthModal(false);
@@ -154,13 +156,13 @@ const App = (props) => {
           </Route>
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/r/:id" component={ThreadPage} />
+          <Route exact path="/r/:id" component={PostPage} />
         </Switch>
 
         {isModal
           ?
             <Route exact path="/r/:id">
-              <ThreadPage isModal={isModal}/>
+              <PostPage isModal={isModal}/>
             </Route>
           : null
         }
@@ -221,15 +223,15 @@ const StyledApp = styled(App)`
 `
 
 const mapStateToProps = (state) => ({
-  loaded: state.posts.loaded,
-  postLoading: state.posts.isLoading,
+  initLoading: state.auth.initLoading,
   globalTheme: state.global.theme,
   isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user,
-  token: state.auth.token
+  token: state.auth.token,
+  init: state.auth.init,
 })
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPosts, loadUser })
+  connect(mapStateToProps, { loadUser, loadInit })
 )(StyledApp);

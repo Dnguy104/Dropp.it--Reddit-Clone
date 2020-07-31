@@ -4,6 +4,7 @@ import errors from './errors';
 import messages from './messages';
 import auth from './auth';
 import comments from './comments';
+import threads from './threads';
 import global from './global';
 
 export default combineReducers({
@@ -11,6 +12,7 @@ export default combineReducers({
   errors,
   messages,
   auth,
+  threads,
   global,
   comments,
 });

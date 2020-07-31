@@ -5,12 +5,13 @@ import { tokenConfig } from './auth';
 import { CAST_C_VOTE, CAST_VOTE } from './types';
 
 export const handleUpvote = (postId, commentId=null) => (dispatch, getState) => () => {
-  const obj = !!commentId ? getState().comments.commentModels[commentId] : getState().posts.posts[postId];
+  const state = getState();
+  const obj = !!commentId ? state.comments.commentModels[commentId] : getState().posts.posts[postId];
 
   let newObj = {
     ...obj
   }
-
+  console.log(newObj)
   let options = {
     method: '',
     headers: tokenConfig(getState).headers,
@@ -40,6 +41,7 @@ export const handleUpvote = (postId, commentId=null) => (dispatch, getState) => 
 
   axios(options)
     .then(res => {
+      console.log(newObj)
       if(!!commentId) {
         dispatch({
           type: CAST_C_VOTE,
@@ -51,11 +53,15 @@ export const handleUpvote = (postId, commentId=null) => (dispatch, getState) => 
         type: CAST_VOTE,
         payload: newObj
       });
-    }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+    }).catch(err => {
+      console.log(err)
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
 };
 
 export const handleDownvote = (postId, commentId=null) => (dispatch, getState) => () => {
-  const obj = !!commentId ? getState().comments.commentModels[commentId] : getState().posts.posts[postId];
+  const state = getState();
+  const obj = !!commentId ? state.comments.commentModels[commentId] : getState().posts.posts[postId];
   let newObj = {
     ...obj
   }

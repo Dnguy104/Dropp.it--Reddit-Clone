@@ -11,19 +11,23 @@ const PostForm = (props) => {
     className,
     globalTheme,
     addPost,
+    threadModels,
     user
    } = props;
 
   const renderthreadSelect = (onChange, value) => {
     let threads = !!user && !!user.subs ? Object.keys(user.subs).map((id)=>{
-        return (
-          <option value={id} key={id}>{id}</option>
-        );
-      }) : null;
+      console.log(id)
       return (
-        <select name="thread" onChange={onChange} value={value}>
-          {threads}
-        </select>
+        <option value={user.subs[id].thread} key={id}>
+          {threadModels[user.subs[id].thread].title}
+        </option>
+      );
+    }) : null;
+    return (
+      <select name="thread" onChange={onChange} value={value}>
+        {threads}
+      </select>
     );
   }
 
@@ -88,6 +92,7 @@ const StyledPostForm = styled(PostForm)`
 const mapStateToProps = (state) => ({
   globalTheme: state.global.theme,
   user: state.auth.user,
+  threadModels: state.threads.threadModels
 });
 
 export default connect(mapStateToProps, { addPost })(StyledPostForm);

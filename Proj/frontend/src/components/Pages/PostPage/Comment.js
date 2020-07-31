@@ -39,15 +39,17 @@ const Comment = (props) => {
           <Subtitle
             minimized={minimized}
             render={()=>(
-              <>
+              <div className='minimized-subtitle'>
                 <div className='uncollapse-button' onClick={handleCommentCollapse(comment.id)}>
                   <AiOutlinePlusCircle style={{
                     color: theme.themes[globalTheme].colorB,
                     fontSize: '15px',
                   }}/>
                 </div>
-                <p>{comment.author} {comment.score} points · {comment.created_on}</p>
-              </>
+                <p style={{
+                  display: 'inline'
+                }}>{comment.author} {comment.score} points · {comment.created_on}</p>
+              </div>
             )}
           />
           :
@@ -58,12 +60,14 @@ const Comment = (props) => {
                 <p>{comment.author} {comment.score} points · {comment.created_on}</p>
               )}
             />
-            <p>
-              {comment.content}
-            </p>
-            <p>
-              {comment.depth}
-            </p>
+            <div className='comment-content'>
+              <p>
+                {comment.content}
+              </p>
+              <p>
+                {comment.depth}
+              </p>
+            </div>
             <div>
               <Button onClick={handleCommentReplyToggle(comment.id)} icon>Reply</Button>
               <Button icon>Reply</Button>
@@ -84,14 +88,23 @@ const StyledComment = styled(Comment)`
   flex-direction: row;
   justify-content: flex-start;
   padding-top: 20px;
+  color: ${props=>theme.themes[props.globalTheme].colorA};
   .content-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
   }
+  .comment-content {
+    color: ${(props) => theme.themes[props.globalTheme].colorB};
+  }
+  .minimized-subtitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
   .uncollapse-button {
-    float: left;
+    height: 15px;
     padding: 0px 4px;
     margin-left: 5px;
     margin-right: 6px;
@@ -99,7 +112,7 @@ const StyledComment = styled(Comment)`
   .minimized {
     transition-duration: 0.5s;
     &:hover {
-      color: ${props=>theme.themes[props.globalTheme].colorB};
+        color: ${props=>theme.themes[props.globalTheme].colorB};
     }
   }
 

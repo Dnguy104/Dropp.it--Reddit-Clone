@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { addPost, setPostStyle } from '../../../actions/posts.js';
 import PropTypes from 'prop-types';
@@ -9,7 +9,11 @@ import styled from 'styled-components';
 import theme from '../../../utils/theme.js';
 
 const MainPage = props => {
-  const { globalTheme, className, user, handlePost } = props;
+  const { globalTheme, className, user, handlePost, trending } = props;
+
+  const renderTrending = useCallback(()=>{
+
+  }, []);
 
   return (
     <>
@@ -25,7 +29,8 @@ const MainPage = props => {
         <div className='right-dash'>
           <Element style={{
             height: '300px'
-          }}/>
+          }}>
+          </Element>
         </div>
       </div>
     </>

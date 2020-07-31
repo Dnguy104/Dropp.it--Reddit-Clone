@@ -5,8 +5,7 @@ import theme from '../../utils/theme.js';
 import styled from 'styled-components';
 
 const Subtitlediv = styled.div`
-  color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
-  font-size: ${(props) => props.size};
+  color: ${({globalTheme}) => theme.themes[globalTheme].colorB};
 `
 
 const Threadline = (props) => {
@@ -25,7 +24,7 @@ const Threadline = (props) => {
   if(!!xl) size = theme.fontSize.xl;
   return (
     <Subtitlediv globalTheme={globalTheme} size={size}>
-      |
+
     </Subtitlediv>
   );
 }

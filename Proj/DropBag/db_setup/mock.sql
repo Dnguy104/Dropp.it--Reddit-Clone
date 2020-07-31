@@ -1,7 +1,7 @@
 INSERT INTO dropbag_user (id, password, last_login, is_superuser, email, first_name, last_name, is_active, is_mod, date_joined, username)
 VALUES
-(1, '1', '2020-07-24 22:13:40.490443', 0, 'test@gmail.com', '', '', 1, 0, '2020-07-21 22:59:31.020391', '1'),
-(2, '2', '2020-07-23 22:53:58.242942', 0, 'test1@gmail.com', '', '', 1, 0, '2020-07-23 22:53:44.390596', '2');
+(1, '1', '2020-07-24 22:13:40.490443', 0, 'test@gmail.com', '', '', 1, 0, '2020-07-21 22:59:31.020391', 'NiceGuy-1'),
+(2, '2', '2020-07-23 22:53:58.242942', 0, 'test1@gmail.com', '', '', 1, 0, '2020-07-23 22:53:44.390596', 'NiceGuy-2');
 
 INSERT INTO dropbag_thread (id, title, created_on, about, user_id)
 VALUES

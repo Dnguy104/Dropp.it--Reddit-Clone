@@ -1,4 +1,4 @@
-import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST, POST_LOADING, SET_POST_STYLE, CAST_VOTE } from '../actions/types.js';
+import { GET_POSTS, DELETE_POST, ADD_POST, SET_POST, POST_LOADING, SET_POST_STYLE, CAST_VOTE, CLEAR_USER_POST } from '../actions/types.js';
 
 const initialState = {
   posts: {},
@@ -48,6 +48,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         posts: {...state.posts, [action.payload.id]: action.payload}
+      }
+    case CLEAR_USER_POST:
+      return {
+        ...state,
+        posts: {...action.payload.posts}
       }
     default:
       return state;

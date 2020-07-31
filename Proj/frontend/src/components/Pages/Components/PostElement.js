@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import theme from '../../../utils/theme.js';
 import { setPostStyle } from '../../../actions/posts.js';
-import { Element, Menu, DivMenu } from '../../SharedComponents';
+import { Element, Menu, DivMenu, MenuCaret } from '../../SharedComponents';
 import styled from 'styled-components';
+import { TiThMenu } from "react-icons/ti";
+import { RiMenuLine } from "react-icons/ri";
+
 
 const PostElement = (props) => {
   const {
@@ -19,10 +22,12 @@ const PostElement = (props) => {
      return (
        <DivMenu globalTheme={globalTheme}>
          <div onClick={()=>{setPostStyle('card'); toggleMenu();}}>
-           Card
+          <TiThMenu />
+           <p>Card</p>
          </div>
          <div onClick={()=>{setPostStyle('classic'); toggleMenu();}}>
-           Classic
+          <RiMenuLine />
+           <p>Classic</p>
          </div>
        </DivMenu>
      );
@@ -38,16 +43,15 @@ const PostElement = (props) => {
       justifyContent: 'space-between',
     }}>
       <div className='post' onClick={handlePost}>
-        <p style={{ margin: 'auto 0px', lineHeight: 0, paddingLeft: '10px'}}>Create Post</p>
+        <p style={{margin:'auto 0px', lineHeight: 0, paddingLeft: '10px'}}>Create Post</p>
       </div>
       <Menu
-        right
+        left
         render={cardStyles}
         display={
-        <div style={{
-          color: theme.themes[globalTheme].colorB,
-        }}>
-          <p>Style</p>
+        <div className='menu-button'>
+          <TiThMenu />
+          <MenuCaret />
         </div>}
       />
     </Element>
@@ -60,20 +64,41 @@ const StyledPostElement = styled(PostElement)`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  align-items: center;
 
   .post {
     cursor: text;
     border-radius: 6px;
     color: ${({globalTheme})=>theme.themes[globalTheme].colorA};
     background-color: rgba(100,100,100, 0.2);
-    flex: 1 2 width;
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 400px;
+    height: 100%;
     justify-items: center;
     &:hover {
       background-color: rgba(100,100,100, 0.3);
     }
+  }
+
+  .menu-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 20px;
+    color: ${({globalTheme})=>theme.themes[globalTheme].colorA};
+    padding: 10px;
+    border-radius: 30px;
+    :hover {
+      color: ${({globalTheme})=>theme.themes[globalTheme].colorB};
+      border-top-color: ${({globalTheme})=>theme.themes[globalTheme].colorB};
+      box-shadow: inset 0 0 100px 100px rgba(200, 200, 200, 0.1);
+    }
+  }
+
+  ${MenuCaret} {
+    border-top-color: inherit;
+    margin-left: 5px;
   }
 `
 

@@ -47,7 +47,7 @@ export default (state = initialState, action) => {
     case CAST_C_VOTE:
       return {
         ...state,
-        commentModels: {...state.comments, [action.payload.id]: action.payload}
+        commentModels: {...state.commentModels, [action.payload.id]: action.payload}
       }
     default:
       return state;

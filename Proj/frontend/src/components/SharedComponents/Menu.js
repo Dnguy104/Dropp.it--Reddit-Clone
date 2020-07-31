@@ -21,10 +21,27 @@ export const DivMenu = styled.div`
     border-color: ${props => theme.themes[props.globalTheme].colorA};
     color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
     background-color: ${props => theme.themes[props.globalTheme].element};
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 20px;
     &:hover {
       color: ${props=>theme.themes[props.globalTheme].colorB};
     }
   }
+  p {
+    padding-left: 5px;
+  }
+`
+
+export const MenuCaret = styled.div`
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+
+  border-top: 7px solid transparent;
+
 `
 
 const Menu = props => {
@@ -71,11 +88,12 @@ const Menu = props => {
   if(menuState) {
     menuClass = 'open';
   }
+  let menuDirection = left ? 'left' : 'right';
 
   return (
-    <div className={`${className}`} style={style} ref={node}>
+    <div className={`${className} ${menuDirection}`} style={style} ref={node}>
       <div
-        className='button'
+        className={`button`}
         onClick={(e)=> {
           e.stopPropagation();
           openMenu();
@@ -83,7 +101,7 @@ const Menu = props => {
       >
         {display}
       </div>
-      <div className={`${menuClass} menu`}>
+      <div className={`${menuClass} ${menuDirection} menu`}>
         {render(closeMenu)}
       </div>
     </div>
@@ -95,9 +113,20 @@ Menu.propTypes = {
 };
 
 const StyledMenu = styled(Menu)`
-  .menu {
-
+  .left {
+    ${DivMenu} {
+      left: 5px;
+      top: 50px;
+    }
   }
+  .right {
+    ${DivMenu} {
+      right: 5px;
+      top: 50px;
+    }
+  }
+  position: relative;
+  width: auto;
   .closed {
     display: none;
   }
@@ -105,17 +134,9 @@ const StyledMenu = styled(Menu)`
     display: block;
   }
   .button {
-    height: auto;
-    width: fit-content;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    box-sizing: border-box;
     padding: 2px 4px;
-    align-self: ${props => props.right ? 'flex-end' : 'flex-start'};
   }
+
   p {
     font-size: 12px;
     height: fit-content;

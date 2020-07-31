@@ -14,9 +14,9 @@ const Post = props => {
         <>
           <Subtitle
             render={()=>(
-              <>
+              <p>
                 r/{post.thread} ~ Posted by u/{post.author} on {post.created_on}
-              </>
+              </p>
             )}
           />
           <Title title={post.title} fontSize='xxl'/>
@@ -35,7 +35,7 @@ Post.propTypes = {
 
 const StyledPost = styled(Post)`
   p {
-    color: ${(props) => theme.themes[props.globalTheme].colorB};
+    color: ${(props) => theme.themes[props.globalTheme].colorA};
   }
 `
 
