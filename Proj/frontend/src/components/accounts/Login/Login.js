@@ -47,7 +47,7 @@ const Login = (props) => {
           lg
           initialState={{'username': '', 'password' : ''}}
           buttonStyle={{
-            backgroundColor: 'rgb(0,0,0,0.1)',
+            backgroundColor: 'theme.themes[globalTheme].highlight',
           }}
           render={(onChange, state) => (
             <>

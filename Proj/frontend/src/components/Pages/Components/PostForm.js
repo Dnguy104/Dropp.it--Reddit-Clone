@@ -19,8 +19,8 @@ const PostForm = (props) => {
     let threads = !!user && !!user.subs ? Object.keys(user.subs).map((id)=>{
       console.log(id)
       return (
-        <option value={user.subs[id].thread} key={id}>
-          {threadModels[user.subs[id].thread].title}
+        <option value={user.subs[id]} key={id}>
+          {threadModels[user.subs[id]].title}
         </option>
       );
     }) : null;
@@ -40,7 +40,7 @@ const PostForm = (props) => {
           submit='Submit'
           lg
           buttonStyle={{
-            
+
           }}
           initialState={{
             'title': '',

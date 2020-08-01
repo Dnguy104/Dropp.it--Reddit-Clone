@@ -100,6 +100,7 @@ class ThreadCRView(RequireTokenMixin,
 class ThreadSubscribe(RequireTokenMixin,
                     CreateModelMixin,
                     ListModelMixin,
+                    DestroyModelMixin,
                     GenericAPIView):
 
     serializer_class = ThreadSubSerializer
@@ -175,3 +176,19 @@ class ThreadSubscribe(RequireTokenMixin,
             print('thread subsssss: ', self.data)
             self.data = {i['id']: i for i in self.data}
         return JsonResponse(self.data, status=self.status, safe=False)
+
+    def delete(self, request, *args, **kwargs):
+        self.request = self.parse_request(request);
+        print("delete ", self.request)
+        user = self.authenticate(request)
+        if user is False:
+            print('flase user:', user)
+            return JsonResponse(self.data, status=self.status, safe=False)
+        sub = {}
+        print('threaddddddddddd',kwargs.get('thread'))
+        print('threaddddddddddd',self.request['thread'])
+        if Thread_Subscription.objects.filter(user = self.user.id, thread = self.request['thread']).exists():
+            sub = Thread_Subscription.objects.get(user = self.user.id, thread = self.request['thread'])
+        print(sub)
+        self.destroy(instance=sub)
+        return JsonResponse(self.data, status=self.status)

@@ -41,7 +41,6 @@ export const handleUpvote = (postId, commentId=null) => (dispatch, getState) => 
 
   axios(options)
     .then(res => {
-      console.log(newObj)
       if(!!commentId) {
         dispatch({
           type: CAST_C_VOTE,

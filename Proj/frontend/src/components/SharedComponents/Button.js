@@ -69,6 +69,9 @@ const StyledButton = styled(Button)`
       padding-left: 5px;
       color: ${props => theme.themes[props.globaltheme].colorC};
     }
+    :hover {
+      box-shadow: inset 0 0 100px 100px rgba(155, 155, 155, 0.2);
+    }
   }
 
   &.invert {

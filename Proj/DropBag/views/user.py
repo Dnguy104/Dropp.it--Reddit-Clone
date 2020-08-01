@@ -138,7 +138,7 @@ class UserProfile(RequireTokenMixin,
 
             # print('valid')
             # print(tsubs)
-            self.data['subs'] = {i['id']: i for i in tsubs}
+            self.data['subs'] = {i['thread']: i['thread'] for i in tsubs}
             self.status = status.HTTP_200_OK
         else:
             self.data = {}

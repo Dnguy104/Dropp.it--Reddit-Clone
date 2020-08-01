@@ -10,7 +10,7 @@ const Title = (props) => {
     globalTheme,
     className,
     style,
-    xs, sm, md, lg, xl,
+    xs, sm, md, lg, xl, xxl
   } = props;
 
   let size = '16px';
@@ -19,6 +19,7 @@ const Title = (props) => {
   if(!!md) size = theme.fontSize.md;
   if(!!lg) size = theme.fontSize.lg;
   if(!!xl) size = theme.fontSize.xl;
+  if(!!xxl) size = theme.fontSize.xxl;
 
   return (
       <StyledH1 className={className} style={style} globalTheme={globalTheme} size={size}>{title}</StyledH1>
@@ -29,7 +30,7 @@ const StyledH1 = styled.h1`
   color: ${(props) => theme.themes[props.globalTheme].colorB};
   font-size: ${(props) => props.size};
   line-height: 20px;
-  
+
 `
 
 const mapStateToProps = (state) => ({

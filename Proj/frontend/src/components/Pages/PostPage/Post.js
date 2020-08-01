@@ -57,7 +57,7 @@ const Post = props => {
                 </p>
               )}
             />
-            <Title className='title-space' title={post.title} fontSize='xxl'/>
+            <Title className='title-space' title={post.title} xxl/>
             <div className='content'>
               <p>
                 {post.content}
@@ -100,6 +100,7 @@ const StyledPost = styled(Post)`
     padding-top: 10px;
     padding-bottom: 40px;
     position: relative;
+    font-size: 14px;
   }
 
   .title-space {

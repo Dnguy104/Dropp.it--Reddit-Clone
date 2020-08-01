@@ -25,6 +25,7 @@ const Votebox = (props) => {
     voteState,
     handleUpvote,
     handleDownvote,
+    horizontal,
     dispatch,
     ...attr
   } = props;
@@ -49,8 +50,11 @@ const Votebox = (props) => {
     downvoteStyle = 'vote';
   }
 
+  const horizontalStyle = !!horizontal ? 'horizontal' : 'vertical';
+  console.log(horizontalStyle)
+
   return (
-    <div className={`${className} `} {...attr} onClick={(e)=>e.stopPropagation()}>
+    <div className={`${className} ${horizontalStyle}`} {...attr} onClick={(e)=>e.stopPropagation()}>
       <div className="vote-button"
         onMouseEnter={handleUpvoteHover(true)}
         onMouseLeave={handleUpvoteHover(false)}
@@ -75,6 +79,9 @@ const StyledVotebox = styled(Votebox)`
   display: flex;
   flex-direction: column;
   width: fit-content;
+  &.horizontal {
+    flex-direction: row;
+  }
   .vote-button {
     border-style: none;
     border-radius: 2px;
@@ -90,7 +97,7 @@ const StyledVotebox = styled(Votebox)`
   p {
     font-weight: 700;
     font-size: 12px;
-    padding: 12px 0px;
+    padding: 9px 6px;
     align-self: center;
     color: ${(props) => {
       if(props.voteState == 0) return theme.themes[props.globaltheme].colorB;

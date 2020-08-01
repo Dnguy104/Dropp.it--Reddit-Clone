@@ -47,7 +47,7 @@ const theme = {
       colorB: '#fdfdfd',
     },
     light: {
-      background: '#d8e1eb',
+      background: '#dfe4f2',
       element2: '#d8dce3',
       highlight: '#3378f2',
       element: 'white',

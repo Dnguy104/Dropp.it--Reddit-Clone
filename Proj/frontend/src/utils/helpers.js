@@ -50,3 +50,21 @@ export const generateTime = (obj) => {
     created_on: objTime
   };
 }
+
+export const formatDates = (objs) => {
+  Object.keys(objs).forEach(key=>{
+    objs[key] = formatDate(objs[key]);
+  })
+  return objs;
+}
+
+export const formatDate = (obj) => {
+  const date = new Date(obj.created_on * 1000);
+  const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date)
+  const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(date)
+  const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date)
+  return {
+    ...obj,
+    created_on: `${mo} ${da}, ${ye}`
+  };
+}

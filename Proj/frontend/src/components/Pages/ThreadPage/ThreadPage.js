@@ -2,14 +2,13 @@ import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { addPost, setPostStyle } from '../../../actions/posts.js';
 import PropTypes from 'prop-types';
-import { Input, Element, Form, PostCards, Title, Menu, DivMenu } from '../../SharedComponents';
+import {  PostCards } from '../../SharedComponents';
 import PostElement from '../Components/PostElement.js';
-import TrendingElement from './TrendingElement.js';
 import styled from 'styled-components';
 import theme from '../../../utils/theme.js';
 
-const MainPage = props => {
-  const { globalTheme, className, user, handlePost, trending } = props;
+const ThreadPage = props => {
+  const { globalTheme, className, user, handlePost, } = props;
 
   return (
     <>
@@ -23,18 +22,18 @@ const MainPage = props => {
           <PostCards />
         </div>
         <div className='right-dash'>
-          <TrendingElement/>
+
         </div>
       </div>
     </>
   );
 };
 
-MainPage.propTypes = {
+ThreadPage.propTypes = {
 
 };
 
-const StyledMainPage = styled(MainPage)`
+const StyledThreadPage = styled(ThreadPage)`
   background-color: ${props => theme.themes[props.globalTheme].background};
   height: fit-content;
   min-height: 100%;
@@ -47,9 +46,7 @@ const StyledMainPage = styled(MainPage)`
   flex-dirrection: row;
   justify-content: center;
 
-  &.fixed {
-    overflow: hidden;
-  }
+
   .right-dash {
     background-color: transparent;
     flex: 0 0 300px;
@@ -71,4 +68,4 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps
-)(StyledMainPage);
+)(StyledThreadPage);

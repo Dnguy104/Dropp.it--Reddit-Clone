@@ -8,6 +8,7 @@ import { getComments } from '../../../actions/comments.js'
 import { Element } from '../../SharedComponents';
 import CommentSection from './CommentSection.js';
 import Post from './Post.js';
+import Header from './Header.js';
 import AboutElement from '../Components/AboutElement.js';
 import theme from '../../../utils/theme.js';
 
@@ -32,13 +33,14 @@ const PostPage = props => {
     <div className={`${className} modal-wrapper`} onClick={(e)=>(history.goBack())}>
       <div className={modal} onClick={e => e.stopPropagation()}>
         <div className='nav-spacer'></div>
+        <Header close={(e)=>(history.goBack())}/>
         <div className='post-container'>
           <Element className='left-dash'>
             <Post/>
             <CommentSection/>
           </Element>
           <div className='right-dash'>
-            <AboutElement/>
+            <AboutElement />
           </div>
         </div>
       </div>
@@ -60,7 +62,8 @@ const StyledPostPage = styled(PostPage)`
     min-height: 100%;
     margin: 0px auto;
     max-width: 1280px;
-    padding: 32px 16px 0px;
+    padding: 32px 0px;
+    box-sizing: border-box;
     background-color: ${props => theme.themes[props.globalTheme].background};
   }
   .post-container {
@@ -77,11 +80,12 @@ const StyledPostPage = styled(PostPage)`
     height: auto;
     width: 300px;
     margin-left: 15px;
+    margin-right: 16px;
   }
   .left-dash {
     flex: 0 2 740px;
     width: 740px;
-
+    margin-left: 16px;
   }
 
 `

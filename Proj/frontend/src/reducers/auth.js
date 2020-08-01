@@ -9,6 +9,7 @@ import {
   REGISTER_FAIL,
   INIT_LOADING,
   INIT_LOADED,
+  CAST_T_SUB, CAST_T_UNSUB
 } from '../actions/types.js';
 
 const initialState = {
@@ -33,7 +34,12 @@ export default (state = initialState, action) => {
         initLoading: false,
         init: true
       };
-    
+    case CAST_T_UNSUB:
+    case CAST_T_SUB:
+      return {
+        ...state,
+        user: { ...state.user, subs: action.payload.subs }
+      };
     case USER_LOADING:
       return {
         ...state,

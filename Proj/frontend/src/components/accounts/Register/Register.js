@@ -59,7 +59,7 @@ const Register = (props) => {
           lg
           initialState={{'email': '', 'username': '', 'password' : '', 'password2' : ''}}
           buttonStyle={{
-            backgroundColor: 'rgb(0,0,0,0.1)',
+            backgroundColor: 'theme.themes[globalTheme].highlight',
           }}
           render={(onChange, state) => (
             <>
