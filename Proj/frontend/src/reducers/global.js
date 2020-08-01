@@ -1,15 +1,15 @@
 import {
-  THEME_CHANGED
+  SET_THEME
 } from '../actions/types.js';
 import theme from '../utils/theme.js';
 
 const initialState = {
-  theme: 'dark',
+  theme: localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light',
 }
 
 export default (state=initialState, action) => {
   switch(action.type) {
-    case THEME_CHANGED:
+    case SET_THEME:
       return {
         ...state,
         theme: action.payload,

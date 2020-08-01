@@ -4,15 +4,16 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { getComments, addComment } from '../../../actions/comments.js'
-import { Form, Input, Element } from '../../SharedComponents';
+import { getComments } from '../../../actions/comments.js'
+import { Element } from '../../SharedComponents';
 import CommentSection from './CommentSection.js';
 import Post from './Post.js';
+import AboutElement from '../Components/AboutElement.js';
 import theme from '../../../utils/theme.js';
 
 
 const PostPage = props => {
-  const { className, isModal, history, getComments, addComment, user } = props;
+  const { className, isModal, history, getComments, user } = props;
   const [commentsLoaded, setCommentsLoaded] = useState(false);
 
   const modal = isModal ? 'modal' : '';
@@ -26,27 +27,6 @@ const PostPage = props => {
     })();
   })
 
-  const renderForm = () => {
-    return (
-      <Form
-        submitHandler={addComment}
-        submit='Comment'
-        initialState={{'content': ''}}
-        render={(onChange, state) => (
-          <Input
-            type="text"
-            name="content"
-            placeholder="What are your thought?"
-            xs
-            resize
-            text
-            onChange={onChange}
-            value={state['content']}
-          />
-        )}
-      />
-    );
-  }
 
   return (
     <div className={`${className} modal-wrapper`} onClick={(e)=>(history.goBack())}>
@@ -55,13 +35,10 @@ const PostPage = props => {
         <div className='post-container'>
           <Element className='left-dash'>
             <Post/>
-            {renderForm()}
             <CommentSection/>
           </Element>
           <div className='right-dash'>
-            <Element style={{
-              height: '300px'
-            }}/>
+            <AboutElement/>
           </div>
         </div>
       </div>
@@ -94,9 +71,6 @@ const StyledPostPage = styled(PostPage)`
     height: auto;
 
   }
-  ${Form} {
-    margin-bottom: 20px;
-  }
   .right-dash {
     background-color: transparent;
     flex: 0 0 300px;
@@ -120,5 +94,5 @@ const mapStateToProps = state => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getComments, addComment })
+  connect(mapStateToProps, { getComments })
 )(StyledPostPage);

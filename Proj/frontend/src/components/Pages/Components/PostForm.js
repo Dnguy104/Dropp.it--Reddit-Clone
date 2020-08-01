@@ -39,6 +39,9 @@ const PostForm = (props) => {
           submitHandler={addPost}
           submit='Submit'
           lg
+          buttonStyle={{
+            
+          }}
           initialState={{
             'title': '',
             'thread': !!user && !!Object.keys(user.subs).length ? user.subs[Object.keys(user.subs)[0]].id : '',

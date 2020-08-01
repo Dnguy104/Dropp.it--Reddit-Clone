@@ -48,7 +48,7 @@ ThreadLine.propTypes = {
 const StyledThreadLine = styled(ThreadLine)`
   display: flex;
   flex-direction: column;
-  margin: 0px 5px;
+  margin-right: 5px;
   .line {
     width: 11.25px;
     height: 100%;

@@ -70,9 +70,8 @@ const StyledPostCards = styled(PostCards)`
   .card {
     margin: 10px 0px;
     border-radius: 6px;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 1px;
+    border-style: none;
+
 
   }
 `;

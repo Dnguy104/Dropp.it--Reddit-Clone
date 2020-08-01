@@ -18,7 +18,7 @@ export const DivMenu = styled.div`
     padding: 5px;
     border-top-style: solid;
     border-width: 0.5px;
-    border-color: ${props => theme.themes[props.globalTheme].colorA};
+    cursor: pointer;
     color: ${({globalTheme}) => theme.themes[globalTheme].colorA};
     background-color: ${props => theme.themes[props.globalTheme].element};
     display: flex;
@@ -117,6 +117,10 @@ const StyledMenu = styled(Menu)`
     ${DivMenu} {
       left: 5px;
       top: 50px;
+      .more-menu {
+        top: 10px;
+        left: 0px;
+      }
     }
   }
   .right {
@@ -124,6 +128,11 @@ const StyledMenu = styled(Menu)`
       right: 5px;
       top: 50px;
     }
+  }
+
+  ${DivMenu}.more-menu {
+    top: 35px;
+    left: 0px;
   }
   position: relative;
   width: auto;

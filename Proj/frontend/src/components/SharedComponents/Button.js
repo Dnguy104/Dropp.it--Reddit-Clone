@@ -42,14 +42,12 @@ const Button = (props) => {
 const StyledButton = styled(Button)`
   border-style: none;
   border-radius: var(--b-radius);
-  background-color: ${props => theme.themes[props.globaltheme].colorB};
+  background-color: ${props => theme.themes[props.globaltheme].highlight};
   color: ${props => theme.themes[props.globaltheme].element};
   height: 100%;
   width: 100%;
   padding: 0px 10px;
-  &:hover {
-    box-shadow: inset 0 0 100px 100px rgba(155, 155, 155, 0.1);
-  }
+  cursor: pointer;
 
   &:focus {
     outline: none;
@@ -57,20 +55,27 @@ const StyledButton = styled(Button)`
 
   &.icon {
     height: 25px;
-    width: initial;
+    width: auto;
     line-height: 0;
     font-weight: 800;
     font-size: 11px;
     padding: 5px 5px;
     color: ${props => theme.themes[props.globaltheme].colorC};
     background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    p {
+      padding-left: 5px;
+      color: ${props => theme.themes[props.globaltheme].colorC};
+    }
   }
 
   &.invert {
     background-color: transparent;
-    color: ${props => theme.themes[props.globaltheme].colorB};
+    color: ${props => theme.themes[props.globaltheme].highlight};
     border-style: solid;
-    border-color: ${props => theme.themes[props.globaltheme].colorB};
+    border-color: ${props => theme.themes[props.globaltheme].highlight};
     border-width: 1px;
   }
 

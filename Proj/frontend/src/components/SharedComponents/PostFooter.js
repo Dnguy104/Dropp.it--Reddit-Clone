@@ -3,21 +3,25 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from './Button.js';
 import Menu, { DivMenu } from './Menu.js'
-import { FaExpandAlt } from "react-icons/fa";
 import { FiMoreHorizontal } from "react-icons/fi";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FaCommentAlt } from "react-icons/fa";
 import { deletePost } from '../../actions/posts.js';
 import styled from 'styled-components';
+import theme from '../../utils/theme.js';
+
 
 const PostFooter = (props) => {
-  const { globalTheme, className, user, postUser, postId, deletePost } = props;
+  const { globalTheme, className, user, postUser, postId, deletePost, } = props;
   const ownsPost = user && postUser == user.id;
 
   const moreButtons = (toggleMenu) => {
     return (
-      <DivMenu globalTheme={globalTheme}>
+      <DivMenu globalTheme={globalTheme} className='more-menu'>
         {ownsPost ?
           <div onClick={()=>{deletePost(postId); toggleMenu();}}>
-            Delete
+          <AiOutlineDelete />
+            <p>Delete</p>
           </div>
           : null
         }
@@ -29,9 +33,12 @@ const PostFooter = (props) => {
 
   return (
     <div className={className}>
-      <Button icon onClick={stopProp}><FaExpandAlt/></Button>
-      <Button icon>Comments</Button>
+      <Button icon>
+        <FaCommentAlt/>
+        <p>Comments</p>
+      </Button>
       <Menu
+        left
         render={moreButtons}
         display={<Button icon><FiMoreHorizontal/></Button>}
       />
@@ -47,11 +54,16 @@ const StyledPostFooter = styled(PostFooter)`
   }
   position: absolute;
   bottom: 0px;
-  top: auto;
 
   display: flex;
   flex-direction: row;
   align-items: center;
+
+
+  ${DivMenu} .more-menu{
+    top: 10px;
+    right: 5px;
+  }
 
 `
 

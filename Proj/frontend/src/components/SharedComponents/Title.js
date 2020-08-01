@@ -21,7 +21,7 @@ const Title = (props) => {
   if(!!xl) size = theme.fontSize.xl;
 
   return (
-      <StyledH1 style={style} globalTheme={globalTheme} size={size}>{title}</StyledH1>
+      <StyledH1 className={className} style={style} globalTheme={globalTheme} size={size}>{title}</StyledH1>
   );
 };
 
@@ -29,6 +29,7 @@ const StyledH1 = styled.h1`
   color: ${(props) => theme.themes[props.globalTheme].colorB};
   font-size: ${(props) => props.size};
   line-height: 20px;
+  
 `
 
 const mapStateToProps = (state) => ({

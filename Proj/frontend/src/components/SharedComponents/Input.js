@@ -41,15 +41,17 @@ const Styleddiv = styled.div`
     border-radius: var(--b-radius);
     border-style: none;
     box-sizing: border-box;
-    background-color:${({light}) => light ? 'rgb(0,0,0,0.1)' : 'rgb(0,0,0,0.4)'};
-    opacity:  0.8;
-    border-color: ${props => theme.themes[props.globalTheme].colorA};
-    border-width: 2px;
+    background-color: ${(props) => props.light ? 'rgb(0,0,0,0.1)' : theme.themes[props.globalTheme].element2};
+    ${props => props.globalTheme == 'light' ? 'border-color: theme.themes[props.globalTheme].colorC;' : 'border-color: theme.themes[props.globalTheme].colorC;'}
+    border-width: 1px;
     color: ${props => theme.themes[props.globalTheme].colorA};
     resize: ${({resize}) => resize ? 'vertical' : 'none'};
     width: 100%;
     height: ${({height}) => height};
     padding-left: 10px;
+  }
+  :focus {
+    outline: none;
   }
 
   textarea {

@@ -90,17 +90,13 @@ const StyledLogin = styled(Login)`
   position: relative;
   height: 640px;
   width: 850px;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.12),
-              0 2px 2px rgba(0,0,0,0.12),
-              0 4px 4px rgba(0,0,0,0.12),
-              0 20px 20px rgba(0,0,0,0.12),
-              0 24px 24px rgba(0,0,0,0.12),
-              2px 0px 2px rgba(0,0,0,0.12),
-              4px 0px 4px rgba(0,0,0,0.12),
-              20px 0px 20px rgba(0,0,0,0.12),
-              -2px 0px 2px rgba(0,0,0,0.12),
-              -4px 0px 4px rgba(0,0,0,0.12),
-              -20px 0px 20px rgba(0,0,0,0.12);
+  box-shadow:
+              0 20px 20px 0px rgba(0,0,0,0.12),
+              0 24px 24px 0px rgba(0,0,0,0.12),
+              4px 0px 4px 0px rgba(0,0,0,0.12),
+              20px 0px 20px 0px rgba(0,0,0,0.12),
+              -4px 0px 4px 0px rgba(0,0,0,0.12),
+              -20px 0px 20px 0px rgba(0,0,0,0.12);
 
   border-radius: 4px;
   display: flex;

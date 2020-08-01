@@ -16,11 +16,9 @@ const Element = (props) => {
 
 const StyledElement = styled.div`
   border-radius: 8px;
-  border-style: solid;
+  border-style: none;
   background-color: ${props => theme.themes[props.globalTheme].element};
-  border-color: transparent;
-  box-shadow: inset 0px 0px 20px 0px rgba(200,200,200, 0.2);
-  border-width: 1px;
+  ${props => props.globalTheme == 'light' ? 'box-shadow: 0px 0px 30px 5px rgba(100,100,100, 0.4);' : 'box-shadow: inset 0px 0px 30px 0px rgba(200,200,200, 0.1);'}
   padding: 10px;
 `
 

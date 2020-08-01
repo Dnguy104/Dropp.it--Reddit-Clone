@@ -12,6 +12,7 @@ export const CLEAR_USER_POST = "CLEAR_USER_POST";
 
 export const GET_ERRORS = "GET_ERRORS";
 export const CREATE_MESSAGE = "CREATE_MESSAGE";
+export const SET_THEME = "SET_THEME";
 
 export const USER_LOADING = "USER_LOADING";
 export const USER_LOADED = "USER_LOADED";
@@ -21,7 +22,6 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
-export const THEME_CHANGED = "THEME_CHANGED";
 export const INIT_LOADING = "INIT_LOADING";
 export const INIT_LOADED = "INIT_LOADED";
 

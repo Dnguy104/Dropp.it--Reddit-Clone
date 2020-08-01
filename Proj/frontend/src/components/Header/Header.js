@@ -3,16 +3,37 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
+import { setTheme } from '../../actions/global.js';
 import { Button, Input, Menu, MenuCaret, DivMenu } from '../SharedComponents';
 import styled from 'styled-components';
 import theme from '../../utils/theme.js';
 import {  FiUserPlus, FiLogOut, FiLogIn } from "react-icons/fi";
+import { BsMoon } from "react-icons/bs";
+
 const Header = (props) => {
-  const { globalTheme, className, isAuthenticated, logout, handleAuth, handleRegister, user } = props
+  const { globalTheme,
+    className,
+    isAuthenticated,
+    logout,
+    handleAuth,
+    handleRegister,
+    user,
+    setTheme,
+    theme
+  } = props
+
+  const toggleTheme = () => {
+    if(theme == 'light') setTheme('dark');
+    else setTheme('light');
+  }
 
   const links = (toggleMenu) => {
     return (
       <DivMenu globalTheme={globalTheme}>
+        <div onClick={()=>{toggleTheme(); }}>
+          <BsMoon />
+          <p>{theme} Mode</p>
+        </div>
         { !!isAuthenticated ?
           <div onClick={()=>{logout(); toggleMenu();}}>
             <FiLogOut />
@@ -68,7 +89,7 @@ const Header = (props) => {
 const StyledHeader = styled(Header)`
   box-sizing: border-box;
   background-color: ${props => theme.themes[props.globalTheme].element};
-  box-shadow: 0px 0px 15px 15px rgba(0,0,0, 0.3), inset 0px -5px 15px 0px rgba(200,200,200, 0.1);
+  box-shadow: 0px 0px 30px 1px rgba(0,0,0, 0.2), inset 0px -5px 15px 0px rgba(200,200,200, 0.1);
   padding-left: 10px;
   position: fixed;
   width: 100%;
@@ -124,10 +145,11 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   globalTheme: state.global.theme,
-  user: state.auth.user
+  user: state.auth.user,
+  theme: state.global.theme,
 });
 
 export default connect(
   mapStateToProps,
-  { logout }
+  { logout, setTheme }
 )(StyledHeader);

@@ -70,7 +70,7 @@ const StyledPostElement = styled(PostElement)`
     cursor: text;
     border-radius: 6px;
     color: ${({globalTheme})=>theme.themes[globalTheme].colorA};
-    background-color: rgba(100,100,100, 0.2);
+    background-color: ${({globalTheme})=>theme.themes[globalTheme].element2};
     display: flex;
     flex-direction: column;
     width: 400px;
@@ -92,7 +92,7 @@ const StyledPostElement = styled(PostElement)`
     :hover {
       color: ${({globalTheme})=>theme.themes[globalTheme].colorB};
       border-top-color: ${({globalTheme})=>theme.themes[globalTheme].colorB};
-      box-shadow: inset 0 0 100px 100px rgba(200, 200, 200, 0.1);
+      box-shadow: inset 0 0 100px 100px rgba(100, 100, 100, 0.2);
     }
   }
 

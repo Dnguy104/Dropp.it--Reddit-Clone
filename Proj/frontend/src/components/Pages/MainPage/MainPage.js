@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Input, Element, Form, PostCards, Title, Menu, DivMenu } from '../../SharedComponents';
 import RightDash from '../Components/RightDash.js';
 import PostElement from '../Components/PostElement.js';
+import TrendingElement from './TrendingElement.js';
 import styled from 'styled-components';
 import theme from '../../../utils/theme.js';
 
@@ -27,10 +28,7 @@ const MainPage = props => {
           <PostCards />
         </div>
         <div className='right-dash'>
-          <Element style={{
-            height: '300px'
-          }}>
-          </Element>
+          <TrendingElement/>
         </div>
       </div>
     </>
@@ -66,8 +64,8 @@ const StyledMainPage = styled(MainPage)`
   }
   .left-dash {
     background-color: transparent;
-    flex: 0 1 600px;
-    width: 600px;
+    flex: 0 1 640px;
+    width: 640px;
   }
 
 `

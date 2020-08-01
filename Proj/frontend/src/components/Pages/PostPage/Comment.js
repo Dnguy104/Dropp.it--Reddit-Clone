@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { handleCommentReplyToggle, handleCommentCollapse } from '../../../actions/comments.js';
 import styled from 'styled-components';
-import { Subtitle, Button } from '../../SharedComponents';
+import { Subtitle, Button, Menu, DivMenu } from '../../SharedComponents';
 import theme, { colors as Colors } from '../../../utils/theme.js';
 import ThreadLine from './ThreadLine.js';
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle, AiOutlineDelete } from "react-icons/ai";
+import { FiMoreHorizontal } from "react-icons/fi";
+import { FaCommentAlt } from "react-icons/fa";
 
 const Comment = (props) => {
   const { className,
@@ -16,10 +18,25 @@ const Comment = (props) => {
     handleCommentCollapse,
     updateCommentThreadView,
     commentThreadView,
-    globalTheme
+    globalTheme,
+    user
   } = props;
-
+  const ownsComment = user && comment.user == user.id;
   const minimizedStyle = minimized ? 'minimized' : '';
+
+  const moreButtons = (toggleMenu) => {
+    return (
+      <DivMenu globalTheme={globalTheme} className='more-menu'>
+        {ownsComment ?
+          <div onClick={()=>{ toggleMenu();}}>
+          <AiOutlineDelete />
+            <p>Delete</p>
+          </div>
+          : null
+        }
+      </DivMenu>
+    );
+  };
 
   return (
     <div className={`${className} ${minimizedStyle}`} >
@@ -42,7 +59,7 @@ const Comment = (props) => {
               <div className='minimized-subtitle'>
                 <div className='uncollapse-button' onClick={handleCommentCollapse(comment.id)}>
                   <AiOutlinePlusCircle style={{
-                    color: theme.themes[globalTheme].colorB,
+                    color: theme.themes[globalTheme].highlight,
                     fontSize: '15px',
                   }}/>
                 </div>
@@ -64,13 +81,17 @@ const Comment = (props) => {
               <p>
                 {comment.content}
               </p>
-              <p>
-                {comment.depth}
-              </p>
             </div>
-            <div>
-              <Button onClick={handleCommentReplyToggle(comment.id)} icon>Reply</Button>
-              <Button icon>Reply</Button>
+            <div className='comment-footer'>
+              <Button onClick={handleCommentReplyToggle(comment.id)} icon>
+                <FaCommentAlt />
+                <p>Reply</p>
+              </Button>
+              <Menu
+                left
+                render={moreButtons}
+                display={<Button icon><FiMoreHorizontal/></Button>}
+              />
             </div>
           </>
         }
@@ -97,6 +118,12 @@ const StyledComment = styled(Comment)`
   }
   .comment-content {
     color: ${(props) => theme.themes[props.globalTheme].colorB};
+    padding: 5px 0px;
+  }
+  .comment-footer {
+    padding-top: 5px;
+    display: flex;
+    flex-direction: row;
   }
   .minimized-subtitle {
     display: flex;
@@ -110,7 +137,7 @@ const StyledComment = styled(Comment)`
     margin-right: 6px;
   }
   .minimized {
-    transition-duration: 0.5s;
+    transition-duration: 0.3s;
     &:hover {
         color: ${props=>theme.themes[props.globalTheme].colorB};
     }
@@ -121,6 +148,7 @@ const StyledComment = styled(Comment)`
 const mapStateToProps = (state, props) => ({
   comment: state.comments.commentModels[props.commentThreadView.id],
   globalTheme: state.global.theme,
+  user: state.auth.user,
 });
 
 
