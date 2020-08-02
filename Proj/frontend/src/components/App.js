@@ -15,6 +15,7 @@ import Header from './Header/Header.js';
 import PostForm from './Pages/Components/PostForm.js';
 import MainPage from './Pages/MainPage/MainPage.js';
 import PostPage from './Pages/PostPage/PostPage.js';
+import ThreadPage from './Pages/ThreadPage/ThreadPage.js';
 import theme from '../utils/theme.js';
 
 const GlobalStyle = createGlobalStyle`
@@ -25,6 +26,10 @@ const GlobalStyle = createGlobalStyle`
   body, h1, h2, h3, h4, h5, h6, p {
     margin: 0;
     padding: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: IBMPlexSans, Arial, sans-serif;
   }
 
   body {
@@ -129,6 +134,7 @@ const App = (props) => {
   }
 
   const handlePost = () => {
+    console.log('handling')
     setPostModal(true);
   }
 
@@ -156,12 +162,15 @@ const App = (props) => {
           </Route>
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/r/:id" component={PostPage} />
+          <Route exact path="/r/:thread" >
+            <ThreadPage handlePost={handlePost}/>
+          </Route>
+          <Route exact path="/r/:thread/:id" component={PostPage} />
         </Switch>
 
         {isModal
           ?
-            <Route exact path="/r/:id">
+            <Route exact path="/r/:thread/:id">
               <PostPage isModal={isModal}/>
             </Route>
           : null

@@ -2,7 +2,7 @@ import Element from './Element';
 import Form from './Form';
 import Input from './Input';
 import PostCard from './PostCard';
-import PostCards from './PostCards';
+import PostCards, { LinkDiv } from './PostCards';
 import PostFooter from './PostFooter';
 import PostHeader from './PostHeader';
 import Subtitle from './Subtitle';
@@ -17,6 +17,7 @@ export {
   Element,
   Form,
   Input,
+  LinkDiv,
   Modal,
   Menu,
   DivMenu,

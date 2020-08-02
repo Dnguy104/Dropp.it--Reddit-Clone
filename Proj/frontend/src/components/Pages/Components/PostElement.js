@@ -73,7 +73,7 @@ const StyledPostElement = styled(PostElement)`
     background-color: ${({globalTheme})=>theme.themes[globalTheme].element2};
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: 300px;
     height: 100%;
     justify-items: center;
     &:hover {

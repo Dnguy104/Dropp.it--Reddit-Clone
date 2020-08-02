@@ -65,7 +65,7 @@ const Header = (props) => {
             name="Search"
             placeholder="Search"
             style={{
-              height: '40px'
+              height: '40px',
             }}
           />
         </div>
@@ -108,8 +108,8 @@ const StyledHeader = styled(Header)`
     padding-top: 4px;
   }
   .searchbar {
-    width: 300px;
     margin-left: 15px;
+    width: 250px;
   }
   .left {
     display: flex;

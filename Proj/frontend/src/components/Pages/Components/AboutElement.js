@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import theme from '../../../utils/theme.js';
 import { Element, Title, Button } from '../../SharedComponents';
-import { subThread } from '../../../actions/threads.js'
+import { subThread, setThread } from '../../../actions/threads.js'
 import styled from 'styled-components';
 import { GiCakeSlice } from "react-icons/gi";
 
@@ -14,8 +15,11 @@ const AboutElement = (props) => {
     thread,
     subThread,
     subbed,
+    handlePost,
+    link
    } = props;
   const [subButtonText, setSubButtonText] = useState(subbed ? 'JOINED' : 'JOIN')
+
   const enterTextToggle = useCallback(()=>{
     setSubButtonText( subbed ? 'LEAVE' : 'JOIN');
   },[subbed])
@@ -24,43 +28,62 @@ const AboutElement = (props) => {
     setSubButtonText( subbed ? 'JOINED' : 'JOIN');
   },[subbed])
 
-  const handleSub = useCallback(()=>{
+  const handleSub = useCallback((e)=>{
+    e.stopPropagation()
     setSubButtonText( subbed ? 'JOIN' : 'LEAVE');
     subThread(thread.id)
   },[subbed])
 
   return (
-    <Element className={className} globalTheme={globalTheme} style={{
-      padding: '0px',
-      overflow: 'hidden',
-    }}>
-      <div className='panel'></div>
-        <div className='about-conatainer'>
-          <div className='header'>
-            <div className='thumbnail'></div>
-            <Title title={`r/${thread.title}`} lg/>
-          </div>
-          <div className='about'>
-            <p>{thread.about}</p>
-          </div>
-          <div className='created'>
-            <GiCakeSlice/>
-            <Title className='text-icon' title={`Created ${thread.created_on}`} md/>
-          </div>
-          <Button
-            invert={subbed ? 'invert' : null}
-            onClick={handleSub}
-            onMouseEnter={enterTextToggle}
-            onMouseLeave={leaveTextToggle}
-            buttonStyle={{
-              height: '35px',
-              margin: '10px 0px'
-            }}
-          >
-            <h3>{subButtonText}</h3>
-          </Button>
-      </div>
-    </Element>
+      <Element className={className} globalTheme={globalTheme} style={{
+        padding: '0px',
+        overflow: 'hidden',
+      }}>
+        <div className='panel'></div>
+          {!!thread ?
+            <div className='about-conatainer'>
+              {link ?
+                <div className='header'>
+                  <div className='thumbnail'></div>
+                  <Title title={`r/${thread.title}`} lg/>
+                </div>
+                :
+                null
+              }
+              <div className='about'>
+                <p>{thread.about}</p>
+              </div>
+              <div className='created'>
+                <GiCakeSlice/>
+                <Title className='text-icon' title={`Created ${thread.created_on}`} md/>
+              </div>
+              {link ?
+                <Button
+                  invert={subbed ? 'invert' : null}
+                  onClick={handleSub}
+                  onMouseEnter={enterTextToggle}
+                  onMouseLeave={leaveTextToggle}
+                  buttonStyle={{
+                    height: '35px',
+                    margin: '10px 0px'
+                  }}
+                >
+                  <h3>{subButtonText}</h3>
+                </Button>
+                :
+                <Button
+                  onClick={handlePost}
+                  buttonStyle={{
+                    height: '35px',
+                    margin: '10px 0px'
+                  }}
+                >
+                  <h3>CREATE POST</h3>
+                </Button>
+              }
+            </div>
+          : null}
+      </Element>
   );
 }
 
@@ -113,10 +136,10 @@ const StyledAboutElement = styled(AboutElement)`
   }
 `
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, props) => ({
   globalTheme: state.global.theme,
-  thread: state.threads.threadModels[state.posts.posts[state.posts.currentPostId].thread],
-  subbed: state.auth.user ? state.auth.user.subs.hasOwnProperty(state.posts.posts[state.posts.currentPostId].thread) : false
+  thread: state.threads.threadModels[props.threadId],
+  subbed: state.auth.user ? state.auth.user.subs.hasOwnProperty(props.threadId) : false
 });
 
-export default connect(mapStateToProps, { subThread })(StyledAboutElement);
+export default connect(mapStateToProps, { subThread, setThread })(StyledAboutElement);

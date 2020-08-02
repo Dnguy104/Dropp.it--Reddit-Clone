@@ -8,8 +8,8 @@ const Subtitlediv = styled.div`
   p {
     color: inherit;
     font-size: ${(props) => props.size};
+    display: inline;
   }
-
 
 `
 

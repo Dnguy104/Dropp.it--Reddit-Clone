@@ -65,6 +65,8 @@ const StyledHeader = styled(Header)`
   background-color: black;
   box-sizing: border-box;
   justify-content: space-between;
+
+
   .header {
     display: flex;
   }
@@ -75,6 +77,9 @@ const StyledHeader = styled(Header)`
 
   ${Votebox} {
     margin-right: 15px;
+    p {
+      color: white;
+    }
   }
 `
 

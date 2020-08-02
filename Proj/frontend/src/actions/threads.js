@@ -4,10 +4,12 @@ import { formatDate, formatDates } from '../utils/helpers.js';
 import { tokenConfig } from './auth';
 import { GET_THREADS, SET_THREAD, ADD_THREAD, THREAD_LOADING, LOAD_TRENDING_THREADS, CAST_T_SUB, CAST_T_UNSUB } from './types';
 
-export const setThread = (post) => (dispatch, getState) => () => {
+export const setThread = (threadId) => (dispatch, getState) => () => {
   dispatch({
     type: SET_THREAD,
-    payload: post.id
+    payload: {
+      threadId
+    }
   });
 };
 

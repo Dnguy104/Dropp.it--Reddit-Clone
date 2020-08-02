@@ -20,7 +20,7 @@ const MainPage = props => {
             <PostElement handlePost={handlePost}/>
             : null
           }
-          <PostCards />
+          <PostCards threadlink={true}/>
         </div>
         <div className='right-dash'>
           <TrendingElement/>
@@ -38,14 +38,25 @@ const StyledMainPage = styled(MainPage)`
   background-color: ${props => theme.themes[props.globalTheme].background};
   height: fit-content;
   min-height: 100%;
-  /* padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 15px; */
   overflow: auto;
   padding: 0px 30px;
   display: flex;
   flex-dirrection: row;
   justify-content: center;
+  box-sizing: border-box;
+
+  @media only screen and (max-width: 860px) {
+    padding: 0px 5px;
+
+    .right-dash {
+      display: none
+    }
+
+    .left-dash {
+      flex: 0;
+      width: 100%;
+    }
+  }
 
   &.fixed {
     overflow: hidden;
@@ -61,6 +72,7 @@ const StyledMainPage = styled(MainPage)`
     background-color: transparent;
     flex: 0 1 640px;
     width: 640px;
+
   }
 
 `

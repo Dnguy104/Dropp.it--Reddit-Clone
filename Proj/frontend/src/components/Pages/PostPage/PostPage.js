@@ -5,7 +5,8 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { getComments } from '../../../actions/comments.js'
-import { Element } from '../../SharedComponents';
+import { setThread } from '../../../actions/threads.js'
+import { Element, LinkDiv } from '../../SharedComponents';
 import CommentSection from './CommentSection.js';
 import Post from './Post.js';
 import Header from './Header.js';
@@ -14,9 +15,8 @@ import theme from '../../../utils/theme.js';
 
 
 const PostPage = props => {
-  const { className, isModal, history, getComments, user } = props;
+  const { className, isModal, location, history, getComments, user, match, setThread } = props;
   const [commentsLoaded, setCommentsLoaded] = useState(false);
-
   const modal = isModal ? 'modal' : '';
 
   useEffect(() => {
@@ -40,7 +40,14 @@ const PostPage = props => {
             <CommentSection/>
           </Element>
           <div className='right-dash'>
-            <AboutElement />
+            <LinkDiv
+              to={{
+                pathname:`/r/${match.params.thread}`,
+              }}
+              onClick={setThread(location.threadId)}
+            >
+              <AboutElement threadId={location.threadId} link/>
+            </LinkDiv>
           </div>
         </div>
       </div>
@@ -72,8 +79,17 @@ const StyledPostPage = styled(PostPage)`
     flex-direction: row;
     justify-content: center;
     height: auto;
-
   }
+  @media only screen and (max-width: 860px) {
+    .right-dash {
+      display: none;
+    }
+    .left-dash {
+      width: 100%;
+      margin: 0px 16px;
+    }
+  }
+
   .right-dash {
     background-color: transparent;
     flex: 0 0 300px;
@@ -98,5 +114,5 @@ const mapStateToProps = state => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getComments })
+  connect(mapStateToProps, { getComments, setThread })
 )(StyledPostPage);

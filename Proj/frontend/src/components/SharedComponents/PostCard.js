@@ -1,5 +1,6 @@
 import React  from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PostHeader from './PostHeader.js';
 import Subtitle from './Subtitle.js';
@@ -7,9 +8,11 @@ import Title from './Title.js';
 import PostFooter from './PostFooter.js';
 import Votebox from './Votebox.js';
 import Button from './Button.js';
+import { LinkDiv } from './PostCards.js';
 import styled from 'styled-components';
 import theme, { colors as Colors } from '../../utils/theme.js';
 import { setPost } from '../../actions/posts.js'
+import { setThread } from '../../actions/threads.js'
 import { handleUpvote, handleDownvote } from '../../actions/votes.js'
 import { FaExpandAlt } from "react-icons/fa";
 
@@ -17,16 +20,19 @@ const PostCard = (props) => {
   const {
     globalTheme,
     className,
+    threadlink,
     post,
     thread,
     handlePostCardClick,
     setPost,
+    setThread,
     id,
     postStyle,
     handleUpvote,
     handleDownvote
   } = props;
   const threadName = !!thread ? thread.title : null;
+  const threadId = !!thread ? thread.id : null;
 
   const renderContent = () => {
     if (postStyle == 'classic') {
@@ -36,7 +42,22 @@ const PostCard = (props) => {
           <Subtitle
             render={()=>(
               <>
-                r/{threadName} ~ Posted by u/{post.author} on {post.created_on}
+                {threadlink ?
+                  <Link
+                    to={{
+                      pathname:`/r/${threadName}`,
+                    }}
+                    onClick={(e)=>{e.stopPropagation(); setThread(threadId)();}}
+                    style={{
+                      color: theme.themes[globalTheme].colorB,
+                      fontWeight: 700
+                    }}
+                  >
+                    <p>r/{threadName} ~</p>
+                  </Link>
+                  : null
+                }
+                <p> Posted by u/{post.author} on {post.created_on}</p>
               </>
             )}
           />
@@ -50,7 +71,24 @@ const PostCard = (props) => {
         <div className='content-container'>
           <Subtitle
             render={()=>(
-              <p>r/{threadName} ~ Posted by u/{post.author} on {post.created_on}</p>
+              <>
+                {threadlink ?
+                  <Link
+                    to={{
+                      pathname:`/r/${threadName}`,
+                    }}
+                    onClick={(e)=>{e.stopPropagation(); setThread(threadId)();}}
+                    style={{
+                      color: theme.themes[globalTheme].colorB,
+                      fontWeight: 700
+                    }}
+                  >
+                    <p>r/{threadName} ~</p>
+                  </Link>
+                  : null
+                }
+                <p> Posted by u/{post.author} on {post.created_on}</p>
+              </>
             )}
           />
           <Title className='title-space' title={post.title} xl/>
@@ -158,5 +196,5 @@ const mapStateToProps = (state, props) => ({
 
 export default connect(
   mapStateToProps,
-  { setPost, handleUpvote, handleDownvote }
+  { setPost, setThread, handleUpvote, handleDownvote }
 )(StyledPostCard);

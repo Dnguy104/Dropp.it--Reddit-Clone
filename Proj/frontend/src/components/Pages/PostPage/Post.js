@@ -99,6 +99,7 @@ const StyledPost = styled(Post)`
   .content {
     padding-top: 10px;
     padding-bottom: 40px;
+    margin-right 25px;
     position: relative;
     font-size: 14px;
   }
