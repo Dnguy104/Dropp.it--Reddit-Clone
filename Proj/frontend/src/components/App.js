@@ -26,6 +26,10 @@ const GlobalStyle = createGlobalStyle`
   body, h1, h2, h3, h4, h5, h6, p {
     margin: 0;
     padding: 0;
+
+  }
+  p {
+    line-height: 21px;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -34,7 +38,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     height: 100vh;
-    font-family: Verdana, Geneva, sans-serif;
+    font-family: Noto Sans,Arial,sans-serif
   }
 
   a, u {

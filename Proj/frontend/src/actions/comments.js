@@ -105,12 +105,12 @@ export const addComment = (newComment) => (dispatch, getState) => {
   axios
     .post(`http://localhost:8000/api/threads/${threadId}/posts/${state.posts.currentPostId}/comments/`, request, config)
     .then(res => {
-      const comment = commentInit(res.data);
+      let comment = {...commentInit(res.data), score: 0, votestate: 0};
 
       console.log(comment)
 
       if(comment.parent) dispatch(handleCommentReplyToggle(comment.parent))();
-      const comments = {...state.comments.commentPageLinks[comment.post], [comment.id]: comment};
+      const comments = {[comment.id]: comment, ...state.comments.commentPageLinks[comment.post]};
       dispatch({
         type: ADD_COMMENT,
         payload: {

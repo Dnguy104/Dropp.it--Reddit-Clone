@@ -68,7 +68,7 @@ class Thread_Subscription(models.Model):
         unique_together = [['user', 'thread']]
 
 class Post(models.Model):
-    title = models.CharField(max_length=40)
+    title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, max_length=100, blank=True)
     # upvote = models.IntegerField(blank=True, null=True)
     # downvote = models.IntegerField(blank=True, null=True)

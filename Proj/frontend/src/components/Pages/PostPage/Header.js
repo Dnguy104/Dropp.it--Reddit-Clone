@@ -49,7 +49,6 @@ const Header = props => {
 };
 
 Header.propTypes = {
-  post: PropTypes.object.isRequired,
 };
 
 const StyledHeader = styled(Header)`

@@ -16,8 +16,12 @@ const PostForm = (props) => {
     currentThread
    } = props;
 
+  let defaultThread = !!user && !!Object.keys(user.subs).length ? Object.keys(user.subs)[0] : '';
+  if(!!currentThread) defaultThread = currentThread.id;
+
   const renderthreadSelect = (onChange, value) => {
     let threads;
+
     if(!!currentThread) {
       threads = (
         <option value={currentThread.id} key={currentThread.id}>
@@ -40,7 +44,9 @@ const PostForm = (props) => {
       </select>
     );
   }
-
+  console.log(user)
+  console.log(user)
+  console.log(defaultThread)
   return (
     <Element className={className} onClick={e => e.stopPropagation()}>
       <div className='form-container'>
@@ -54,7 +60,7 @@ const PostForm = (props) => {
           }}
           initialState={{
             'title': '',
-            'thread': !!user && !!Object.keys(user.subs).length ? user.subs[Object.keys(user.subs)[0]].id : '',
+            'thread': defaultThread,
             'content' : ''
           }}
           render={(onChange, state) => (

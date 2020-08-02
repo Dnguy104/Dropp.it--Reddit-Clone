@@ -19,7 +19,7 @@ const PostFooter = (props) => {
     return (
       <DivMenu globalTheme={globalTheme} className='more-menu'>
         {ownsPost ?
-          <div onClick={()=>{deletePost(postId); toggleMenu();}}>
+          <div onClick={(e)=>{e.stopPropagation(); deletePost(postId); toggleMenu();}}>
           <AiOutlineDelete />
             <p>Delete</p>
           </div>

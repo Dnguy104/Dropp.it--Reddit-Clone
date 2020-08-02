@@ -15,10 +15,10 @@ import theme from '../../../utils/theme.js';
 
 
 const PostPage = props => {
-  const { className, isModal, location, history, getComments, user, match, setThread } = props;
+  const { className, isModal, location, history, getComments, user, match, setThread, threadId } = props;
   const [commentsLoaded, setCommentsLoaded] = useState(false);
   const modal = isModal ? 'modal' : '';
-
+  console.log(props)
   useEffect(() => {
     (async() => {
       if(!commentsLoaded) {
@@ -46,7 +46,7 @@ const PostPage = props => {
               }}
               onClick={setThread(location.threadId)}
             >
-              <AboutElement threadId={location.threadId} link/>
+              <AboutElement threadId={threadId} link/>
             </LinkDiv>
           </div>
         </div>
@@ -106,10 +106,11 @@ const StyledPostPage = styled(PostPage)`
 
 `
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
   // commentLoaded: state.comments.commentLoaded,
   user: state.auth.user,
   globalTheme: state.global.theme,
+  threadId: state.posts.posts[props.match.params.id].thread
 });
 
 export default compose(
