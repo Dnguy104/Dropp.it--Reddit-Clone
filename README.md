@@ -8,6 +8,7 @@ Backend - Python, Django, MySQL
 ## Features
 * User accounts with JWT token based authentication
 * Psistent toggleable UI themes
+* flexible/ responsive UI
 * collapsable threaded comments
 * Forum subscriptions and posting comments
 * Upvote/downvote content
