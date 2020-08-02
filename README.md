@@ -1,6 +1,9 @@
 # Dropp.it
 
 <img src="Droppit.gif" width="500" height="250" />
+<img src="droppit1.PNG" width="500" height="250" />
+<img src="droppit2.PNG" width="500" height="250" />
+<img src="droppit3.PNG" width="500" height="250" />
 
 A fullstack community forum content application (inspired by Reddit). Users can create communities where they can post content, comment, and vote.  
 Frontend -  React.js, Redux  
