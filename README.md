@@ -9,6 +9,8 @@ Backend - Python, Django, MySQL
 * User accounts with JWT token based authentication
 * Psistent toggleable UI themes
 * flexible/ responsive UI
+* CSS sprite icons
+* Infinite scrolling
 * collapsable threaded comments
 * Forum subscriptions and posting comments
 * Upvote/downvote content
