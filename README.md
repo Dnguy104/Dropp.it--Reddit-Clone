@@ -7,7 +7,7 @@ Backend - Python, Django, MySQL
 
 ## Features
 * User accounts with JWT token based authentication
-* Psistent toggleable UI themes
+* Persistent toggleable UI themes
 * flexible/ responsive UI
 * CSS sprite icons
 * Infinite scrolling
